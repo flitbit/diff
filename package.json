@@ -1,0 +1,40 @@
+{
+	"name": "diff",
+	"description": "Javascript module that calculates the deep-difference between objects.",
+	"version": "0.1.0",
+	"keywords": [
+		"diff",
+		"difference",
+		"compare",
+		"change-tracking"
+		],
+	"author": {
+		"name": "Phillip Clark",
+		"email": "phillip@flitbit.org"
+	},
+	"repository": { "type": "git", "url": "git://github.com/flitbit/diff.git" },
+	"main": "./index.js",
+	"directories": {
+		"lib": "./lib",
+		"test": "./test"
+	},
+	"devDependencies" : {
+    "should": {
+      "version": "1.2.0"
+    },
+    "vows": {
+      "version": "0.6.4",
+      "dependencies": {
+        "eyes": {
+          "version": "0.1.8"
+        },
+        "diff": {
+          "version": "1.0.4"
+        }
+      }
+		}
+	},
+	"scripts": {
+		"test": "node test/all.js"
+	}
+}
