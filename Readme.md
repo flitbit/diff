@@ -91,7 +91,10 @@ Differences are reported as one or more change records. Change records have the 
 * `index` - when kind === 'A', indicates the array index where the change occurred
 * `item` - when kind === 'A', contains a nested change record indicating the change that occurred at the array index 
 
-Change records are generated for all structural differences between `origin` (lhs) and `comparand` (rhs). The methods only consider an object's own properties and array elements; those inherited from an object's prototype chain are not considered.
+Change records are generated for all structural differences between `origin` and `comparand`. The methods only consider an object's own properties and array elements; those inherited from an object's prototype chain are not considered.
+
+Changes to arrays are recorded simplistically. We care most about the shape of the structure; therefore we don't take the time to determine if an object moved from one slot in the array to another. Instead, we only record the structural
+differences. If the structural differences are applied from the `comparand` to the `origin` then the two objects will compare as "deep equal" using most `isEqual` implementations such as found in [lodash](https://github.com/bestiejs/lodash) or [underscore](http://underscorejs.org/).
 
 ### Changes
 
