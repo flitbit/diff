@@ -127,9 +127,11 @@ observableDiff(lhs, rhs, function (d) {
 ```
 
 ## API Documentation
-A startard import of `var diff = require('diff')` is assumed in all of the code examples. The import results in an object having the following publid properties:
+A standard import of `var diff = require('diff')` is assumed in all of the code examples. The import results in an object having the following public properties:
 
 * `diff`           - a function that calculates the differences between two objects.
 * `observableDiff` - a function that calculates the differences between two objects and reports each to an observer function.
 * `applyDiff`      - a function that applies any structural differences from one object to another.
-* `applyChange`    - applies a single change record to an origin object.
+* `applyChange`    - a function that applies a single change record to an origin object.
+
+
