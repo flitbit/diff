@@ -25,7 +25,7 @@ If you intend to run the examples you'll also need [extend](https://github.com/j
 
 ## Warning!
 
-I've only had time to verify its behavior in node.js.
+I've only had time to verify its behavior in node.js. If you're working in a browser you're on your own for now.
 
 ## Simple Examples
 
