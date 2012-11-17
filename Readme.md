@@ -14,6 +14,7 @@ Tests are written using [vows](http://vowsjs.org/) & [should.js](https://github.
 npm test diff
 ```
 
+If you intend to run the examples you'll also need [extend](https://github.com/justmoon/node-extend) and [lodash](https://github.com/bestiejs/lodash).
 ## Features
 
 * Get the structural differences between two objects.
