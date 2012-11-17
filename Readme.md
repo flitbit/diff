@@ -1,8 +1,21 @@
 # diff
 
-*diff* is a javascript module providing utility methods for working with the structural differences between two objects.
+**diff** is a javascript/node.js module providing utility methods for working with the structural differences between two objects.
 
-In order to describe differences, change revolves around an `origin` object. For consistency, the `origin` object is always the operand on the `left-hand-side` of operations. The other object, our `comparand` is always on the `right-hand-side` of operations.
+## Features
+
+* Get the structural differences between two objects.
+* Observe the structural differences between two objects.
+* When structural differences represent change, apply change from one object to another.
+* When structural differences represent change, selectively apply change from one object to another.
+
+## Warning!
+
+I intend to make **diff** work in all major browsers but admittedly, I've only had time to verify its behavior in node.js.
+
+## Examples
+
+In order to describe differences, change revolves around an `origin` object. For consistency, the `origin` object is always the operand on the `left-hand-side` of operations. The `comparand`, which may contain changes, is always on the `right-hand-side` of operations.
 
 ``` javascript
 var diff = require('diff').diff;
@@ -64,8 +77,7 @@ Differences are reported as one or more change records. Change records have the 
 * `index` - when kind === 'A', indicates the array index where the change occurred
 * `item` - when kind === 'A', contains a nested change record indicating the change that occurred at the array index 
 
-Change records are generated for all structural differences between each object's own properties and array elements.
-the prototype
+Change records are generated for all structural differences between `origin` (lhs) and `comparand` (rhs). The methods only consider an object's own properties and array elements, those inherited from an object's prototype chain are not considered.
 
 ### Changes
 
