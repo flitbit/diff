@@ -1,6 +1,6 @@
 # diff
 
-Calculates the difference between two javascript objects.
+*diff* is a javascript module providing utility methods for working with the structural differences between two objects.
 
 ``` javascript
 var diff = require('diff').diff;
@@ -25,8 +25,26 @@ var rhs = {
 	}
 };
 
-var differences = diff(lhs, rhs);
-
+var differences = diff(lhs, rhs); 
+```
+The code snippet above would result in the following structure describing the differences:
+``` javascript
+[ { kind: 'E',
+    path: [ 'name' ],
+    lhs: 'my object',
+    rhs: 'updated object' },
+  { kind: 'A',
+    path: [ 'details', 'with' ],
+    index: 2,
+    item: { kind: 'E', path: [], lhs: 'elements', rhs: 'more' } },
+  { kind: 'A',
+    path: [ 'details', 'with' ],
+    index: 3,
+    item: { kind: 'N', rhs: 'elements' } },
+  { kind: 'A',
+    path: [ 'details', 'with' ],
+    index: 4,
+    item: { kind: 'N', rhs: { than: 'before' } } } ]
 ```
 
 ### Differences

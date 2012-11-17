@@ -1,5 +1,5 @@
 var util = require('util'),
-diff     = require('../index').diff;
+diff     = require('../index');
 
 var lhs = {
 	name: 'my object',
@@ -21,6 +21,15 @@ var rhs = {
 	}
 };
 
-var differences = diff(lhs, rhs);
+var differences = diff.diff(lhs, rhs);
+
+// Print the differences to the console...
 util.log(util.inspect(differences, false, 99));
 
+diff.observableDiff(lhs, rhs, function (d) {
+	if (d.path.length !== 1 || d.path.join('.') !== 'name') {
+		diff.applyChange(lhs, rhs, d);	
+	}
+});
+
+console.log(util.inspect(lhs, false, 99));
