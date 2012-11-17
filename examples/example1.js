@@ -27,6 +27,7 @@ var differences = diff.diff(lhs, rhs);
 util.log(util.inspect(differences, false, 99));
 
 diff.observableDiff(lhs, rhs, function (d) {
+	// Apply all changes except those to the 'name' property...
 	if (d.path.length !== 1 || d.path.join('.') !== 'name') {
 		diff.applyChange(lhs, rhs, d);	
 	}
