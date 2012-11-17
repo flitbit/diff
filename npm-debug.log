@@ -1,0 +1,133 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'publish' ]
+2 info using npm@1.1.65
+3 info using node@v0.8.9
+4 verbose publish [ '.' ]
+5 verbose read json /Users/phillip/projects/flitbit/diff/package.json
+6 verbose cache add [ '.', null ]
+7 silly cache add name=undefined spec="." args=[".",null]
+8 verbose parsed url { pathname: '.', path: '.', href: '.' }
+9 silly lockFile 3a52ce78- .
+10 verbose lock . /Users/phillip/.npm/3a52ce78-.lock
+11 verbose read json package.json
+12 verbose tar pack [ '/var/folders/gm/cft18yh15gv8kvcj61xsxc5w0000gn/T/npm-19289/1353181401095-0.14686017646454275/tmp.tgz',
+12 verbose tar pack   '.' ]
+13 verbose tarball /var/folders/gm/cft18yh15gv8kvcj61xsxc5w0000gn/T/npm-19289/1353181401095-0.14686017646454275/tmp.tgz
+14 verbose folder .
+15 info prepublish diff@0.1.0
+16 silly lockFile e49a2ee1-1095-0-14686017646454275-tmp-tgz /var/folders/gm/cft18yh15gv8kvcj61xsxc5w0000gn/T/npm-19289/1353181401095-0.14686017646454275/tmp.tgz
+17 verbose lock /var/folders/gm/cft18yh15gv8kvcj61xsxc5w0000gn/T/npm-19289/1353181401095-0.14686017646454275/tmp.tgz /Users/phillip/.npm/e49a2ee1-1095-0-14686017646454275-tmp-tgz.lock
+18 silly lockFile e49a2ee1-1095-0-14686017646454275-tmp-tgz /var/folders/gm/cft18yh15gv8kvcj61xsxc5w0000gn/T/npm-19289/1353181401095-0.14686017646454275/tmp.tgz
+19 verbose tar unpack /var/folders/gm/cft18yh15gv8kvcj61xsxc5w0000gn/T/npm-19289/1353181401095-0.14686017646454275/tmp.tgz
+20 silly lockFile c8d6a339-1095-0-14686017646454275-package /var/folders/gm/cft18yh15gv8kvcj61xsxc5w0000gn/T/npm-19289/1353181401095-0.14686017646454275/package
+21 verbose lock /var/folders/gm/cft18yh15gv8kvcj61xsxc5w0000gn/T/npm-19289/1353181401095-0.14686017646454275/package /Users/phillip/.npm/c8d6a339-1095-0-14686017646454275-package.lock
+22 silly gunzTarPerm modes [ '755', '644' ]
+23 silly gunzTarPerm extractEntry package.json
+24 silly gunzTarPerm extractEntry .npmignore
+25 silly gunzTarPerm extractEntry index.js
+26 silly gunzTarPerm extractEntry examples/diff-scenarios.js
+27 silly gunzTarPerm extractEntry examples/example1.js
+28 silly gunzTarPerm extractEntry lib/diff.js
+29 silly gunzTarPerm extractEntry Readme.md
+30 silly gunzTarPerm extractEntry test/all.js
+31 silly gunzTarPerm extractEntry test/diff-test.js
+32 verbose read json /var/folders/gm/cft18yh15gv8kvcj61xsxc5w0000gn/T/npm-19289/1353181401095-0.14686017646454275/package/package.json
+33 silly lockFile c8d6a339-1095-0-14686017646454275-package /var/folders/gm/cft18yh15gv8kvcj61xsxc5w0000gn/T/npm-19289/1353181401095-0.14686017646454275/package
+34 verbose from cache /var/folders/gm/cft18yh15gv8kvcj61xsxc5w0000gn/T/npm-19289/1353181401095-0.14686017646454275/package/package.json
+35 verbose tar pack [ '/Users/phillip/.npm/diff/0.1.0/package.tgz',
+35 verbose tar pack   '/var/folders/gm/cft18yh15gv8kvcj61xsxc5w0000gn/T/npm-19289/1353181401095-0.14686017646454275/package' ]
+36 verbose tarball /Users/phillip/.npm/diff/0.1.0/package.tgz
+37 verbose folder /var/folders/gm/cft18yh15gv8kvcj61xsxc5w0000gn/T/npm-19289/1353181401095-0.14686017646454275/package
+38 silly lockFile 61c2655b-illip-npm-diff-0-1-0-package-tgz /Users/phillip/.npm/diff/0.1.0/package.tgz
+39 verbose lock /Users/phillip/.npm/diff/0.1.0/package.tgz /Users/phillip/.npm/61c2655b-illip-npm-diff-0-1-0-package-tgz.lock
+40 silly lockFile 61c2655b-illip-npm-diff-0-1-0-package-tgz /Users/phillip/.npm/diff/0.1.0/package.tgz
+41 silly lockFile 289a28e1-s-phillip-npm-diff-0-1-0-package /Users/phillip/.npm/diff/0.1.0/package
+42 verbose lock /Users/phillip/.npm/diff/0.1.0/package /Users/phillip/.npm/289a28e1-s-phillip-npm-diff-0-1-0-package.lock
+43 silly lockFile 289a28e1-s-phillip-npm-diff-0-1-0-package /Users/phillip/.npm/diff/0.1.0/package
+44 verbose tar unpack /Users/phillip/.npm/diff/0.1.0/package.tgz
+45 silly lockFile 289a28e1-s-phillip-npm-diff-0-1-0-package /Users/phillip/.npm/diff/0.1.0/package
+46 verbose lock /Users/phillip/.npm/diff/0.1.0/package /Users/phillip/.npm/289a28e1-s-phillip-npm-diff-0-1-0-package.lock
+47 silly gunzTarPerm modes [ '755', '644' ]
+48 silly gunzTarPerm extractEntry package.json
+49 silly gunzTarPerm extractEntry .npmignore
+50 silly gunzTarPerm extractEntry index.js
+51 silly gunzTarPerm extractEntry examples/diff-scenarios.js
+52 silly gunzTarPerm extractEntry examples/example1.js
+53 silly gunzTarPerm extractEntry lib/diff.js
+54 silly gunzTarPerm extractEntry Readme.md
+55 silly gunzTarPerm extractEntry test/all.js
+56 silly gunzTarPerm extractEntry test/diff-test.js
+57 verbose read json /Users/phillip/.npm/diff/0.1.0/package/package.json
+58 silly lockFile 289a28e1-s-phillip-npm-diff-0-1-0-package /Users/phillip/.npm/diff/0.1.0/package
+59 silly shasum updated bytes 5027
+60 info shasum db4590c6d0ab3697493b393fa79d6857bc9cbac9
+60 info shasum /Users/phillip/.npm/diff/0.1.0/package.tgz
+61 verbose from cache /Users/phillip/.npm/diff/0.1.0/package/package.json
+62 verbose chmod /Users/phillip/.npm/diff/0.1.0/package.tgz 644
+63 verbose chown /Users/phillip/.npm/diff/0.1.0/package.tgz [ 501, 20 ]
+64 silly lockFile 3a52ce78- .
+65 silly publish { name: 'diff',
+65 silly publish   description: 'Javascript module that calculates the deep-difference between objects.',
+65 silly publish   version: '0.1.0',
+65 silly publish   keywords: [ 'diff', 'difference', 'compare', 'change-tracking' ],
+65 silly publish   author: { name: 'Phillip Clark', email: 'phillip@flitbit.org' },
+65 silly publish   repository: { type: 'git', url: 'git://github.com/flitbit/diff.git' },
+65 silly publish   main: './index.js',
+65 silly publish   directories: { lib: './lib', test: './test' },
+65 silly publish   devDependencies:
+65 silly publish    { lodash: { version: '0.9.2' },
+65 silly publish      extend: { version: '1.1.1' },
+65 silly publish      should: { version: '1.2.1' },
+65 silly publish      vows: { version: '0.6.4', dependencies: [Object] } },
+65 silly publish   scripts: { test: 'node test/all.js' },
+65 silly publish   readme: '# diff\n\n**diff** is a javascript/node.js module providing utility methods for working with the structural differences between objects.\n\n## Features\n\n* Get the structural differences between two objects.\n* Observe the structural differences between two objects.\n* When structural differences represent change, apply change from one object to another.\n* When structural differences represent change, selectively apply change from one object to another.\n\n## Installation\n```\nnpm install diff\n```\n\n## Testing\nTests are written using [vows](http://vowsjs.org/) & [should.js](https://github.com/visionmedia/should.js/) (you may need to install them). If you\'ve installed in a development environment you can use npm to run the tests.\n\n```\nnpm test diff\n```\n\nIf you intend to run the examples you\'ll also need [extend](https://github.com/justmoon/node-extend) and [lodash](https://github.com/bestiejs/lodash).\n\n## Warning!\n\nI\'ve only had time to verify its behavior in node.js. If you\'re working in a browser you\'re on your own for now.\n\n## Simple Examples\n\nIn order to describe differences, change revolves around an `origin` object. For consistency, the `origin` object is always the operand on the `left-hand-side` of operations. The `comparand`, which may contain changes, is always on the `right-hand-side` of operations.\n\n``` javascript\nvar diff = require(\'diff\').diff;\n\nvar lhs = {\n\tname: \'my object\',\n\tdescription: \'it\\\'s an object!\',\n\tdetails: {\n\t\tit: \'has\',\n\t\tan: \'array\',\n\t\twith: [\'a\', \'few\', \'elements\']\n\t}\n};\n\nvar rhs = {\n\tname: \'updated object\',\n\tdescription: \'it\\\'s an object!\',\n\tdetails: {\n\t\tit: \'has\',\n\t\tan: \'array\',\n\t\twith: [\'a\', \'few\', \'more\', \'elements\', { than: \'before\' }]\n\t}\n};\n\nvar differences = diff(lhs, rhs); \n```\nThe code snippet above would result in the following structure describing the differences:\n``` javascript\n[ { kind: \'E\',\n    path: [ \'name\' ],\n    lhs: \'my object\',\n    rhs: \'updated object\' },\n  { kind: \'A\',\n    path: [ \'details\', \'with\' ],\n    index: 2,\n    item: { kind: \'E\', path: [], lhs: \'elements\', rhs: \'more\' } },\n  { kind: \'A\',\n    path: [ \'details\', \'with\' ],\n    index: 3,\n    item: { kind: \'N\', rhs: \'elements\' } },\n  { kind: \'A\',\n    path: [ \'details\', \'with\' ],\n    index: 4,\n    item: { kind: \'N\', rhs: { than: \'before\' } } } ]\n```\n\n### Differences\n\nDifferences are reported as one or more change records. Change records have the following structure:\n\n* `kind` - indicates the kind of change; will be one of the following:\n    * `N` - indicates a newly added property/element\n    * `D` - indicates a property/element was deleted\n    * `E` - indicates a property/element was edited\n    * `A` - indicates a change occurred within an array\n* `path` - the property path (from the left-hand-side root)\n* `lhs` - the value on the left-hand-side of the comparison (undefined if kind === \'N\')\n* `rhs` - the value on the right-hand-side of the comparison (undefined if kind === \'D\')\n* `index` - when kind === \'A\', indicates the array index where the change occurred\n* `item` - when kind === \'A\', contains a nested change record indicating the change that occurred at the array index \n\nChange records are generated for all structural differences between `origin` and `comparand`. The methods only consider an object\'s own properties and array elements; those inherited from an object\'s prototype chain are not considered.\n\nChanges to arrays are recorded simplistically. We care most about the shape of the structure; therefore we don\'t take the time to determine if an object moved from one slot in the array to another. Instead, we only record the structural\ndifferences. If the structural differences are applied from the `comparand` to the `origin` then the two objects will compare as "deep equal" using most `isEqual` implementations such as found in [lodash](https://github.com/bestiejs/lodash) or [underscore](http://underscorejs.org/).\n\n### Changes\n\nWhen two objects differ, you can observe the differences as they are calculated and selectively apply those changes to the origin object (left-hand-side).\n``` javascript\nvar observableDiff = require(\'diff\').observableDiff,\napplyChange        = require(\'diff\').applyChange;\n\nvar lhs = {\n\tname: \'my object\',\n\tdescription: \'it\\\'s an object!\',\n\tdetails: {\n\t\tit: \'has\',\n\t\tan: \'array\',\n\t\twith: [\'a\', \'few\', \'elements\']\n\t}\n};\n\nvar rhs = {\n\tname: \'updated object\',\n\tdescription: \'it\\\'s an object!\',\n\tdetails: {\n\t\tit: \'has\',\n\t\tan: \'array\',\n\t\twith: [\'a\', \'few\', \'more\', \'elements\', { than: \'before\' }]\n\t}\n};\n\nobservableDiff(lhs, rhs, function (d) {\n\t// Apply all changes except those to the \'name\' property...\n\tif (d.path.length !== 1 || d.path.join(\'.\') !== \'name\') {\n\t\tapplyChange(lhs, rhs, d);\t\n\t}\n}); \n```\n\n## API Documentation\nA standard import of `var diff = require(\'diff\')` is assumed in all of the code examples. The import results in an object having the following public properties:\n\n* `diff`           - a function that calculates the differences between two objects.\n* `observableDiff` - a function that calculates the differences between two objects and reports each to an observer function.\n* `applyDiff`      - a function that applies any structural differences from one object to another.\n* `applyChange`    - a function that applies a single change record to an origin object.\n\n\n',
+65 silly publish   readmeFilename: 'Readme.md',
+65 silly publish   _id: 'diff@0.1.0',
+65 silly publish   dist: { shasum: 'db4590c6d0ab3697493b393fa79d6857bc9cbac9' } }
+66 verbose url raw diff
+67 verbose url resolving [ 'https://registry.npmjs.org/', './diff' ]
+68 verbose url resolved https://registry.npmjs.org/diff
+69 info trying registry request attempt 1 at 12:43:21
+70 http PUT https://registry.npmjs.org/diff
+71 http 409 https://registry.npmjs.org/diff
+72 verbose url raw diff
+73 verbose url resolving [ 'https://registry.npmjs.org/', './diff' ]
+74 verbose url resolved https://registry.npmjs.org/diff
+75 info trying registry request attempt 1 at 12:43:22
+76 http GET https://registry.npmjs.org/diff
+77 http 200 https://registry.npmjs.org/diff
+78 verbose url raw diff/0.1.0/-tag/latest
+79 verbose url resolving [ 'https://registry.npmjs.org/', './diff/0.1.0/-tag/latest' ]
+80 verbose url resolved https://registry.npmjs.org/diff/0.1.0/-tag/latest
+81 info trying registry request attempt 1 at 12:43:22
+82 http PUT https://registry.npmjs.org/diff/0.1.0/-tag/latest
+83 http 403 https://registry.npmjs.org/diff/0.1.0/-tag/latest
+84 error publish Error sending version data
+85 error Error: forbidden user: flitbit not authorized to modify diff
+85 error Changed: description "A javascript text diff implementation." -> "Javascript module that calculates the deep-difference between objects."
+85 error Changed: dist-tags.latest "1.0.4" -> "0.1.0"
+85 error Added: versions.0.1.0
+85 error Changed: time.modified "2012-10-20T02:19:35.505Z" -> "2012-11-17T19:42:56.827Z"
+85 error Added: time.0.1.0
+85 error Changed: repository.url "git://github.com/kpdecker/jsdiff.git" -> "git://github.com/flitbit/diff.git"
+85 error Added: author: diff/0.1.0/-tag/latest
+85 error     at RegClient.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:259:14)
+85 error     at Request.init.self.callback (/usr/local/lib/node_modules/npm/node_modules/request/main.js:120:22)
+85 error     at Request.EventEmitter.emit (events.js:91:17)
+85 error     at Request.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/main.js:648:16)
+85 error     at Request.EventEmitter.emit (events.js:115:20)
+85 error     at IncomingMessage.Request.start.self.req.self.httpModule.request.buffer (/usr/local/lib/node_modules/npm/node_modules/request/main.js:610:14)
+85 error     at IncomingMessage.EventEmitter.emit (events.js:115:20)
+85 error     at IncomingMessage._emitEnd (http.js:366:10)
+85 error     at HTTPParser.parserOnMessageComplete [as onMessageComplete] (http.js:149:23)
+85 error     at CleartextStream.socketOnData [as ondata] (http.js:1366:20)
+86 error If you need help, you may report this log at:
+86 error     <http://github.com/isaacs/npm/issues>
+86 error or email it to:
+86 error     <npm-@googlegroups.com>
+87 error System Darwin 12.2.0
+88 error command "node" "/usr/local/bin/npm" "publish"
+89 error cwd /Users/phillip/projects/flitbit/diff
+90 error node -v v0.8.9
+91 error npm -v 1.1.65
+92 verbose exit [ 1, true ]

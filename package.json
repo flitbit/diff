@@ -1,6 +1,6 @@
 {
-	"name": "diff",
-	"description": "Javascript module that calculates the deep-difference between objects.",
+	"name": "deep-diff",
+	"description": "Node.js module providing utility functions for working with the structural differences between objects."
 	"version": "0.1.0",
 	"keywords": [
 		"diff",

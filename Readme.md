@@ -1,6 +1,6 @@
-# diff
+# deep-diff
 
-**diff** is a javascript/node.js module providing utility methods for working with the structural differences between objects.
+**deep-diff** is a javascript/node.js module providing utility functions for working with the structural differences between objects.
 
 ## Features
 
@@ -11,14 +11,14 @@
 
 ## Installation
 ```
-npm install diff
+npm install deep-diff
 ```
 
 ## Testing
 Tests are written using [vows](http://vowsjs.org/) & [should.js](https://github.com/visionmedia/should.js/) (you may need to install them). If you've installed in a development environment you can use npm to run the tests.
 
 ```
-npm test diff
+npm test deep-diff
 ```
 
 If you intend to run the examples you'll also need [extend](https://github.com/justmoon/node-extend) and [lodash](https://github.com/bestiejs/lodash).
@@ -32,7 +32,7 @@ I've only had time to verify its behavior in node.js. If you're working in a bro
 In order to describe differences, change revolves around an `origin` object. For consistency, the `origin` object is always the operand on the `left-hand-side` of operations. The `comparand`, which may contain changes, is always on the `right-hand-side` of operations.
 
 ``` javascript
-var diff = require('diff').diff;
+var diff = require('deep-diff').diff;
 
 var lhs = {
 	name: 'my object',
@@ -100,8 +100,8 @@ differences. If the structural differences are applied from the `comparand` to t
 
 When two objects differ, you can observe the differences as they are calculated and selectively apply those changes to the origin object (left-hand-side).
 ``` javascript
-var observableDiff = require('diff').observableDiff,
-applyChange        = require('diff').applyChange;
+var observableDiff = require('deep-diff').observableDiff,
+applyChange        = require('deep-diff').applyChange;
 
 var lhs = {
 	name: 'my object',
@@ -132,7 +132,7 @@ observableDiff(lhs, rhs, function (d) {
 ```
 
 ## API Documentation
-A standard import of `var diff = require('diff')` is assumed in all of the code examples. The import results in an object having the following public properties:
+A standard import of `var diff = require('deep-diff')` is assumed in all of the code examples. The import results in an object having the following public properties:
 
 * `diff`           - a function that calculates the differences between two objects.
 * `observableDiff` - a function that calculates the differences between two objects and reports each to an observer function.
