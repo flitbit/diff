@@ -1,6 +1,13 @@
 # diff
 
-**diff** is a javascript/node.js module providing utility methods for working with the structural differences between two objects.
+**diff** is a javascript/node.js module providing utility methods for working with the structural differences between objects.
+
+## Features
+
+* Get the structural differences between two objects.
+* Observe the structural differences between two objects.
+* When structural differences represent change, apply change from one object to another.
+* When structural differences represent change, selectively apply change from one object to another.
 
 ## Installation
 ```
@@ -15,16 +22,10 @@ npm test diff
 ```
 
 If you intend to run the examples you'll also need [extend](https://github.com/justmoon/node-extend) and [lodash](https://github.com/bestiejs/lodash).
-## Features
-
-* Get the structural differences between two objects.
-* Observe the structural differences between two objects.
-* When structural differences represent change, apply change from one object to another.
-* When structural differences represent change, selectively apply change from one object to another.
 
 ## Warning!
 
-I intend to make **diff** work in all major browsers but admittedly, I've only had time to verify its behavior in node.js.
+I've only had time to verify its behavior in node.js.
 
 ## Simple Examples
 
