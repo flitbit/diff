@@ -2,6 +2,18 @@
 
 **diff** is a javascript/node.js module providing utility methods for working with the structural differences between two objects.
 
+## Installation
+```
+npm install diff
+```
+
+## Testing
+Tests are written using [vows](http://vowsjs.org/) & [should.js](https://github.com/visionmedia/should.js/) (you may need to install them). If you've installed in a development environment you can use npm to run the tests.
+
+```
+npm test diff
+```
+
 ## Features
 
 * Get the structural differences between two objects.
@@ -13,7 +25,7 @@
 
 I intend to make **diff** work in all major browsers but admittedly, I've only had time to verify its behavior in node.js.
 
-## Examples
+## Simple Examples
 
 In order to describe differences, change revolves around an `origin` object. For consistency, the `origin` object is always the operand on the `left-hand-side` of operations. The `comparand`, which may contain changes, is always on the `right-hand-side` of operations.
 
@@ -77,7 +89,7 @@ Differences are reported as one or more change records. Change records have the 
 * `index` - when kind === 'A', indicates the array index where the change occurred
 * `item` - when kind === 'A', contains a nested change record indicating the change that occurred at the array index 
 
-Change records are generated for all structural differences between `origin` (lhs) and `comparand` (rhs). The methods only consider an object's own properties and array elements, those inherited from an object's prototype chain are not considered.
+Change records are generated for all structural differences between `origin` (lhs) and `comparand` (rhs). The methods only consider an object's own properties and array elements; those inherited from an object's prototype chain are not considered.
 
 ### Changes
 
@@ -113,3 +125,11 @@ observableDiff(lhs, rhs, function (d) {
 	}
 }); 
 ```
+
+## API Documentation
+A startard import of `var diff = require('diff')` is assumed in all of the code examples. The import results in an object having the following publid properties:
+
+* `diff`           - a function that calculates the differences between two objects.
+* `observableDiff` - a function that calculates the differences between two objects and reports each to an observer function.
+* `applyDiff`      - a function that applies any structural differences from one object to another.
+* `applyChange`    - applies a single change record to an origin object.
