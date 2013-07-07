@@ -43,6 +43,12 @@ exports.batch = vows.describe('diff').addBatch({
 			d[0].should.have.property('kind').eql('D');
 		}
 
+	},
+	'A target that has null value': {
+		topic: function () { return { key: null }; },
+		'shows no differences when compared to itself': function (it) {
+			should.not.exist(diff(it, it));
+		}
 	}
 
 });
