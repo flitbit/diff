@@ -41,8 +41,29 @@ exports.batch = vows.describe('diff').addBatch({
 			var d = diff(it, {});
 			d.length.should.eql(1);
 			d[0].should.have.property('kind').eql('D');
+		},
+		'shows the property as edited when compared to an object with null': function (it) {
+			var d = diff(it, { one: null });
+			d.length.should.eql(1);
+			d[0].should.have.property('kind').eql('E');
 		}
 
+	},
+	'A target that has null value': {
+		topic: function () { return { key: null }; },
+		'shows no differences when compared to itself': function (it) {
+			should.not.exist(diff(it, it));
+		},
+		'shows the property as removed when compared to an empty object': function (it) {
+			var d = diff(it, {});
+			d.length.should.eql(1);
+			d[0].should.have.property('kind').eql('D');
+		},
+		'shows the property is changed when compared to an object that has value': function (it) {
+			var d = diff(it, { key: 'value' });
+			d.length.should.eql(1);
+			d[0].should.have.property('kind').eql('E');
+		}
 	}
 
 });
