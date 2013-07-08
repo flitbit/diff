@@ -1,5 +1,6 @@
-var util = require('util'),
-diff     = require('../index');
+var util = require('util')
+, deep   = require('..')
+;
 
 var lhs = {
 	name: 'my object',
@@ -21,15 +22,15 @@ var rhs = {
 	}
 };
 
-var differences = diff.diff(lhs, rhs);
+var differences = deep.diff(lhs, rhs);
 
 // Print the differences to the console...
 util.log(util.inspect(differences, false, 99));
 
-diff.observableDiff(lhs, rhs, function (d) {
+deep.observableDiff(lhs, rhs, function (d) {
 	// Apply all changes except those to the 'name' property...
 	if (d.path.length !== 1 || d.path.join('.') !== 'name') {
-		diff.applyChange(lhs, rhs, d);	
+		deep.applyChange(lhs, rhs, d);
 	}
 });
 

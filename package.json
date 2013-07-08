@@ -1,7 +1,7 @@
 {
 	"name": "deep-diff",
 	"description": "Node.js module providing utility functions for working with the structural differences between objects.",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"keywords": [
 		"diff",
 		"difference",
@@ -18,29 +18,12 @@
 		"lib": "./lib",
 		"test": "./test"
 	},
-	"devDependencies" : {
-		"lodash": {
-			"version": "0.9.2"
-		},
-		"extend": {
-			"version": "1.1.1"
-		},
-		"should": {
-			"version": "1.2.1"
-		},
-		"vows": {
-			"version": "0.6.4",
-			"dependencies": {
-				"eyes": {
-					"version": "0.1.8"
-				},
-				"diff": {
-					"version": "1.0.4"
-				}
-			}
-		}
+	"devDependencies": {
+			"deep-equal": ">=0.0.0",
+			"expect.js": "~0.2.x",
+			"mocha": "~1.10.x"
 	},
 	"scripts": {
-		"test": "node test/all.js"
+		"test": "mocha -R spec"
 	}
 }

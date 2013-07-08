@@ -1,9 +1,10 @@
 var util = require('util'),
-extend   = require('extend'),
-should   = require('should'),
-_        = require('lodash'),
-diff = require('../index').diff,
-apply = require('../index').applyDiff;
+expect   = require('expect.js'),
+eql      = require('deep-equal'),
+deep     = require('..')
+extend   = util._extend;
+diff     = deep.diff,
+apply    = deep.applyDiff;
 
 function f0() {};
 function f1() {};
@@ -22,14 +23,15 @@ util.log(util.inspect(diff(other, circular), false, 99));
 var clone = extend({}, one);
 apply(clone, two);
 util.log(util.inspect(clone, false, 99));
-_.isEqual(clone, two).should.be.true;
-_.isEqual(clone, one).should.be.false;
+
+expect(eql(clone, two)).to.be(true);
+expect(eql(clone, one)).to.be(false);
 
 clone = extend({}, circular);
 apply(clone, other);
 util.log(util.inspect(clone, false, 99));
-_.isEqual(clone, other).should.be.true;
-_.isEqual(clone, circular).should.be.false;
+expect(eql(clone, other)).to.be(true);
+expect(eql(clone, circular)).to.be(false);
 
 
 var array = { name: 'array two levels deep', item: { arr: ['it', { has: 'data' }]}};
@@ -39,9 +41,9 @@ util.log(util.inspect(diff(array, arrayChange), false, 99));
 clone = extend({}, array);
 apply(clone, arrayChange);
 util.log(util.inspect(clone, false, 99));
-_.isEqual(clone, arrayChange).should.be.true;
+expect(eql(clone, arrayChange)).to.be(true);
 
 var one_prop = { one: 'property' };
 var d = diff(one_prop, {});
-d.length.should.be.eql(1);
+expect(d.length).to.be(1);
 
