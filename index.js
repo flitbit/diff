@@ -166,6 +166,9 @@
 				var it = target, i, u;
 				u = change.path.length - 1;
 				for(i = 0; i < u; i++){
+					if (typeof it[change.path[i]] === 'undefined') {
+						it[change.path[i]] = {};
+					}
 					it = it[change.path[i]];
 				}
 				switch(change.kind) {
