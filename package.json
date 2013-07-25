@@ -1,17 +1,17 @@
 {
 	"name": "deep-diff",
 	"description": "Node.js module providing utility functions for working with the structural differences between objects.",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"keywords": [
 		"diff",
 		"difference",
 		"compare",
 		"change-tracking"
 		],
-	"author": {
-		"name": "Phillip Clark",
-		"email": "phillip@flitbit.org"
-	},
+	"author": "Phillip Clark <phillip@flitbit.com>",
+	"contributors": [
+		"SocalNick"
+	],
 	"repository": { "type": "git", "url": "git://github.com/flitbit/diff.git" },
 	"main": "./index.js",
 	"directories": {

@@ -14,18 +14,39 @@
 npm install deep-diff
 ```
 
-## Testing
-Tests are written using [vows](http://vowsjs.org/) & [should.js](https://github.com/visionmedia/should.js/) (you may need to install them). If you've installed in a development environment you can use npm to run the tests.
+## Tests
 
+Tests use [mocha](http://visionmedia.github.io/mocha/) and [expect.js](https://github.com/LearnBoost/expect.js/), so if you clone the [github repository](https://github.com/flitbit/json-ptr) you'll need to run:
+
+```bash
+npm install
 ```
-npm test deep-diff
+
+... followed by ...
+
+```bash
+npm test
 ```
 
-If you intend to run the examples you'll also need [extend](https://github.com/justmoon/node-extend) and [lodash](https://github.com/bestiejs/lodash).
+... or ...
 
-## Warning!
+```bash
+mocha -R spec
+```
 
-I've only had time to verify its behavior in node.js. If you're working in a browser you're on your own for now.
+### Importing
+
+**nodejs**
+```javascript
+var deep = require('deep-diff')
+```
+
+**browser**
+```html
+<script src="deep-diff-0.1.2.min.js"></script>
+```
+
+> In a browser, `deep-diff` defines a global variable `DeepDiff`. If there is a conflict in the global namesapce you can restore the conflicting definition and assign `deep-diff` to another variable like this: `var deep = DeepDiff.noConflict();`.
 
 ## Simple Examples
 
@@ -54,7 +75,7 @@ var rhs = {
 	}
 };
 
-var differences = diff(lhs, rhs); 
+var differences = diff(lhs, rhs);
 ```
 The code snippet above would result in the following structure describing the differences:
 ``` javascript
@@ -89,7 +110,7 @@ Differences are reported as one or more change records. Change records have the 
 * `lhs` - the value on the left-hand-side of the comparison (undefined if kind === 'N')
 * `rhs` - the value on the right-hand-side of the comparison (undefined if kind === 'D')
 * `index` - when kind === 'A', indicates the array index where the change occurred
-* `item` - when kind === 'A', contains a nested change record indicating the change that occurred at the array index 
+* `item` - when kind === 'A', contains a nested change record indicating the change that occurred at the array index
 
 Change records are generated for all structural differences between `origin` and `comparand`. The methods only consider an object's own properties and array elements; those inherited from an object's prototype chain are not considered.
 
@@ -126,12 +147,13 @@ var rhs = {
 observableDiff(lhs, rhs, function (d) {
 	// Apply all changes except those to the 'name' property...
 	if (d.path.length !== 1 || d.path.join('.') !== 'name') {
-		applyChange(lhs, rhs, d);	
+		applyChange(lhs, rhs, d);
 	}
-}); 
+});
 ```
 
 ## API Documentation
+
 A standard import of `var diff = require('deep-diff')` is assumed in all of the code examples. The import results in an object having the following public properties:
 
 * `diff`           - a function that calculates the differences between two objects.

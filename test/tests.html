@@ -1,0 +1,32 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>deep-diff Tests</title>
+  <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+</head>
+<body>
+  <div id="mocha"></div>
+  <!--
+  You should open this file directly in a browser from your file system, not from a server...
+  -->
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+  <script src="../node_modules/expect.js/expect.js"></script>
+  <script src="../node_modules/mocha/mocha.js"></script>
+  <script>
+    // Sets up a conflict in the global namespace.
+    DeepDiff = { Conflict: "here" };
+    DeepDiffConflict = DeepDiff;
+  </script>
+  <script src="../releases/deep-diff-0.1.2.min.js"></script>
+  <!--script src="../index.js"></script-->
+  <script>mocha.setup('bdd')</script>
+  <script src="tests.js"></script>
+
+  <script>
+  window.onload = function() {
+   mocha.run()
+ };
+ </script>
+
+</body>
+</html>

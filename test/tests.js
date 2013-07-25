@@ -1,6 +1,10 @@
-var deep = require('..')
-, expect = require('expect.js')
-, util   = require('util')
+if (typeof require === 'function') {
+	var expect = require('expect.js'),
+	DeepDiff = require('..')
+	;
+}
+var deep = DeepDiff
+, executingInBrowser = 'undefined' !== typeof window
 ;
 
 describe('deep-diff', function() {
@@ -92,6 +96,27 @@ describe('deep-diff', function() {
 
 	});
 
+	describe('When executing in a browser (otherwise these tests are benign)', function() {
+
+		it('#isConflict reports conflict in the global namespace for `DeepDiff`', function() {
+// the browser test harness sets up a conflict.
+			if (executingInBrowser) {
+				expect(DeepDiff.isConflict).to.be.ok();
+			}
+		});
+
+		it('#noConflict restores prior definition for the global `DeepDiff`', function() {
+// the browser test harness sets up a conflict.
+			if (executingInBrowser) {
+				expect(DeepDiff.isConflict).to.be.ok();
+				var another = DeepDiff.noConflict();
+				expect(another).to.be(deep);
+				expect(DeepDiff).to.be(DeepDiffConflict);
+			}
+		});
+
+	});
+
 	describe('A target that has nested values', function() {
 		var nestedOne = { noChange: 'same', levelOne: { levelTwo: 'value' } };
 		var nestedTwo = { noChange: 'same', levelOne: { levelTwo: 'another value' } };
@@ -101,11 +126,13 @@ describe('deep-diff', function() {
 		});
 
 		it('shows the property as removed when compared to an empty object', function() {
-			var diff = deep.diff(nestedOne, empty);
+			var diff = deep(nestedOne, empty);
 			expect(diff).to.be.ok();
 			expect(diff.length).to.be(2);
 			expect(diff[0]).to.have.property('kind');
 			expect(diff[0].kind).to.be('D');
+			expect(diff[1]).to.have.property('kind');
+			expect(diff[1].kind).to.be('D');
 		});
 
 		it('shows the property is changed when compared to an object that has value', function() {
