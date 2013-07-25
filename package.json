@@ -15,8 +15,8 @@
 	"repository": { "type": "git", "url": "git://github.com/flitbit/diff.git" },
 	"main": "./index.js",
 	"directories": {
-		"examples": "./examples"
-		"releases": "./releases"
+		"examples": "./examples",
+		"releases": "./releases",
 		"test": "./test"
 	},
 	"devDependencies": {
