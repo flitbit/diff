@@ -43,9 +43,9 @@ var deep = require('deep-diff')
 
 **browser**
 ```html
-<script src="deep-diff-0.1.2.min.js"></script>
+<script src="deep-diff-0.1.3.min.js"></script>
 ```
-
+> Minified, browser release of the current version of the module is under the `releases` folder.
 > In a browser, `deep-diff` defines a global variable `DeepDiff`. If there is a conflict in the global namesapce you can restore the conflicting definition and assign `deep-diff` to another variable like this: `var deep = DeepDiff.noConflict();`.
 
 ## Simple Examples

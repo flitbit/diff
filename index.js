@@ -14,7 +14,7 @@
 	if (conflict) {
 		conflictResolution.push(
 			function() {
-				if ($scope.DeepDiff === accumulateDiff) {
+				if ('undefined' !== typeof conflict && $scope.DeepDiff === accumulateDiff) {
 					$scope.DeepDiff = conflict;
 					conflict = undefined;
 				}
