@@ -88,7 +88,7 @@
   		changes(new DiffDeleted(currentPath, lhs));
   	} else if (ltype !== rtype) {
   		changes(new DiffEdit(currentPath, lhs, rhs));
-  	} else if (ltype === 'object' && lhs != null) {
+  	} else if (ltype === 'object' && lhs != null && rhs != null) {
   		stack = stack || [];
   		if (stack.indexOf(lhs) < 0) {
   			stack.push(lhs);
