@@ -105,6 +105,21 @@ describe('deep-diff', function() {
 
 	});
 
+
+	describe('A target that has a date value', function() {
+		var lhs = { key: new Date(555555555555) };
+
+		it('shows the property is changed with a new date value', function() {
+			var diff = deep.diff(lhs, { key: new Date(777777777777) });
+			expect(diff).to.be.ok();
+			expect(diff.length).to.be(1);
+			expect(diff[0]).to.have.property('kind');
+			expect(diff[0].kind).to.be('E');
+		});
+
+	});
+
+
 	describe('When executing in a browser (otherwise these tests are benign)', function() {
 
 		it('#isConflict reports conflict in the global namespace for `DeepDiff`', function() {
