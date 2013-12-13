@@ -14,6 +14,12 @@
 npm install deep-diff
 ```
 
+For the browser, you can install with [bower](http://bower.io/):
+
+```
+bower install deep-diff
+```
+
 ## Tests
 
 Tests use [mocha](http://visionmedia.github.io/mocha/) and [expect.js](https://github.com/LearnBoost/expect.js/), so if you clone the [github repository](https://github.com/flitbit/json-ptr) you'll need to run:
