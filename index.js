@@ -33,9 +33,9 @@
       }
     });
   }
-  
+
   function Diff(kind, path) {
-  	Object.defineProperty(this, 'kind', { value: kind, enumerable: true, writable: true });
+  	Object.defineProperty(this, 'kind', { value: kind, enumerable: true });
   	if (path && path.length) {
   		Object.defineProperty(this, 'path', { value: path, enumerable: true });
   	}
@@ -43,20 +43,20 @@
 
   function DiffEdit(path, origin, value) {
   	DiffEdit.super_.call(this, 'E', path);
-  	Object.defineProperty(this, 'lhs', { value: origin, enumerable: true, writable: true });
-  	Object.defineProperty(this, 'rhs', { value: value, enumerable: true, writable: true });
+  	Object.defineProperty(this, 'lhs', { value: origin, enumerable: true });
+  	Object.defineProperty(this, 'rhs', { value: value, enumerable: true });
   }
   inherits(DiffEdit, Diff);
 
   function DiffNew(path, value) {
   	DiffNew.super_.call(this, 'N', path);
-  	Object.defineProperty(this, 'rhs', { value: value, enumerable: true, writable: true });
+  	Object.defineProperty(this, 'rhs', { value: value, enumerable: true });
   }
   inherits(DiffNew, Diff);
 
   function DiffDeleted(path, value) {
   	DiffDeleted.super_.call(this, 'D', path);
-  	Object.defineProperty(this, 'lhs', { value: value, enumerable: true, writable: true });
+  	Object.defineProperty(this, 'lhs', { value: value, enumerable: true });
   }
   inherits(DiffDeleted, Diff);
 
@@ -248,35 +248,6 @@
 			}
 		}
 
-  function revertChange(change) {
-    if (!checkForDiff(change)) {
-      console.log(change)
-      throw new TypeError('[Object] Required properties on change are missing');
-    }
-    var h;
-    switch(change.kind) {
-      case 'A':
-        revertChange(change.item);
-        break;
-      case 'D':
-        change.kind = 'N';
-        change.rhs = change.lhs;
-        delete change.lhs;
-        break;
-      case 'E':
-        h = change.rhs;
-        change.rhs = change.lhs;
-        change.lhs = h;
-        break;
-      case 'N':
-        change.kind = 'D';
-        change.lhs = change.rhs;
-        delete change.rhs;
-        break;
-      }
-    return change;
-  }
-  
 	function applyDiff(target, source, filter) {
 		if (target && source) {
 			var onChange = function(change) {
@@ -294,7 +265,6 @@
 		observableDiff: { value: deepDiff, enumerable:true },
 		applyDiff: { value: applyDiff, enumerable:true },
 		applyChange: { value: applyChange, enumerable:true },
-    revertChange: { value: revertChange, enumerable:true },
 		isConflict: { get: function() { return 'undefined' !== typeof conflict; }, enumerable: true },
 		noConflict: {
 			value: function () {
