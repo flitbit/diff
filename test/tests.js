@@ -1,15 +1,11 @@
 if (typeof require === 'function') {
 	var expect = require('expect.js'),
-	DeepDiff = require('..')
-	;
+	DeepDiff = require('..');
 }
-var deep = DeepDiff
-, executingInBrowser = 'undefined' !== typeof window
-;
+var deep = DeepDiff, executingInBrowser = 'undefined' !== typeof window;
 
 describe('deep-diff', function() {
-	var empty = {}
-	;
+	var empty = {};
 
 	describe('A target that has no properties', function() {
 
@@ -189,6 +185,17 @@ describe('deep-diff', function() {
 
 		});
 
-	});
+  });
+
+  describe('A diff item reverted', function() {
+    var nestedOne = { noChange: 'same', levelOne: [{ levelTwo: 'value', levelTwo: 'value2' }] };
+    var nestedTwo = { noChange: 'same', levelOne: [{ levelTwo: 'another value' }] };
+    var original = deep.diff(nestedOne, nestedTwo)[0];
+    var reverted = deep.revertChange(original);  
+    it('shows no differences when compared to itself reverted again', function() {
+      var revertedTwice = deep.revertChange(reverted);
+      expect(deep.diff(original, revertedTwice)).to.be.an('undefined');
+    });
+  });
 
 });
