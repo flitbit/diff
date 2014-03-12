@@ -67,6 +67,34 @@
   }
   inherits(DiffArray, Diff);
 
+  function checkForDiff(object) {
+    if (object && object.kind && object.path){
+      switch(object.kind) {
+        case 'A':
+          if (object.hasOwnProperty('index') && object.hasOwnProperty('item')){
+            return true;
+          }
+          break;
+        case 'D':
+          if (object.hasOwnProperty('lhs')){
+            return true;
+          }
+          break;
+        case 'E':
+          if (object.hasOwnProperty('lhs') && object.hasOwnProperty('rhs')){
+            return true;
+          }
+          break;
+        case 'N':
+          if (object.hasOwnProperty('rhs')){
+            return true;
+          }
+          break;
+      }
+    }
+    return false;
+  }
+
   function arrayRemove(arr, from, to) {
   	var rest = arr.slice((to || from) + 1 || arr.length);
   	arr.length = from < 0 ? arr.length + from : from;
@@ -189,8 +217,8 @@
 	}
 
 	function applyChange(target, source, change) {
-		if (!(change instanceof Diff)) {
-			throw new TypeError('[Object] change must be instanceof Diff');
+		if (!checkForDiff(change)) {
+			throw new TypeError('[Object] Required properties on change are missing');
 		}
 		if (target && source && change) {
 			var it = target, i, u;
