@@ -129,7 +129,9 @@
   			stack.length = stack.length - 1;
   		}
   	} else if (lhs !== rhs) {
-  		changes(new DiffEdit(currentPath, lhs, rhs));
+      if(!(ltype === "number" && isNaN(lhs) && isNaN(rhs))) {
+  		  changes(new DiffEdit(currentPath, lhs, rhs));
+      }
   	}
   }
 
