@@ -9,6 +9,10 @@
 * When structural differences represent change, apply change from one object to another.
 * When structural differences represent change, selectively apply change from one object to another.
 
+## ChangeLog
+
+`0.1.6` - Changed objects within nested arrays can now be applied. They were previously recording the changes appropriately but `applyDiff` would error. Comparison of `NaN` works more sanely - comparison to number shows difference, comparison to another `Nan` does not.
+
 ## Installation
 ```
 npm install deep-diff
