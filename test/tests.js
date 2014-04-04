@@ -121,6 +121,25 @@ describe('deep-diff', function() {
 	});
 
 
+  describe('A target that has a NaN', function() {
+    var lhs = { key: NaN };
+
+    it('shows the property is changed when compared to another number', function() {
+      var diff = deep.diff(lhs, { key: 0 });
+      expect(diff).to.be.ok();
+			expect(diff.length).to.be(1);
+			expect(diff[0]).to.have.property('kind');
+			expect(diff[0].kind).to.be('E');
+    });
+
+    it('shows no differences when compared to another NaN', function() {
+      var diff = deep.diff(lhs, { key: NaN });
+      expect(diff).to.be.an('undefined');
+    });
+
+  });
+
+
 	describe('When executing in a browser (otherwise these tests are benign)', function() {
 
 		it('#isConflict reports conflict in the global namespace for `DeepDiff`', function() {
