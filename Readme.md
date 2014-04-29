@@ -11,6 +11,8 @@
 
 ## ChangeLog
 
+`0.1.7` - [Enhancement #11](https://github.com/flitbit/diff/issues/11) Added the ability to filter properties that should not be analyzed while calculating differences. Makes `deep-diff` more usable when other frameworks attach housekeeping properties to existing objects. AngularJS does exactly such, and this filter ability should ease working with it.
+
 `0.1.6` - Changed objects within nested arrays can now be applied. They were previously recording the changes appropriately but `applyDiff` would error. Comparison of `NaN` works more sanely - comparison to number shows difference, comparison to another `Nan` does not.
 
 ## Installation
@@ -171,4 +173,18 @@ A standard import of `var diff = require('deep-diff')` is assumed in all of the 
 * `applyDiff`      - a function that applies any structural differences from one object to another.
 * `applyChange`    - a function that applies a single change record to an origin object.
 
+### `diff`
+
+The `diff` function calculates the difference between two objects. In version `0.1.7` you can supply your own `prefilter` function as the 3rd arguement and control which properties are ignored while calculating differences throughout the object graph.
+
+**Arguments**
+
++ `lhs` - the left-hand operand; the origin object.
++ `rhs` - the right-hand operand; the object being compared structurally with the origin object.
++ `prefilter` - an optional function that determines whether difference analysis should continue down the object graph.
++ `acc` - an optional accumulator/array (requirement is that it have a `push` function). Each difference is pushed to the specified accumulator.
+
+#### Pre-filtering Object Properties
+
+The `prefilter`'s signature should be `function(path, key)` and it should return a truthy value for any `path`-`key` combination that should be filtered. If filtered, the difference analysis does no further analysis of on the identified object-property path.
 
