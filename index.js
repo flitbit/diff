@@ -74,10 +74,13 @@
   	return arr;
   }
 
-  function deepDiff(lhs, rhs, changes, path, key, stack) {
+  function deepDiff(lhs, rhs, changes, prefilter, path, key, stack) {
   	path = path || [];
   	var currentPath = path.slice(0);
-  	if (key) { currentPath.push(key); }
+  	if (key) {
+  		if (prefilter && prefilter(currentPath, key)) return;
+  		currentPath.push(key);
+  	}
   	var ltype = typeof lhs;
   	var rtype = typeof rhs;
   	if (ltype === 'undefined') {
@@ -104,7 +107,7 @@
   					if (i >= rhs.length) {
   						changes(new DiffArray(currentPath, i, new DiffDeleted(undefined, lhs[i])));
   					} else {
-  						deepDiff(lhs[i], rhs[i], ea, [], null, stack);
+  						deepDiff(lhs[i], rhs[i], ea, prefilter, [], null, stack);
   					}
   				}
   				while(i < rhs.length) {
@@ -116,14 +119,14 @@
   				akeys.forEach(function(k) {
   					var i = pkeys.indexOf(k);
   					if (i >= 0) {
-  						deepDiff(lhs[k], rhs[k], changes, currentPath, k, stack);
+  						deepDiff(lhs[k], rhs[k], changes, prefilter, currentPath, k, stack);
   						pkeys = arrayRemove(pkeys, i);
   					} else {
-  						deepDiff(lhs[k], undefined, changes, currentPath, k, stack);
+  						deepDiff(lhs[k], undefined, changes, prefilter, currentPath, k, stack);
   					}
   				});
   				pkeys.forEach(function(k) {
-  					deepDiff(undefined, rhs[k], changes, currentPath, k, stack);
+  					deepDiff(undefined, rhs[k], changes, prefilter, currentPath, k, stack);
   				});
   			}
   			stack.length = stack.length - 1;
@@ -135,13 +138,15 @@
   	}
   }
 
-  function accumulateDiff(lhs, rhs, accum) {
+  function accumulateDiff(lhs, rhs, prefilter, accum) {
   	accum = accum || [];
-  	deepDiff(lhs, rhs, function(diff) {
-  		if (diff) {
-  			accum.push(diff);
-  		}
-  	});
+  	deepDiff(lhs, rhs,
+  		function(diff) {
+  			if (diff) {
+  				accum.push(diff);
+  			}
+  		},
+  		prefilter);
   	return (accum.length) ? accum : undefined;
   }
 

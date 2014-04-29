@@ -161,6 +161,56 @@ describe('deep-diff', function() {
 
 	});
 
+
+
+	describe('When filtering keys', function() {
+		var lhs = { enhancement: 'Filter/Ignore Keys?', numero: 11, submitted_by: 'ericclemmons', supported_by: ['ericclemmons'], status: 'open' };
+		var rhs = { enhancement: 'Filter/Ignore Keys?', numero: 11, submitted_by: 'ericclemmons', supported_by: [
+			'ericclemmons',
+			'TylerGarlick',
+			'flitbit',
+			'ergdev'
+		], status: 'closed', fixed_by: 'flitbit' };
+
+		describe('if the filtered property is an array', function() {
+
+			it('changes to the array do not appear as a difference', function() {
+				var prefilter = function(path, key) {
+					return key === 'supported_by'
+				};
+				var diff = deep(lhs, rhs, prefilter);
+				expect(diff).to.be.ok();
+				expect(diff.length).to.be(2);
+				expect(diff[0]).to.have.property('kind');
+				expect(diff[0].kind).to.be('E');
+				expect(diff[1]).to.have.property('kind');
+				expect(diff[1].kind).to.be('N');
+			});
+
+		});
+
+		describe('if the filtered property is not an array', function() {
+
+			it('changes do not appear as a difference', function() {
+				var prefilter = function(path, key) {
+					return key === 'fixed_by'
+				};
+				var diff = deep(lhs, rhs, prefilter);
+				expect(diff).to.be.ok();
+				expect(diff.length).to.be(4);
+				expect(diff[0]).to.have.property('kind');
+				expect(diff[0].kind).to.be('A');
+				expect(diff[1]).to.have.property('kind');
+				expect(diff[1].kind).to.be('A');
+				expect(diff[2]).to.have.property('kind');
+				expect(diff[2].kind).to.be('A');
+				expect(diff[3]).to.have.property('kind');
+				expect(diff[3].kind).to.be('E');
+			});
+
+		});
+	});
+
 	describe('A target that has nested values', function() {
 		var nestedOne = { noChange: 'same', levelOne: { levelTwo: 'value' } };
 		var nestedTwo = { noChange: 'same', levelOne: { levelTwo: 'another value' } };
