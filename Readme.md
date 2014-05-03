@@ -188,3 +188,10 @@ The `diff` function calculates the difference between two objects. In version `0
 
 The `prefilter`'s signature should be `function(path, key)` and it should return a truthy value for any `path`-`key` combination that should be filtered. If filtered, the difference analysis does no further analysis of on the identified object-property path.
 
+# Compatability
+
+Currently testing on Travis CI against:
+
++ node.js `0.11`
++ node.js `0.10`
++ node.js `0.8`
