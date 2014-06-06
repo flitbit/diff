@@ -227,6 +227,92 @@
     }
   }
 
+  function revertArrayChange(arr, index, change) {
+    if (change.path && change.path.length) {
+      // the structure of the object at the index has changed...
+      var it = arr[index], i, u = change.path.length - 1;
+      for(i = 0; i < u; i++){
+        it = it[change.path[i]];
+      }
+      switch(change.kind) {
+        case 'A':
+          // Array was modified...
+          // it will be an array...
+          revertArrayChange(it[change.path[i]], change.index, change.item);
+          break;
+        case 'D':
+          // Item was deleted...
+          it[change.path[i]] = change.lhs;
+          break;
+        case 'E':
+          // Item was edited
+          it[change.path[i]] = change.lhs;
+          break;
+        case 'N':
+          // Item is new...
+          delete it[change.path[i]];
+          break;
+      }
+    } else {
+      // the array item is different...
+      switch(change.kind) {
+        case 'A':
+          // Array was modified...
+          // it will be an array...
+          revertArrayChange(arr[index], change.index, change.item);
+          break;
+        case 'D':
+          // Item was deleted...
+          arr[index] = change.lhs;
+          break;
+        case 'E':
+          // Item was edited
+          arr[index] = change.lhs;
+          break;
+        case 'N':
+          // Item is new...
+          arr = arrayRemove(arr, index);
+          break;
+      }
+    }
+    return arr;
+  }
+
+  function revertChange(target, source, change) {
+    if (!(change instanceof Diff)) {
+      throw new TypeError('[Object] change must be instanceof Diff');
+    }
+    if (target && source && change) {
+      var it = target, i, u;
+      u = change.path.length - 1;
+      for(i = 0; i < u; i++){
+        if (typeof it[change.path[i]] === 'undefined') {
+          it[change.path[i]] = {};
+        }
+        it = it[change.path[i]];
+      }
+      switch(change.kind) {
+        case 'A':
+          // Array was modified...
+          // it will be an array...
+          revertArrayChange(it[change.path[i]], change.index, change.item);
+          break;
+        case 'D':
+          // Item was deleted...
+          it[change.path[i]] = change.lhs;
+          break;
+        case 'E':
+          // Item was edited...
+          it[change.path[i]] = change.lhs;
+          break;
+        case 'N':
+          // Item is new...
+          delete it[change.path[i]];
+          break;
+      }
+    }
+  }
+
   function applyDiff(target, source, filter) {
     if (target && source) {
       var onChange = function(change) {
@@ -244,6 +330,7 @@
     observableDiff: { value: deepDiff, enumerable:true },
     applyDiff: { value: applyDiff, enumerable:true },
     applyChange: { value: applyChange, enumerable:true },
+    revertChange: { value: revertChange, enumerable:true },
     isConflict: { get: function() { return 'undefined' !== typeof conflict; }, enumerable: true },
     noConflict: {
       value: function () {
