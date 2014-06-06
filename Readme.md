@@ -172,6 +172,7 @@ A standard import of `var diff = require('deep-diff')` is assumed in all of the 
 * `observableDiff` - a function that calculates the differences between two objects and reports each to an observer function.
 * `applyDiff`      - a function that applies any structural differences from one object to another.
 * `applyChange`    - a function that applies a single change record to an origin object.
+* `revertChange`   - a function that reverts a single change record from a target object.
 
 ### `diff`
 
