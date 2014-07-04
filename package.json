@@ -2,6 +2,7 @@
   "name": "deep-diff",
   "description": "Javascript utility for calculating deep difference, capturing changes, and applying changes across objects; for nodejs and the browser.",
   "version": "0.1.7",
+  "license": "MIT",
   "keywords": [
     "diff",
     "difference",
