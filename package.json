@@ -1,7 +1,7 @@
 {
   "name": "deep-diff",
   "description": "Javascript utility for calculating deep difference, capturing changes, and applying changes across objects; for nodejs and the browser.",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "license": "MIT",
   "keywords": [
     "diff",
@@ -12,7 +12,8 @@
   "author": "Phillip Clark <phillip@flitbit.com>",
   "contributors": [
     "SocalNick",
-    "sonstone"
+    "sonstone",
+    "ravishivt"
   ],
   "repository": {
     "type": "git",

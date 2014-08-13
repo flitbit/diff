@@ -1,11 +1,12 @@
-;(function(undefined) {
+/*jshint indent:2, laxcomma:true*/
+;(function (undefined) {
   "use strict";
 
   var $scope
   , conflict, conflictResolution = [];
-  if (typeof global == 'object' && global) {
+  if (typeof global === 'object' && global) {
     $scope = global;
-  } else if (typeof window !== 'undefined'){
+  } else if (typeof window !== 'undefined') {
     $scope = window;
   } else {
     $scope = {};
@@ -13,7 +14,7 @@
   conflict = $scope.DeepDiff;
   if (conflict) {
     conflictResolution.push(
-      function() {
+      function () {
         if ('undefined' !== typeof conflict && $scope.DeepDiff === accumulateDiff) {
           $scope.DeepDiff = conflict;
           conflict = undefined;
@@ -77,62 +78,60 @@
   function deepDiff(lhs, rhs, changes, prefilter, path, key, stack) {
     path = path || [];
     var currentPath = path.slice(0);
-    if (key) {
-      if (prefilter && prefilter(currentPath, key)) return;
+    if (typeof key !== 'undefined') {
+      if (prefilter && prefilter(currentPath, key)) { return; }
       currentPath.push(key);
     }
     var ltype = typeof lhs;
     var rtype = typeof rhs;
     if (ltype === 'undefined') {
       if (rtype !== 'undefined') {
-        changes(new DiffNew(currentPath, rhs ));
+        changes(new DiffNew(currentPath, rhs));
       }
     } else if (rtype === 'undefined') {
       changes(new DiffDeleted(currentPath, lhs));
     } else if (ltype !== rtype) {
       changes(new DiffEdit(currentPath, lhs, rhs));
-    } else if (lhs instanceof Date && rhs instanceof Date && ((lhs-rhs) != 0) ) {
+    } else if (lhs instanceof Date && rhs instanceof Date && ((lhs - rhs) !== 0)) {
       changes(new DiffEdit(currentPath, lhs, rhs));
-    } else if (ltype === 'object' && lhs != null && rhs != null) {
+    } else if (ltype === 'object' && lhs !== null && rhs !== null) {
       stack = stack || [];
       if (stack.indexOf(lhs) < 0) {
         stack.push(lhs);
         if (Array.isArray(lhs)) {
           var i
           , len = lhs.length
-          , ea = function(d) {
-            changes(new DiffArray(currentPath, i, d));
-          };
-          for(i = 0; i < lhs.length; i++) {
+          ;
+          for (i = 0; i < lhs.length; i++) {
             if (i >= rhs.length) {
               changes(new DiffArray(currentPath, i, new DiffDeleted(undefined, lhs[i])));
             } else {
-              deepDiff(lhs[i], rhs[i], ea, prefilter, [], null, stack);
+              deepDiff(lhs[i], rhs[i], changes, prefilter, currentPath, i, stack);
             }
           }
-          while(i < rhs.length) {
+          while (i < rhs.length) {
             changes(new DiffArray(currentPath, i, new DiffNew(undefined, rhs[i++])));
           }
         } else {
           var akeys = Object.keys(lhs);
           var pkeys = Object.keys(rhs);
-          akeys.forEach(function(k) {
-            var i = pkeys.indexOf(k);
-            if (i >= 0) {
+          akeys.forEach(function (k, i) {
+            var other = pkeys.indexOf(k);
+            if (other >= 0) {
               deepDiff(lhs[k], rhs[k], changes, prefilter, currentPath, k, stack);
-              pkeys = arrayRemove(pkeys, i);
+              pkeys = arrayRemove(pkeys, other);
             } else {
               deepDiff(lhs[k], undefined, changes, prefilter, currentPath, k, stack);
             }
           });
-          pkeys.forEach(function(k) {
+          pkeys.forEach(function (k) {
             deepDiff(undefined, rhs[k], changes, prefilter, currentPath, k, stack);
           });
         }
         stack.length = stack.length - 1;
       }
     } else if (lhs !== rhs) {
-      if(!(ltype === "number" && isNaN(lhs) && isNaN(rhs))) {
+      if (!(ltype === "number" && isNaN(lhs) && isNaN(rhs))) {
         changes(new DiffEdit(currentPath, lhs, rhs));
       }
     }
@@ -141,7 +140,7 @@
   function accumulateDiff(lhs, rhs, prefilter, accum) {
     accum = accum || [];
     deepDiff(lhs, rhs,
-      function(diff) {
+      function (diff) {
         if (diff) {
           accum.push(diff);
         }
@@ -152,77 +151,62 @@
 
   function applyArrayChange(arr, index, change) {
     if (change.path && change.path.length) {
-      // the structure of the object at the index has changed...
       var it = arr[index], i, u = change.path.length - 1;
-      for(i = 0; i < u; i++){
+      for (i = 0; i < u; i++) {
         it = it[change.path[i]];
       }
-      switch(change.kind) {
+      switch (change.kind) {
         case 'A':
-          // Array was modified...
-          // it will be an array...
-          applyArrayChange(it[change.path[i]], change.index, change.item);
-          break;
+        applyArrayChange(it[change.path[i]], change.index, change.item);
+        break;
         case 'D':
-          // Item was deleted...
-          delete it[change.path[i]];
-          break;
+        delete it[change.path[i]];
+        break;
         case 'E':
         case 'N':
-          // Item was edited or is new...
-          it[change.path[i]] = change.rhs;
-          break;
+        it[change.path[i]] = change.rhs;
+        break;
       }
     } else {
-      // the array item is different...
       switch(change.kind) {
         case 'A':
-          // Array was modified...
-          // it will be an array...
-          applyArrayChange(arr[index], change.index, change.item);
-          break;
+        applyArrayChange(arr[index], change.index, change.item);
+        break;
         case 'D':
-          // Item was deleted...
-          arr = arrayRemove(arr, index);
-          break;
+        arr = arrayRemove(arr, index);
+        break;
         case 'E':
         case 'N':
-          // Item was edited or is new...
-          arr[index] = change.rhs;
-          break;
+        arr[index] = change.rhs;
+        break;
       }
     }
     return arr;
   }
 
   function applyChange(target, source, change) {
-    if (!(change instanceof Diff)) {
-      throw new TypeError('[Object] change must be instanceof Diff');
-    }
-    if (target && source && change) {
-      var it = target, i, u;
-      u = change.path.length - 1;
-      for(i = 0; i < u; i++){
+    if (target && source && change && change.kind) {
+      var it = target
+      , i = -1
+      , last = change.path.length - 1
+      ;
+      while (++i < last) {
         if (typeof it[change.path[i]] === 'undefined') {
-          it[change.path[i]] = {};
+          it[change.path[i]] = (typeof change.path[i] === 'number') ? new Array() : {};
         }
         it = it[change.path[i]];
       }
       switch(change.kind) {
         case 'A':
-          // Array was modified...
-          // it will be an array...
-          applyArrayChange(it[change.path[i]], change.index, change.item);
-          break;
+        applyArrayChange(it[change.path[i]], change.index, change.item);
+        break;
         case 'D':
-          // Item was deleted...
-          delete it[change.path[i]];
-          break;
+        delete it[change.path[i]];
+        break;
         case 'E':
         case 'N':
-          // Item was edited or is new...
-          it[change.path[i]] = change.rhs;
-          break;
+        it[change.path[i]] = change.rhs;
+        break;
       }
     }
   }
@@ -231,67 +215,54 @@
     if (change.path && change.path.length) {
       // the structure of the object at the index has changed...
       var it = arr[index], i, u = change.path.length - 1;
-      for(i = 0; i < u; i++){
+      for (i = 0; i < u; i++) {
         it = it[change.path[i]];
       }
       switch(change.kind) {
         case 'A':
-          // Array was modified...
-          // it will be an array...
-          revertArrayChange(it[change.path[i]], change.index, change.item);
-          break;
+        revertArrayChange(it[change.path[i]], change.index, change.item);
+        break;
         case 'D':
-          // Item was deleted...
-          it[change.path[i]] = change.lhs;
-          break;
+        it[change.path[i]] = change.lhs;
+        break;
         case 'E':
-          // Item was edited
-          it[change.path[i]] = change.lhs;
-          break;
+        it[change.path[i]] = change.lhs;
+        break;
         case 'N':
-          // Item is new...
-          delete it[change.path[i]];
-          break;
+        delete it[change.path[i]];
+        break;
       }
     } else {
       // the array item is different...
       switch(change.kind) {
         case 'A':
-          // Array was modified...
-          // it will be an array...
-          revertArrayChange(arr[index], change.index, change.item);
-          break;
+        revertArrayChange(arr[index], change.index, change.item);
+        break;
         case 'D':
-          // Item was deleted...
-          arr[index] = change.lhs;
-          break;
+        arr[index] = change.lhs;
+        break;
         case 'E':
-          // Item was edited
-          arr[index] = change.lhs;
-          break;
+        arr[index] = change.lhs;
+        break;
         case 'N':
-          // Item is new...
-          arr = arrayRemove(arr, index);
-          break;
+        arr = arrayRemove(arr, index);
+        break;
       }
     }
     return arr;
   }
 
   function revertChange(target, source, change) {
-    if (!(change instanceof Diff)) {
-      throw new TypeError('[Object] change must be instanceof Diff');
-    }
-    if (target && source && change) {
+    if (target && source && change && change.kind) {
       var it = target, i, u;
       u = change.path.length - 1;
-      for(i = 0; i < u; i++){
+      for (i = 0; i < u; i++) {
         if (typeof it[change.path[i]] === 'undefined') {
           it[change.path[i]] = {};
         }
         it = it[change.path[i]];
       }
-      switch(change.kind) {
+      switch (change.kind) {
         case 'A':
           // Array was modified...
           // it will be an array...
@@ -315,7 +286,7 @@
 
   function applyDiff(target, source, filter) {
     if (target && source) {
-      var onChange = function(change) {
+      var onChange = function (change) {
         if (!filter || filter(target, source, change)) {
           applyChange(target, source, change);
         }
@@ -326,12 +297,12 @@
 
   Object.defineProperties(accumulateDiff, {
 
-    diff: { value: accumulateDiff, enumerable:true },
-    observableDiff: { value: deepDiff, enumerable:true },
-    applyDiff: { value: applyDiff, enumerable:true },
-    applyChange: { value: applyChange, enumerable:true },
-    revertChange: { value: revertChange, enumerable:true },
-    isConflict: { get: function() { return 'undefined' !== typeof conflict; }, enumerable: true },
+    diff: { value: accumulateDiff, enumerable: true },
+    observableDiff: { value: deepDiff, enumerable: true },
+    applyDiff: { value: applyDiff, enumerable: true },
+    applyChange: { value: applyChange, enumerable: true },
+    revertChange: { value: revertChange, enumerable: true },
+    isConflict: { get: function () { return 'undefined' !== typeof conflict; }, enumerable: true },
     noConflict: {
       value: function () {
         if (conflictResolution) {
@@ -344,7 +315,7 @@
     }
   });
 
-  if (typeof module != 'undefined' && module && typeof exports == 'object' && exports && module.exports === exports) {
+  if (typeof module !== 'undefined' && module && typeof exports === 'object' && exports && module.exports === exports) {
     module.exports = accumulateDiff; // nodejs
   } else {
     $scope.DeepDiff = accumulateDiff; // other... browser?

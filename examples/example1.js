@@ -32,6 +32,10 @@ deep.observableDiff(lhs, rhs, function (d) {
 	if (d.path.length !== 1 || d.path.join('.') !== 'name') {
 		deep.applyChange(lhs, rhs, d);
 	}
-});
+}, function (path, key) {
+	var p = (path && path.length) ? path.join('/') : '<no-path>'
+	util.log('prefilter: path = ' + p + ' key = ' + key);
+}
+);
 
 console.log(util.inspect(lhs, false, 99));

@@ -11,6 +11,10 @@
 
 ## ChangeLog
 
+`0.2.0` - [Fixes Bug #17](https://github.com/flitbit/diff/issues/17), [Fixes Bug #19](https://github.com/flitbit/diff/issues/19), [Enhancement #21](https://github.com/flitbit/diff/issues/21) Applying changes that are properly structured can now be applied as a change (no longer requires typeof Diff) - supports differences being applied after round-trip serialization to JSON format. Prefilter now reports the path of all changes - it was not showing a path for arrays and anything in the structure below (reported by @ravishvt).
+
+*Breaking Change* &ndash; The structure of change records for differences below an array element has changed. Array indexes are now reported as numeric elements in the `path` if the changes is merely edited (an `E` kind). Changes of kind `A` (array) are only reported for changes in the terminal array itself and will have a nested `N` (new) item or a nested `D` (deleted) item.
+
 `0.1.7` - [Enhancement #11](https://github.com/flitbit/diff/issues/11) Added the ability to filter properties that should not be analyzed while calculating differences. Makes `deep-diff` more usable with frameworks that attach housekeeping properties to existing objects. AngularJS does this, and the new filter ability should ease working with it.
 
 `0.1.6` - Changed objects within nested arrays can now be applied. They were previously recording the changes appropriately but `applyDiff` would error. Comparison of `NaN` works more sanely - comparison to number shows difference, comparison to another `Nan` does not.
@@ -55,7 +59,7 @@ var deep = require('deep-diff')
 
 **browser**
 ```html
-<script src="deep-diff-0.1.3.min.js"></script>
+<script src="deep-diff-0.2.0.min.js"></script>
 ```
 > Minified, browser release of the current version of the module is under the `releases` folder.
 > In a browser, `deep-diff` defines a global variable `DeepDiff`. If there is a conflict in the global namesapce you can restore the conflicting definition and assign `deep-diff` to another variable like this: `var deep = DeepDiff.noConflict();`.
@@ -89,8 +93,9 @@ var rhs = {
 
 var differences = diff(lhs, rhs);
 ```
-The code snippet above would result in the following structure describing the differences:
+*up to v 0.1.7* The code snippet above would result in the following structure describing the differences:
 ``` javascript
+// Versions < 0.2.0
 [ { kind: 'E',
     path: [ 'name' ],
     lhs: 'my object',
@@ -99,6 +104,26 @@ The code snippet above would result in the following structure describing the di
     path: [ 'details', 'with' ],
     index: 2,
     item: { kind: 'E', path: [], lhs: 'elements', rhs: 'more' } },
+  { kind: 'A',
+    path: [ 'details', 'with' ],
+    index: 3,
+    item: { kind: 'N', rhs: 'elements' } },
+  { kind: 'A',
+    path: [ 'details', 'with' ],
+    index: 4,
+    item: { kind: 'N', rhs: { than: 'before' } } } ]
+```
+
+*v 0.2.0 and above* The code snippet above would result in the following structure describing the differences:
+``` javascript
+[ { kind: 'E',
+    path: [ 'name' ],
+    lhs: 'my object',
+    rhs: 'updated object' },
+  { kind: 'E',
+    path: [ 'details', 'with', 2 ],
+ 		lhs: 'elements',
+ 		rhs: 'more' },
   { kind: 'A',
     path: [ 'details', 'with' ],
     index: 3,
