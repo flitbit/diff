@@ -1,3 +1,7 @@
+/*!
+ * deep-diff.
+ * Licensed under the MIT License.
+ */ 
 /*jshint indent:2, laxcomma:true*/
 ;(function (undefined) {
   "use strict";
