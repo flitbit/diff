@@ -147,14 +147,14 @@ describe('deep-diff', function () {
     it('#isConflict reports conflict in the global namespace for `DeepDiff`', function () {
 // the browser test harness sets up a conflict.
       if (executingInBrowser) {
-        expect(DeepDiff.isConflict).to.be.ok();
+        expect(DeepDiff.isConflict()).to.be.ok();
       }
     });
 
     it('#noConflict restores prior definition for the global `DeepDiff`', function () {
 // the browser test harness sets up a conflict.
       if (executingInBrowser) {
-        expect(DeepDiff.isConflict).to.be.ok();
+        expect(DeepDiff.isConflict()).to.be.ok();
         var another = DeepDiff.noConflict();
         expect(another).to.be(deep);
         expect(DeepDiff).to.be(DeepDiffConflict);
