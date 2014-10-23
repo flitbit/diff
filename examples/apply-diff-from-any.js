@@ -23,7 +23,6 @@ while (++cycle < 10) {
 
     comparand = data[i];
 
-
     // get the difference...
     records = diff(prior, comparand);
 
