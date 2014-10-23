@@ -1,3 +1,7 @@
+/*!
+ * deep-diff.
+ * Licensed under the MIT License.
+ */ 
 /*jshint indent:2, laxcomma:true*/
 ;(function (undefined) {
   "use strict";
@@ -302,7 +306,7 @@
     applyDiff: { value: applyDiff, enumerable: true },
     applyChange: { value: applyChange, enumerable: true },
     revertChange: { value: revertChange, enumerable: true },
-    isConflict: { get: function () { return 'undefined' !== typeof conflict; }, enumerable: true },
+    isConflict: { value: function () { return 'undefined' !== typeof conflict; }, enumerable: true },
     noConflict: {
       value: function () {
         if (conflictResolution) {

@@ -1,0 +1,16 @@
+{
+  "name": "deep-diff",
+  "description": "Javascript utility for calculating deep difference, capturing changes, and applying changes across objects; for nodejs and the browser.",
+  "version": "0.2.0",
+  "license": "MIT",
+  "keywords": [
+    "diff",
+    "difference",
+    "compare",
+    "change-tracking"
+  ],
+  "repository": "flitbit/diff",
+  "scripts" : [
+    "index.js"
+  ]
+}
