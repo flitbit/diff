@@ -9,7 +9,7 @@
     "compare",
     "change-tracking"
   ],
-  "repository": "litbit/diff",
+  "repository": "flitbit/diff",
   "scripts" : [
     "index.js"
   ]
