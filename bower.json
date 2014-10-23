@@ -19,6 +19,9 @@
     "node_modules",
     "bower_components",
     "app/bower_components",
+    "build",
+    "components",
+    "component.json",
     "test",
     "tests"
   ]
