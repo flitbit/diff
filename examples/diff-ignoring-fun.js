@@ -21,14 +21,9 @@ var dog = {
   walk: quadrapedWalk
 };
 
-var horse = {
-  legs: 4,
-  walk: quadrapedWalk
-};
-
 var diff = deep.diff(duck, dog);
 
-// The differences will include the name, legs, and walk.
+// The differences will include the legs, and walk.
 util.log('Differences:\r\n' + util.inspect(diff, false, 9));
 
 
@@ -62,17 +57,17 @@ if (deep.diff(duck, dog)) {
   util.log("Ooops, that prior statement seems to be wrong! (but it won't be)");
 }
 
-// Now assign an "equivelant" walk function...
+// Now assign an "equivalent" walk function...
 dog.walk = function duckWalk() {
   util.log('right step, left-step, waddle');
 };
 
 if (diff = deep.diff(duck, dog)) {
-  // The dog's walk function is an equivelant, but different duckWalk function.
+  // The dog's walk function is an equivalent, but different duckWalk function.
   util.log('Hrmm, the dog walks differently: ' + util.inspect(diff, false, 9));
 }
 
-// Use the observableDiff fn to ingore based on behavioral equivelance...
+// Use the observableDiff fn to ingore based on behavioral equivalence...
 
 observed = [];
 deep.observableDiff(duck, dog, function (d) {
@@ -89,5 +84,5 @@ deep.observableDiff(duck, dog, function (d) {
 });
 
 if (observed.length === 0) {
-  util.log('Yay!, we detected that the walk functions are equivelant');
+  util.log('Yay!, we detected that the walk functions are equivalent');
 }
