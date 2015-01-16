@@ -20,6 +20,33 @@ describe('deep-diff', function () {
       expect(deep.diff(empty, {})).to.be.an('undefined');
     });
 
+    describe('when compared to a different type of keyless object', function () {
+      var ctor = function () {
+        this.foo = 'bar';
+      };
+      var comparandTuples = [['an array', { key: [] }],
+                             ['an object', { key: {}}],
+                             ['a date', { key: new Date() }],
+                             ['a null', { key: null }],
+                             ['a regexp literal', {key: /a/}],
+                             ['Math', {key: Math}]];
+
+      comparandTuples.forEach(function (lhsTuple) {
+        comparandTuples.forEach(function (rhsTuple) {
+          if (lhsTuple[0] === rhsTuple[0]) {
+            return;
+          }
+          it('shows differences when comparing ' + lhsTuple[0] + ' to ' + rhsTuple[0], function () {
+            var diff = deep.diff(lhsTuple[1], rhsTuple[1]);
+            expect(diff).to.be.ok();
+            expect(diff.length).to.be(1);
+            expect(diff[0]).to.have.property('kind');
+            expect(diff[0].kind).to.be('E');
+          });
+        });
+      });
+    });
+
     describe('when compared with an object having other properties', function () {
       var comparand = { other: 'property', another: 13.13 };
       var diff = deep.diff(empty, comparand);
@@ -66,6 +93,14 @@ describe('deep-diff', function () {
 
     it('shows the property as edited when compared to an object with null', function () {
       var diff = deep.diff(lhs, { one: null });
+      expect(diff).to.be.ok();
+      expect(diff.length).to.be(1);
+      expect(diff[0]).to.have.property('kind');
+      expect(diff[0].kind).to.be('E');
+    });
+
+    it ('shows the property as edited when compared to an array', function () {
+      var diff = deep.diff(lhs, ['one']);
       expect(diff).to.be.ok();
       expect(diff.length).to.be(1);
       expect(diff[0]).to.have.property('kind');
