@@ -1,7 +1,7 @@
 /*!
  * deep-diff.
  * Licensed under the MIT License.
- */ 
+ */
 /*jshint indent:2, laxcomma:true*/
 ;(function (undefined) {
   "use strict";
@@ -79,6 +79,26 @@
     return arr;
   }
 
+  function realTypeOf(subject) {
+    var type = typeof subject;
+    if (type !== 'object') {
+      return type;
+    }
+
+    if (subject === Math) {
+      return 'math';
+    } else if (subject === null) {
+      return 'null';
+    } else if (Array.isArray(subject)) {
+      return 'array';
+    } else if (subject instanceof Date) {
+      return 'date';
+    } else if (/^\/.*\//.test(subject.toString())) {
+      return 'regexp';
+    }
+    return 'object';
+  }
+
   function deepDiff(lhs, rhs, changes, prefilter, path, key, stack) {
     path = path || [];
     var currentPath = path.slice(0);
@@ -94,7 +114,7 @@
       }
     } else if (rtype === 'undefined') {
       changes(new DiffDeleted(currentPath, lhs));
-    } else if (ltype !== rtype) {
+    } else if (realTypeOf(lhs) !== realTypeOf(rhs)) {
       changes(new DiffEdit(currentPath, lhs, rhs));
     } else if (lhs instanceof Date && rhs instanceof Date && ((lhs - rhs) !== 0)) {
       changes(new DiffEdit(currentPath, lhs, rhs));
