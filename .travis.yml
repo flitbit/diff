@@ -3,6 +3,8 @@ branches:
   only:
     - master
 node_js:
+  - "iojs"
+  - "0.12"
   - "0.11"
   - "0.10"
   - "0.8"
