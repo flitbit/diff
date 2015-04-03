@@ -3,7 +3,20 @@
  * Licensed under the MIT License.
  */
 /*jshint indent:2, laxcomma:true*/
-;(function (undefined) {
+;(function (root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define([], factory);
+  } else if (typeof exports === 'object') {
+    // Node. Does not work with strict CommonJS, but
+    // only CommonJS-like environments that support module.exports,
+    // like Node.
+    module.exports = factory();
+  } else {
+    // Browser globals (root is window)
+    root.DeepDiff = factory();
+  }
+}(this, function (undefined) {
   "use strict";
 
   var $scope
@@ -339,9 +352,5 @@
     }
   });
 
-  if (typeof module !== 'undefined' && module && typeof exports === 'object' && exports && module.exports === exports) {
-    module.exports = accumulateDiff; // nodejs
-  } else {
-    $scope.DeepDiff = accumulateDiff; // other... browser?
-  }
-}());
+  return accumulateDiff;
+}));
