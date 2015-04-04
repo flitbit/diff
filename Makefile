@@ -9,7 +9,7 @@ all: deps min
 min:
 	$(UGLIFY)	index.js \
 		-o $(OUTPUT) \
-		-r '$,require,exports,window,global' -m \
+		-r '$,require,exports,module,window,global' -m \
 		--comments '/^!/'
 
 deps:
