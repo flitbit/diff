@@ -1,7 +1,7 @@
 {
   "name": "deep-diff",
   "description": "Javascript utility for calculating deep difference, capturing changes, and applying changes across objects; for nodejs and the browser.",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "license": "MIT",
   "keywords": [
     "diff",
@@ -27,8 +27,8 @@
   },
   "devDependencies": {
     "deep-equal": "~1.0.0",
-    "expect.js": "~0.3.1",
-    "mocha": "~2.2.1"
+    "expect.js": "^0.3.1",
+    "mocha": "^2.2.1"
   },
   "scripts": {
     "test": "mocha -R spec"

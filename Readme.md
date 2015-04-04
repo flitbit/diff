@@ -1,6 +1,6 @@
 # deep-diff [![Build Status](https://travis-ci.org/flitbit/diff.png?branch=master)](https://travis-ci.org/flitbit/diff)
 
-**deep-diff** is a javascript/node.js module providing utility functions for working with the structural differences between objects.
+**deep-diff** is a javascript/node.js module providing utility functions for determining the structural differences between objects and includes some utilities for applying differences across objects.
 
 ## Features
 
@@ -10,6 +10,8 @@
 * When structural differences represent change, selectively apply change from one object to another.
 
 ## ChangeLog
+
+`0.3.1` - Better type checking by @Drinks, UMD wrapper by @SimenB. Now certifies against nodejs 12 and iojs (Thanks @SimenB).
 
 `0.2.0` - [Fixes Bug #17](https://github.com/flitbit/diff/issues/17), [Fixes Bug #19](https://github.com/flitbit/diff/issues/19), [Enhancement #21](https://github.com/flitbit/diff/issues/21) Applying changes that are properly structured can now be applied as a change (no longer requires typeof Diff) - supports differences being applied after round-trip serialization to JSON format. Prefilter now reports the path of all changes - it was not showing a path for arrays and anything in the structure below (reported by @ravishvt).
 
@@ -59,7 +61,7 @@ var deep = require('deep-diff')
 
 **browser**
 ```html
-<script src="deep-diff-0.2.0.min.js"></script>
+<script src="deep-diff-0.3.1.min.js"></script>
 ```
 > Minified, browser release of the current version of the module is under the `releases` folder.
 > In a browser, `deep-diff` defines a global variable `DeepDiff`. If there is a conflict in the global namesapce you can restore the conflicting definition and assign `deep-diff` to another variable like this: `var deep = DeepDiff.noConflict();`.
@@ -218,6 +220,8 @@ The `prefilter`'s signature should be `function(path, key)` and it should return
 
 Currently testing on Travis CI against:
 
-+ node.js `0.11`
-+ node.js `0.10`
-+ node.js `0.8`
++ iojs
++ nodejs `0.12`
++ nodejs `0.11`
++ nodejs `0.10`
++ nodejs `0.8`
