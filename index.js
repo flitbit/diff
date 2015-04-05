@@ -3,7 +3,7 @@
  * Licensed under the MIT License.
  */
 ;(function(root, factory) {
-  "use strict";
+  'use strict';
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
     define([], factory);
@@ -17,7 +17,7 @@
     root.DeepDiff = factory();
   }
 }(this, function(undefined) {
-  "use strict";
+  'use strict';
 
   var $scope, conflict, conflictResolution = [];
   if (typeof global === 'object' && global) {
@@ -191,7 +191,7 @@
         stack.length = stack.length - 1;
       }
     } else if (lhs !== rhs) {
-      if (!(ltype === "number" && isNaN(lhs) && isNaN(rhs))) {
+      if (!(ltype === 'number' && isNaN(lhs) && isNaN(rhs))) {
         changes(new DiffEdit(currentPath, lhs, rhs));
       }
     }

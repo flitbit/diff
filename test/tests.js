@@ -360,35 +360,35 @@ describe('deep-diff', function() {
 
     describe('regression test for bug #10, ', function() {
         var lhs = {
-            "id": "Release",
-            "phases": [{
-                "id": "Phase1",
-                "tasks": [{
-                    "id": "Task1"
+            id: 'Release',
+            phases: [{
+                id: 'Phase1',
+                tasks: [{
+                    id: 'Task1'
                 }, {
-                    "id": "Task2"
+                    id: 'Task2'
                 }]
             }, {
-                "id": "Phase2",
-                "tasks": [{
-                    "id": "Task3"
+                id: 'Phase2',
+                tasks: [{
+                    id: 'Task3'
                 }]
             }]
         };
         var rhs = {
-            "id": "Release",
-            "phases": [{
+            id: 'Release',
+            phases: [{
                 // E: Phase1 -> Phase2
-                "id": "Phase2",
-                "tasks": [{
-                    "id": "Task3"
+                id: 'Phase2',
+                tasks: [{
+                    id: 'Task3'
                 }]
             }, {
-                "id": "Phase1",
-                "tasks": [{
-                    "id": "Task1"
+                id: 'Phase1',
+                tasks: [{
+                    id: 'Task1'
                 }, {
-                    "id": "Task2"
+                    id: 'Task2'
                 }]
             }]
         };
