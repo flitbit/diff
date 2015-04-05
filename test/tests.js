@@ -1,4 +1,4 @@
-/*global it: false, describe: false, DeepDiffConflict: false*/
+/*global DeepDiffConflict: false*/
 'use strict';
 
 if (typeof require === 'function') {
