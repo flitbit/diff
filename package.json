@@ -15,6 +15,10 @@
     "sonstone",
     "ravishivt"
   ],
+  "files": [
+    "index.js",
+    "releases/"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/flitbit/diff.git"
