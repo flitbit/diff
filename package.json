@@ -29,9 +29,11 @@
     "deep-equal": "~1.0.0",
     "expect.js": "^0.3.1",
     "jshint": "^2.6.3",
-    "mocha": "^2.2.1"
+    "mocha": "^2.2.1",
+    "uglifyjs": "^2.4.10"
   },
   "scripts": {
+    "uglify": "uglifyjs index.js -o releases/deep-diff-$npm_package_version.min.js  -r '$,require,exports,module,window,global' -m  --comments '/^!/'",
     "pretest": "jshint index.js test/",
     "test": "mocha"
   }
