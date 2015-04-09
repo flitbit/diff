@@ -249,7 +249,7 @@
     if (target && source && change && change.kind) {
       var it = target,
         i = -1,
-        last = change.path.length - 1;
+        last = change.path ? change.path.length - 1 : 0;
       while (++i < last) {
         if (typeof it[change.path[i]] === 'undefined') {
           it[change.path[i]] = (typeof change.path[i] === 'number') ? [] : {};
@@ -258,7 +258,7 @@
       }
       switch (change.kind) {
         case 'A':
-          applyArrayChange(it[change.path[i]], change.index, change.item);
+          applyArrayChange(change.path ? it[change.path[i]] : it, change.index, change.item);
           break;
         case 'D':
           delete it[change.path[i]];
