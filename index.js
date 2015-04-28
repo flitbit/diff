@@ -139,7 +139,7 @@
     path = path || [];
     var currentPath = path.slice(0);
     if (typeof key !== 'undefined') {
-      if (prefilter && prefilter(currentPath, key)) {
+      if (prefilter && prefilter(currentPath, key, { lhs: lhs, rhs: rhs })) {
         return;
       }
       currentPath.push(key);
