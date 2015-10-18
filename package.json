@@ -15,6 +15,10 @@
     "sonstone",
     "ravishivt"
   ],
+  "files": [
+    "index.js",
+    "releases/"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/flitbit/diff.git"
@@ -28,9 +32,14 @@
   "devDependencies": {
     "deep-equal": "~1.0.0",
     "expect.js": "^0.3.1",
-    "mocha": "^2.2.1"
+    "jscs": "^1.12.0",
+    "jshint": "^2.6.3",
+    "mocha": "^2.2.1",
+    "uglifyjs": "^2.4.10"
   },
   "scripts": {
-    "test": "mocha -R spec"
+    "uglify": "uglifyjs index.js -o releases/deep-diff-$npm_package_version.min.js  -r '$,require,exports,module,window,global' -m  --comments '/^!/'",
+    "pretest": "jscs index.js test/ && jshint index.js test/",
+    "test": "mocha"
   }
 }

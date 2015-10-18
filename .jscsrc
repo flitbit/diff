@@ -1,0 +1,15 @@
+{
+  //"validateIndentation": 2, index.js uses 2, and tests.js uses 4. https://github.com/jscs-dev/node-jscs/issues/1106
+  "validateQuoteMarks": "'",
+  "requireSpacesInFunctionExpression": {
+    "beforeOpeningCurlyBrace": true
+  },
+  "disallowSpacesInFunctionExpression": {
+    "beforeOpeningRoundBrace": true
+  },
+  "disallowQuotedKeysInObjects": true,
+  "disallowMultipleLineStrings": true,
+  "disallowMultipleSpaces": true,
+  "requireLineFeedAtFileEnd": true,
+  "requireSemicolons": true
+}

@@ -1,8 +1,7 @@
 {
   "node": true,
-  "mocha":  true,
-	"strict": true,
-	"laxcomma": true,
-	"nomen": false,
-	"indent": 2
+  "strict": true,
+  "laxcomma": true,
+  "nomen": false,
+  "indent": 2
 }
