@@ -482,4 +482,22 @@ describe('deep-diff', function() {
 
     });
 
+    describe('regression test for bug #35', function() {
+        var lhs = ["a", "a", "a"];
+        var rhs = ["a"];
+
+        it('can apply diffs between two top level arrays', function() {
+            var differences = deep.diff(lhs, rhs);
+
+            /* We must apply the differences in reverse order, since the array indices 
+               in the diff become stale/invalid if you delete elements from the array
+               whose indices are in ascending order */
+            for (var i = differences.length - 1; i >= 0; i--) {
+                deep.applyChange(lhs, true, differences[i]);
+            }
+
+            expect(lhs).to.eql(["a"]);
+        });
+    });
+
 });
