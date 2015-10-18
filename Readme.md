@@ -11,6 +11,8 @@
 
 ## ChangeLog
 
+`0.3.3` - Thanks @SimenB: enabled npm script for release (alternate to the Makefile). Also linting as part of `npm test`. Thanks @joeldenning: Fixed issue #35; diffs of top level arrays now working.
+
 `0.3.2` - Resolves #46; support more robust filters by including `lhs` and `rhs` in the filter callback. By @Orlando80
 
 `0.3.1` - Better type checking by @Drinks, UMD wrapper by @SimenB. Now certifies against nodejs 12 and iojs (Thanks @SimenB).
@@ -222,7 +224,7 @@ The `prefilter`'s signature should be `function(path, key)` and it should return
 
 Currently testing on Travis CI against:
 
-+ iojs
++ nodejs `4.2.1`
 + nodejs `0.12`
 + nodejs `0.11`
 + nodejs `0.10`
