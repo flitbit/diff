@@ -129,7 +129,7 @@
       return 'array';
     } else if (subject instanceof Date) {
       return 'date';
-    } else if (/^\/.*\//.test(subject.toString())) {
+    } else if (typeof subject.toString !== 'undefined' && /^\/.*\//.test(subject.toString())) {
       return 'regexp';
     }
     return 'object';
