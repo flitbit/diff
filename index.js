@@ -127,7 +127,7 @@
       return 'null';
     } else if (Array.isArray(subject)) {
       return 'array';
-    } else if (subject instanceof Date) {
+    } else if (Object.prototype.toString.call(subject) === '[object Date]') {
       return 'date';
     } else if (/^\/.*\//.test(subject.toString())) {
       return 'regexp';
@@ -154,7 +154,7 @@
       changes(new DiffDeleted(currentPath, lhs));
     } else if (realTypeOf(lhs) !== realTypeOf(rhs)) {
       changes(new DiffEdit(currentPath, lhs, rhs));
-    } else if (lhs instanceof Date && rhs instanceof Date && ((lhs - rhs) !== 0)) {
+    } else if (Object.prototype.toString.call(lhs) === '[object Date]' && Object.prototype.toString.call(rhs) === '[object Date]' && ((lhs - rhs) !== 0)) {
       changes(new DiffEdit(currentPath, lhs, rhs));
     } else if (ltype === 'object' && lhs !== null && rhs !== null) {
       stack = stack || [];
@@ -212,7 +212,7 @@
   function applyArrayChange(arr, index, change) {
     if (change.path && change.path.length) {
       var it = arr[index],
-        i, u = change.path.length - 1;
+          i, u = change.path.length - 1;
       for (i = 0; i < u; i++) {
         it = it[change.path[i]];
       }
@@ -248,8 +248,8 @@
   function applyChange(target, source, change) {
     if (target && source && change && change.kind) {
       var it = target,
-        i = -1,
-        last = change.path ? change.path.length - 1 : 0;
+          i = -1,
+          last = change.path ? change.path.length - 1 : 0;
       while (++i < last) {
         if (typeof it[change.path[i]] === 'undefined') {
           it[change.path[i]] = (typeof change.path[i] === 'number') ? [] : {};
@@ -275,7 +275,7 @@
     if (change.path && change.path.length) {
       // the structure of the object at the index has changed...
       var it = arr[index],
-        i, u = change.path.length - 1;
+          i, u = change.path.length - 1;
       for (i = 0; i < u; i++) {
         it = it[change.path[i]];
       }
@@ -316,7 +316,7 @@
   function revertChange(target, source, change) {
     if (target && source && change && change.kind) {
       var it = target,
-        i, u;
+          i, u;
       u = change.path.length - 1;
       for (i = 0; i < u; i++) {
         if (typeof it[change.path[i]] === 'undefined') {

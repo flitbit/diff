@@ -1,4 +1,4 @@
-/*global DeepDiffConflict: false*/
+/*global DeepDiffConflict: false, document*/
 'use strict';
 
 if (typeof require === 'function') {
@@ -490,13 +490,29 @@ describe('deep-diff', function() {
             var differences = deep.diff(lhs, rhs);
 
             /* We must apply the differences in reverse order, since the array indices
-               in the diff become stale/invalid if you delete elements from the array
-               whose indices are in ascending order */
+             in the diff become stale/invalid if you delete elements from the array
+             whose indices are in ascending order */
             for (var i = differences.length - 1; i >= 0; i--) {
                 deep.applyChange(lhs, true, differences[i]);
             }
 
             expect(lhs).to.eql(['a']);
+        });
+    });
+
+    describe('Objects from different frames', function() {
+        if (!executingInBrowser) return;
+
+        var frame = document.createElement('iframe');
+        document.body.appendChild(frame);
+
+        var lhs = new frame.contentWindow.Date(2010,1,1);
+        var rhs = new frame.contentWindow.Date(2010,1,1);
+
+        it('can compare date instances from a different frame', function() {
+            var differences = deep.diff(lhs, rhs);
+
+            expect(differences).to.be(undefined);
         });
     });
 
