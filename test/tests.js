@@ -516,4 +516,20 @@ describe('deep-diff', function() {
         });
     });
 
+    describe('Comparing regexes should work', function() {
+        var lhs = /foo/;
+        var rhs = /foo/i;
+
+        it('can compare regex instances', function() {
+            var diff = deep.diff(lhs, rhs);
+
+            expect(diff.length).to.be(1);
+
+            expect(diff[0].kind).to.be('E');
+            expect(diff[0].path).to.not.be.ok();
+            expect(diff[0].lhs).to.be('/foo/');
+            expect(diff[0].rhs).to.be('/foo/i');
+        });
+    });
+
 });

@@ -144,6 +144,13 @@
       }
       currentPath.push(key);
     }
+
+    // Use string comparison for regexes
+    if (realTypeOf(lhs) === 'regexp' && realTypeOf(rhs) === 'regexp') {
+      lhs = lhs.toString();
+      rhs = rhs.toString();
+    }
+
     var ltype = typeof lhs;
     var rtype = typeof rhs;
     if (ltype === 'undefined') {
