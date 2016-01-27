@@ -66,6 +66,13 @@
 
   function DiffEdit(path, origin, value) {
     DiffEdit.super_.call(this, 'E', path);
+
+    // try to output json object
+    try {
+      if (typeof origin == 'object') origin = JSON.stringify(origin);
+      if (typeof path == 'object') path = JSON.stringify(path);
+    } catch (e) {}
+
     Object.defineProperty(this, 'lhs', {
       value: origin,
       enumerable: true
@@ -79,6 +86,12 @@
 
   function DiffNew(path, value) {
     DiffNew.super_.call(this, 'N', path);
+
+    // try to output json object
+    try {
+      if (typeof value == 'object') value = JSON.stringify(value);
+    } catch (e) {}
+
     Object.defineProperty(this, 'rhs', {
       value: value,
       enumerable: true
@@ -88,6 +101,12 @@
 
   function DiffDeleted(path, value) {
     DiffDeleted.super_.call(this, 'D', path);
+
+    // try to output json object
+    try {
+      if (typeof value == 'object') value = JSON.stringify(value);
+    } catch (e) {}
+
     Object.defineProperty(this, 'lhs', {
       value: value,
       enumerable: true
