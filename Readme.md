@@ -68,7 +68,7 @@ var deep = require('deep-diff')
 <script src="deep-diff-0.3.1.min.js"></script>
 ```
 > Minified, browser release of the current version of the module is under the `releases` folder.
-> In a browser, `deep-diff` defines a global variable `DeepDiff`. If there is a conflict in the global namesapce you can restore the conflicting definition and assign `deep-diff` to another variable like this: `var deep = DeepDiff.noConflict();`.
+> In a browser, `deep-diff` defines a global variable `DeepDiff`. If there is a conflict in the global namespace you can restore the conflicting definition and assign `deep-diff` to another variable like this: `var deep = DeepDiff.noConflict();`.
 
 ## Simple Examples
 
@@ -207,7 +207,7 @@ A standard import of `var diff = require('deep-diff')` is assumed in all of the 
 
 ### `diff`
 
-The `diff` function calculates the difference between two objects. In version `0.1.7` you can supply your own `prefilter` function as the 3rd arguement and control which properties are ignored while calculating differences throughout the object graph.
+The `diff` function calculates the difference between two objects. In version `0.1.7` you can supply your own `prefilter` function as the 3rd argument and control which properties are ignored while calculating differences throughout the object graph.
 
 **Arguments**
 
