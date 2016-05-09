@@ -11,12 +11,24 @@
   ],
   "author": "Phillip Clark <phillip@flitbit.com>",
   "contributors": [
-    "SocalNick",
-    "sonstone",
-    "ravishivt",
-    "SimenB",
-    "Orlando80",
-    "joeldenning"
+    "Dan Drinkard <dan.drinkard@gmail.com>",
+    "Daniel Spangler <daniel.spangler@gmail.com>",
+    "Denning <denningj@amazon.com>",
+    "Elad Efrat <elad@iNNU.ORG>",
+    "Mats Bryntse <mats.dev@bryntum.com>",
+    "Nicholas Calugar <njcalugar@gmail.com>",
+    "Paul Pflugradt <paulpflugradt@googlemail.com>",
+    "Serkan Serttop <serkanserttop@yahoo.com>",
+    "Simen Bekkhus <sbekkhus91@gmail.com>",
+    "Tom Ashworth <tashworth@twitter.com>",
+    "Tom MacWright <tmcw@users.noreply.github.com>",
+    "Yandell <hyandell@amazon.com>",
+    "ZauberNerd <zaubernerd@zaubernerd.de>",
+    "caasi Huang <caasi.igd@gmail.com>",
+    "icesoar <icesoar@hotmail.com>",
+    "orlando <operri@opentable.com>",
+    "ravishivt <javishi@gmail.com>",
+    "wooorm <tituswormer@gmail.com>"
   ],
   "files": [
     "index.js",
@@ -41,7 +53,7 @@
     "uglifyjs": "^2.4.10"
   },
   "scripts": {
-    "uglify": "uglifyjs index.js -o releases/deep-diff-$npm_package_version.min.js  -r '$,require,exports,module,window,global' -m  --comments '/^!/'",
+    "release": "uglifyjs index.js -o releases/deep-diff-$npm_package_version.min.js  -r '$,require,exports,module,window,global' -m  --comments '/^!/'",
     "pretest": "jscs index.js test/ && jshint index.js test/",
     "test": "mocha"
   }

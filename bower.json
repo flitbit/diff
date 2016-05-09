@@ -1,10 +1,28 @@
 {
   "name": "deep-diff",
   "main": "index.js",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "homepage": "https://github.com/flitbit/diff",
   "authors": [
-    "Phillip Clark <phillip@flitbit.com>"
+  "Dan Drinkard <dan.drinkard@gmail.com>",
+    "Daniel Spangler <daniel.spangler@gmail.com>",
+    "Denning <denningj@amazon.com>",
+    "Elad Efrat <elad@iNNU.ORG>",
+    "Mats Bryntse <mats.dev@bryntum.com>",
+    "Nicholas Calugar <njcalugar@gmail.com>",
+    "Paul Pflugradt <paulpflugradt@googlemail.com>",
+    "Phillip Clark <phillip@flitbit.com>",
+    "Serkan Serttop <serkanserttop@yahoo.com>",
+    "Simen Bekkhus <sbekkhus91@gmail.com>",
+    "Tom Ashworth <tashworth@twitter.com>",
+    "Tom MacWright <tmcw@users.noreply.github.com>",
+    "Yandell <hyandell@amazon.com>",
+    "ZauberNerd <zaubernerd@zaubernerd.de>",
+    "caasi Huang <caasi.igd@gmail.com>",
+    "icesoar <icesoar@hotmail.com>",
+    "orlando <operri@opentable.com>",
+    "ravishivt <javishi@gmail.com>",
+    "wooorm <tituswormer@gmail.com>"
   ],
   "description": "Javascript utility for calculating deep difference, capturing changes, and applying changes across objects; for nodejs and the browser.",
   "keywords": [
