@@ -1,4 +1,5 @@
-# deep-diff [![Build Status](https://travis-ci.org/flitbit/diff.png?branch=master)](https://travis-ci.org/flitbit/diff)
+# deep-diff [![Build Status](https://travis-ci.org/flitbit/diff.png?branch=master)](https://travis-ci.org/flitbit/diff) 
+[![NPM](https://nodei.co/npm/deep-diff.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/deep-diff/)
 
 **deep-diff** is a javascript/node.js module providing utility functions for determining the structural differences between objects and includes some utilities for applying differences across objects.
 
