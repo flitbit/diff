@@ -3,6 +3,8 @@ branches:
   only:
     - master
 node_js:
+  - "6"
+  - "5"
   - "4.2.1"
   - "0.12"
   - "0.11"
