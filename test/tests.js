@@ -532,4 +532,135 @@ describe('deep-diff', function() {
         });
     });
 
+    describe('Order independent hash testing', function() {
+        function sameHash(a, b) {
+            expect(deep.orderIndepHash(a)).to.equal(deep.orderIndepHash(b));
+        }
+
+        function differentHash(a, b) {
+            expect(deep.orderIndepHash(a)).to.not.equal(deep.orderIndepHash(b));
+        }
+
+        describe('Order indepdendent hash function should give different values for different objects', function() {
+            it('should give different values for different "simple" types', function() {
+                differentHash(1, -20);
+                differentHash('foo', 45);
+                differentHash('pie', 'something else');
+                differentHash(1.3332, 1);
+                differentHash(1, null);
+                differentHash('this is kind of a long string, don\'t you think?', 'the quick brown fox jumped over the lazy doge');
+                differentHash(true, 2);
+                differentHash(false, 'flooog');
+            });
+
+            it('should give different values for string and object with string', function() {
+                differentHash('some string', { key: 'some string'});
+            });
+
+            it('should give different values for number and array', function() {
+                differentHash(1, [1]);
+            });
+
+            it('should give different values for string and array of string', function() {
+                differentHash('string', ['string']);
+            });
+
+            it('should give different values for boolean and object with boolean', function() {
+                differentHash(true, {key: true});
+            });
+
+            it('should give different values for different arrays', function() {
+                differentHash([1,2,3], [1,2]);
+                differentHash([1,4,5,6], ['foo', 1, true, undefined]);
+                differentHash([1,4,6], [1,4,7]);
+                differentHash([1,3,5], ['1', '3', '5']);
+            });
+
+            it('should give different values for different objects', function() {
+                differentHash({key: 'value'}, {other: 'value'});
+                differentHash({a: {b: 'c'}}, {a: 'b'});
+            });
+
+            it('should differentiate between arrays and objects', function() {
+                differentHash([1, true, '1'], {a: 1, b: true, c:'1'});
+            });
+        });
+
+        describe('Order independent hash function should work in pathological cases', function() {
+            it('should work in funky javascript cases', function() {
+                differentHash(undefined,null);
+                differentHash(0,undefined);
+                differentHash(0,null);
+                differentHash(0,false);
+                differentHash(0,[]);
+                differentHash('',[]);
+                differentHash(3.22, '3.22');
+                differentHash(true,'true');
+                differentHash(false,0);
+            });
+
+            it('should work on empty array and object', function() {
+                differentHash([], {});
+            });
+
+            it('should work on empty object and undefined', function() {
+                differentHash({}, undefined);
+            });
+
+            it('should work on empty array and array with 0', function() {
+                differentHash([], [0]);
+            });
+        });
+
+        describe('Order independent hash function should be order independent', function() {
+            it('should not care about array order', function() {
+                sameHash([1,2,3], [3,2,1]);
+                sameHash(['hi', true, 9.4], [true, 'hi', 9.4]);
+            });
+
+            it('should not care about key order in an object', function() {
+                sameHash({foo: 'bar', foz: 'baz'}, {foz: 'baz', foo: 'bar'});
+            });
+
+            it('should work with complicated objects', function() {
+                var obj1 = {
+                    foo: 'bar',
+                    faz: [
+                        1,
+                        'pie',
+                        {
+                            food: 'yum'
+                        }
+                    ]
+                };
+
+                var obj2 = {
+                    faz: [
+                        'pie',
+                        {
+                            food: 'yum'
+                        },
+                        1
+                    ],
+                    foo: 'bar'
+                };
+
+                sameHash(obj1, obj2);
+            });
+        });
+    });
+
+
+    describe('Order indepedent array comparison should work', function() {
+        it('can compare simple arrays in an order independent fashion', function() {
+            var lhs = [1, 2, 3];
+            var rhs = [1, 3, 2];
+
+            var diff = deep.orderIndependentDiff(lhs, rhs);
+            expect(diff).to.be(undefined);
+        });
+
+        
+    });
+
 });
