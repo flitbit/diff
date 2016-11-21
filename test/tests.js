@@ -660,7 +660,50 @@ describe('deep-diff', function() {
             expect(diff).to.be(undefined);
         });
 
-        
+        it('still works with repeated elements', function() {
+            var lhs = [1, 1, 2];
+            var rhs = [1, 2, 1];
+
+            var diff = deep.orderIndependentDiff(lhs, rhs);
+            expect(diff).to.be(undefined);
+        });
+
+        it('works on complex objects', function() {
+            var obj1 = {
+                foo: 'bar',
+                faz: [
+                    1,
+                    'pie',
+                    {
+                        food: 'yum'
+                    }
+                ]
+            };
+
+            var obj2 = {
+                faz: [
+                    'pie',
+                    {
+                        food: 'yum'
+                    },
+                    1
+                ],
+                foo: 'bar'
+            };
+
+            var diff = deep.orderIndependentDiff(obj1, obj2);
+            expect(diff).to.be(undefined);
+        });
+
+        it ('should report some difference in non-equal arrays', function() {
+            var lhs = [1, 2, 3];
+            var rhs = [2, 2, 3];
+
+            var diff = deep.orderIndependentDiff(lhs, rhs);
+            expect(diff.length).to.be.ok();
+        })
+
+
     });
 
 });
