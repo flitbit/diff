@@ -532,4 +532,23 @@ describe('deep-diff', function() {
         });
     });
 
+    describe('subject.toString is not a function', function() {
+        var lhs = {
+          left: 'yes',
+          right: 'no',
+        };
+        var rhs = {
+          left: {
+            toString: true,
+          },
+          right: 'no',
+        };
+
+        it('should not throw a TypeError', function() {
+            var diff = deep.diff(lhs, rhs);
+
+            expect(diff.length).to.be(1);
+        });
+    });
+
 });

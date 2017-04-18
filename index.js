@@ -131,7 +131,7 @@
       return 'array';
     } else if (Object.prototype.toString.call(subject) === '[object Date]') {
       return 'date';
-    } else if (typeof subject.toString !== 'undefined' && /^\/.*\//.test(subject.toString())) {
+    } else if (typeof subject.toString === 'function' && /^\/.*\//.test(subject.toString())) {
       return 'regexp';
     }
     return 'object';
