@@ -225,8 +225,9 @@ The `prefilter`'s signature should be `function(path, key)` and it should return
 
 Currently testing on Travis CI against:
 
-+ nodejs `4.2.1`
++ nodejs `6`
++ nodejs `5`
++ nodejs `4`
 + nodejs `0.12`
 + nodejs `0.11`
 + nodejs `0.10`
-+ nodejs `0.8`
