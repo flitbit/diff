@@ -32,6 +32,7 @@
   ],
   "files": [
     "index.js",
+    "index.es.js",
     "releases/"
   ],
   "repository": {
@@ -39,6 +40,8 @@
     "url": "git://github.com/flitbit/diff.git"
   },
   "main": "./index.js",
+  "module": "./index.es.js",
+  "jsnext:main": "/index.es.js",
   "directories": {
     "examples": "./examples",
     "releases": "./releases",
@@ -50,11 +53,13 @@
     "jscs": "^1.12.0",
     "jshint": "^2.6.3",
     "mocha": "^2.2.1",
+    "rollup": "^0.41.6",
     "uglifyjs": "^2.4.10"
   },
   "scripts": {
     "release": "uglifyjs index.js -o releases/deep-diff-$npm_package_version.min.js  -r '$,require,exports,module,window,global' -m  --comments '/^!/'",
-    "pretest": "jscs index.js test/ && jshint index.js test/",
-    "test": "mocha"
+    "pretest": "jscs index.es.js test/ -e && jshint index.es.js test/",
+    "test": "mocha",
+    "build": "rollup index.es.js -f umd -o index.js -n DeepDiff"
   }
 }
