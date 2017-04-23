@@ -1,12 +1,5 @@
-(function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-	typeof define === 'function' && define.amd ? define(factory) :
-	(global.DeepDiff = factory());
-}(this, (function () { 'use strict';
-
-var $scope;
-var conflict;
-var conflictResolution = [];
+'use strict';
+var $scope, conflict, conflictResolution = [];
 if (typeof global === 'object' && global) {
   $scope = global;
 } else if (typeof window !== 'undefined') {
@@ -403,6 +396,4 @@ Object.defineProperties(accumulateDiff, {
   }
 });
 
-return accumulateDiff;
-
-})));
+export default accumulateDiff;
