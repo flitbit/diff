@@ -151,7 +151,7 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack) {
     changes(new DiffDeleted(currentPath, lhs));
   } else if (realTypeOf(lhs) !== realTypeOf(rhs)) {
     changes(new DiffEdit(currentPath, lhs, rhs));
-  } else if (Object.prototype.toString.call(lhs) === '[object Date]' && Object.prototype.toString.call(rhs) === '[object Date]' && ((lhs - rhs) !== 0)) {
+  } else if (realTypeOf(lhs) === 'date' && (lhs - rhs) !== 0) {
     changes(new DiffEdit(currentPath, lhs, rhs));
   } else if (ltype === 'object' && lhs !== null && rhs !== null) {
     stack = stack || [];
