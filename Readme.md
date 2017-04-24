@@ -12,6 +12,14 @@
 
 ## ChangeLog
 
+`0.3.5`  - 2017-04-23 &mdash; Rolled up recent fixes; patches:
+* @stevemao &mdash; #79, #80: now testing latest version of node4
+* @mortonfox &mdash; #85: referencing mocha's new home
+* @tdebarochez &mdash; #90: fixed error when .toString not a function
+* @thiamsantos &mdash; #92, #93: changed module system for improved es2015 modules
+
+`0.3.3` - Thanks @SimenB: enabled npm script for release (alternate to the Makefile). Also linting as part of `npm test`. Thanks @joeldenning: Fixed issue #35; diffs of top level arrays now working.
+
 `0.3.3` - Thanks @SimenB: enabled npm script for release (alternate to the Makefile). Also linting as part of `npm test`. Thanks @joeldenning: Fixed issue #35; diffs of top level arrays now working.
 
 `0.3.2` - Resolves #46; support more robust filters by including `lhs` and `rhs` in the filter callback. By @Orlando80
@@ -39,7 +47,7 @@ bower install deep-diff
 
 ## Tests
 
-Tests use [mocha](http://visionmedia.github.io/mocha/) and [expect.js](https://github.com/LearnBoost/expect.js/), so if you clone the [github repository](https://github.com/flitbit/json-ptr) you'll need to run:
+Tests use [mocha](http://mochajs.org/) and [expect.js](https://github.com/LearnBoost/expect.js/), so if you clone the [github repository](https://github.com/flitbit/json-ptr) you'll need to run:
 
 ```bash
 npm install
@@ -225,8 +233,9 @@ The `prefilter`'s signature should be `function(path, key)` and it should return
 
 Currently testing on Travis CI against:
 
-+ nodejs `4.2.1`
++ nodejs `6`
++ nodejs `5`
++ nodejs `4`
 + nodejs `0.12`
 + nodejs `0.11`
 + nodejs `0.10`
-+ nodejs `0.8`
