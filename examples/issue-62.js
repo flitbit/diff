@@ -1,5 +1,8 @@
 var deep = require("../");
 
+// https://github.com/flitbit/diff/issues/62#issuecomment-229549984
+// 3: appears to be fixed, probably in fixing #74.
+
 var a = {};
 var b = {};
 a.x = b;
