@@ -186,6 +186,9 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack) {
         });
       }
       stack.length = stack.length - 1;
+    } else if (lhs !== rhs) {
+      // lhs is contains a cycle at this element and it differs from rhs
+      changes(new DiffEdit(currentPath, lhs, rhs));
     }
   } else if (lhs !== rhs) {
     if (!(ltype === 'number' && isNaN(lhs) && isNaN(rhs))) {
