@@ -566,7 +566,7 @@ describe('deep-diff', function() {
 
     describe('regression test for issue #70', function() {
         var lhs = {foo: undefined };
-        var rhs = {}
+        var rhs = {};
 
         it('should detect a difference', function() {
             var diff = deep.diff(lhs, rhs);
