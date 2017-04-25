@@ -551,4 +551,16 @@ describe('deep-diff', function() {
         });
     });
 
+    describe('regression test for issue #83', function() {
+        var lhs = {
+          date: null
+        };
+        var rhs = {
+          date: null
+        };
+
+        it('should not detect a difference', function() {
+            expect(deep.diff(lhs, rhs)).to.be(undefined);
+        });
+    });
 });
