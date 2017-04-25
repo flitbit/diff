@@ -563,4 +563,24 @@ describe('deep-diff', function() {
             expect(deep.diff(lhs, rhs)).to.be(undefined);
         });
     });
+
+    describe('regression test for issue #70', function() {
+        var lhs = {foo: undefined };
+        var rhs = {}
+
+        it('should detect a difference', function() {
+            var diff = deep.diff(lhs, rhs);
+
+            expect(diff.length).to.be(1);
+
+            expect(diff[0].kind).to.be('D');
+            expect(diff[0].path).to.be.an('array');
+            expect(diff[0].path).to.have.length(1);
+            expect(diff[0].path[0]).to.be('foo');
+            expect(diff[0].lhs).to.be(undefined);
+
+        });
+    });
+
+
 });

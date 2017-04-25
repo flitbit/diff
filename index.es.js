@@ -146,6 +146,8 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack) {
   if (ltype === 'undefined') {
     if (rtype !== 'undefined') {
       changes(new DiffNew(currentPath, rhs));
+    } else {
+      changes(new DiffDeleted(currentPath, lhs));
     }
   } else if (rtype === 'undefined') {
     changes(new DiffDeleted(currentPath, lhs));
