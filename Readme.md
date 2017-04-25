@@ -23,6 +23,8 @@
 * @tdebarochez &mdash; #90: fixed error when .toString not a function
 * @thiamsantos &mdash; #92, #93: changed module system for improved es2015 modules. WARNING! [This PR broke importing `deep-diff` in Typescript as reported by @kgentes in #97](https://github.com/flitbit/diff/issues/97)
 
+`0.3.4` - Typescript users, reference this version until #97 is fixed!
+
 `0.3.3` - Thanks @SimenB: enabled npm script for release (alternate to the Makefile). Also linting as part of `npm test`. Thanks @joeldenning: Fixed issue #35; diffs of top level arrays now working.
 
 `0.3.3` - Thanks @SimenB: enabled npm script for release (alternate to the Makefile). Also linting as part of `npm test`. Thanks @joeldenning: Fixed issue #35; diffs of top level arrays now working.
