@@ -12,7 +12,11 @@
 
 ## ChangeLog
 
-`0.3.5`  - 2017-04-23 &mdash; Rolled up recent fixes; patches:
+`0.3.6` - 2017-04-25 &mdash; Fixed, closed lingering issues:
+* fixed #74 &mdash; comparing objects with longer cycles
+* fixed #70 &mdash; was not properly detecting a deletion when a property on the operand (lhs) had a value of `undefined` and was _undefined_ on the comparand (rhs). :o).
+
+`0.3.5` - 2017-04-23 &mdash; Rolled up recent fixes; patches:
 * @stevemao &mdash; #79, #80: now testing latest version of node4
 * @mortonfox &mdash; #85: referencing mocha's new home
 * @tdebarochez &mdash; #90: fixed error when .toString not a function
@@ -208,15 +212,15 @@ observableDiff(lhs, rhs, function (d) {
 
 A standard import of `var diff = require('deep-diff')` is assumed in all of the code examples. The import results in an object having the following public properties:
 
-* `diff`           - a function that calculates the differences between two objects.
-* `observableDiff` - a function that calculates the differences between two objects and reports each to an observer function.
-* `applyDiff`      - a function that applies any structural differences from one object to another.
-* `applyChange`    - a function that applies a single change record to an origin object.
-* `revertChange`   - a function that reverts a single change record from a target object.
+* `diff(lhs, rhs, prefilter, acc)` &mdash; calculates the differences between two objects, optionally prefiltering elements for comparison, and optionally using the specified accumulator.
+* `observableDiff(lhs, rhs, observer, prefilter)` &mdash; calculates the differences between two objects and reports each to an observer function, optionally, prefiltering elements for comparison.
+* `applyDiff(target, source, filter)` &mdash; applies any structural differences from a source object to a target object, optionally filtering each difference.
+* `applyChange(target, source, change)` &mdash; applies a single change record to a target object. NOTE: `source` is unused and may be removed.
+* `revertChange(target, source, change)` reverts a single change record to a target object. NOTE: `source` is unused and may be removed.
 
 ### `diff`
 
-The `diff` function calculates the difference between two objects. In version `0.1.7` you can supply your own `prefilter` function as the 3rd argument and control which properties are ignored while calculating differences throughout the object graph.
+The `diff` function calculates the difference between two objects.
 
 **Arguments**
 
