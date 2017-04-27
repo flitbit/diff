@@ -150,13 +150,13 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack) {
 
   var ltype = typeof lhs;
   var rtype = typeof rhs;
-  if (ltype === 'undefined') {
-    if (rtype !== 'undefined') {
-      changes(new DiffNew(currentPath, rhs));
-    } else {
-      changes(new DiffDeleted(currentPath, lhs));
-    }
-  } else if (rtype === 'undefined') {
+
+  var ldefined = ltype !== 'undefined' || stack && stack[stack.length - 1].lhs.hasOwnProperty(key)
+  var rdefined = rtype !== 'undefined' || stack && stack[stack.length - 1].rhs.hasOwnProperty(key)
+
+  if (!ldefined && rdefined) {
+    changes(new DiffNew(currentPath, rhs));
+  } else if (!rdefined && ldefined) {
     changes(new DiffDeleted(currentPath, lhs));
   } else if (realTypeOf(lhs) !== realTypeOf(rhs)) {
     changes(new DiffEdit(currentPath, lhs, rhs));
@@ -164,8 +164,8 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack) {
     changes(new DiffEdit(currentPath, lhs, rhs));
   } else if (ltype === 'object' && lhs !== null && rhs !== null) {
     stack = stack || [];
-    if (stack.indexOf(lhs) < 0) {
-      stack.push(lhs);
+    if (!stack.filter(function (x) { return x.lhs === lhs }).length) {
+      stack.push({ lhs: lhs, rhs: rhs });
       if (Array.isArray(lhs)) {
         var i, len = lhs.length;
         for (i = 0; i < lhs.length; i++) {
