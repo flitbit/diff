@@ -565,11 +565,9 @@ describe('deep-diff', function() {
     });
 
     describe('regression test for issue #70', function() {
-        var lhs = {foo: undefined };
-        var rhs = {};
 
-        it('should detect a difference', function() {
-            var diff = deep.diff(lhs, rhs);
+        it('should detect a difference with undefined property on lhs', function() {
+            var diff = deep.diff({foo: undefined }, {});
 
             expect(diff.length).to.be(1);
 
@@ -578,6 +576,31 @@ describe('deep-diff', function() {
             expect(diff[0].path).to.have.length(1);
             expect(diff[0].path[0]).to.be('foo');
             expect(diff[0].lhs).to.be(undefined);
+
+        });
+
+        it('should detect a difference with undefined property on rhs', function() {
+            var diff = deep.diff({}, { foo: undefined });
+
+            expect(diff.length).to.be(1);
+
+            expect(diff[0].kind).to.be('N');
+            expect(diff[0].path).to.be.an('array');
+            expect(diff[0].path).to.have.length(1);
+            expect(diff[0].path[0]).to.be('foo');
+            expect(diff[0].rhs).to.be(undefined);
+
+        });
+    });
+
+    describe('regression test for issue #98', function() {
+        var lhs = {foo: undefined };
+        var rhs = {foo: undefined };
+
+        it('should not detect a difference with two undefined property values', function() {
+            var diff = deep.diff(lhs, rhs);
+
+            expect(diff).to.be(undefined);
 
         });
     });
