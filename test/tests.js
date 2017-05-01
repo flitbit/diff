@@ -532,6 +532,80 @@ describe('deep-diff', function() {
         });
     });
 
+    describe('subject.toString is not a function', function() {
+        var lhs = {
+          left: 'yes',
+          right: 'no',
+        };
+        var rhs = {
+          left: {
+            toString: true,
+          },
+          right: 'no',
+        };
+
+        it('should not throw a TypeError', function() {
+            var diff = deep.diff(lhs, rhs);
+
+            expect(diff.length).to.be(1);
+        });
+    });
+
+    describe('regression test for issue #83', function() {
+        var lhs = {
+          date: null
+        };
+        var rhs = {
+          date: null
+        };
+
+        it('should not detect a difference', function() {
+            expect(deep.diff(lhs, rhs)).to.be(undefined);
+        });
+    });
+
+    describe('regression test for issue #70', function() {
+
+        it('should detect a difference with undefined property on lhs', function() {
+            var diff = deep.diff({foo: undefined }, {});
+
+            expect(diff.length).to.be(1);
+
+            expect(diff[0].kind).to.be('D');
+            expect(diff[0].path).to.be.an('array');
+            expect(diff[0].path).to.have.length(1);
+            expect(diff[0].path[0]).to.be('foo');
+            expect(diff[0].lhs).to.be(undefined);
+
+        });
+
+        it('should detect a difference with undefined property on rhs', function() {
+            var diff = deep.diff({}, { foo: undefined });
+
+            expect(diff.length).to.be(1);
+
+            expect(diff[0].kind).to.be('N');
+            expect(diff[0].path).to.be.an('array');
+            expect(diff[0].path).to.have.length(1);
+            expect(diff[0].path[0]).to.be('foo');
+            expect(diff[0].rhs).to.be(undefined);
+
+        });
+    });
+
+    describe('regression test for issue #98', function() {
+        var lhs = {foo: undefined };
+        var rhs = {foo: undefined };
+
+        it('should not detect a difference with two undefined property values', function() {
+            var diff = deep.diff(lhs, rhs);
+
+            expect(diff).to.be(undefined);
+
+        });
+    });
+
+
     describe('Order independent hash testing', function() {
         function sameHash(a, b) {
             expect(deep.orderIndepHash(a)).to.equal(deep.orderIndepHash(b));
@@ -701,7 +775,7 @@ describe('deep-diff', function() {
 
             var diff = deep.orderIndependentDiff(lhs, rhs);
             expect(diff.length).to.be.ok();
-        })
+        });
 
 
     });
