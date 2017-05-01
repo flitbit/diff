@@ -12,6 +12,9 @@
 
 ## ChangeLog
 
+`0.3.7` - 2017-05-01
+* fixed issue #98 by merging @sberan's pull request #99 &mdash; better handling of property with `undefined` value existing on either operand. Unit tests supplied.
+
 `0.3.6` - 2017-04-25 &mdash; Fixed, closed lingering issues:
 * fixed #74 &mdash; comparing objects with longer cycles
 * fixed #70 &mdash; was not properly detecting a deletion when a property on the operand (lhs) had a value of `undefined` and was _undefined_ on the comparand (rhs). :o).
