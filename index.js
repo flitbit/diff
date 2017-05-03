@@ -148,63 +148,63 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack, orderIndepende
     rhs = rhs.toString();
   }
 
-    var ltype = typeof lhs;
-    var rtype = typeof rhs;
-    var ldefined =ltype !== 'undefined'|| stack && stack[stack.length - 1].lhs.hasOwnProperty(key) ;
-      var rdefined =rtype !== 'undefined'|| stack && stack[stack.length - 1].rhs.hasOwnProperty(key);
+  var ltype = typeof lhs;
+  var rtype = typeof rhs;
+  var ldefined =ltype !== 'undefined'|| stack && stack[stack.length - 1].lhs.hasOwnProperty(key) ;
+  var rdefined =rtype !== 'undefined'|| stack && stack[stack.length - 1].rhs.hasOwnProperty(key);
 
   if (!ldefined && rdefined) {
-        changes(new DiffNew(currentPath, rhs));
-      }
-     else if (!rdefined && ldefined) {
-      changes(new DiffDeleted(currentPath, lhs));
-    } else if (realTypeOf(lhs) !== realTypeOf(rhs)) {
-      changes(new DiffEdit(currentPath, lhs, rhs));
-    } else if (realTypeOf(lhs) === 'date' && (lhs - rhs) !== 0) {
-      changes(new DiffEdit(currentPath, lhs, rhs));
-    } else if (ltype === 'object' && lhs !== null && rhs !== null) {
-      stack = stack || [];
-      if (!stack.filter(function (x) { return x.lhs=== lhs }).length) {
-        stack.push({lhs: lhs, rhs: rhs });
-        if (Array.isArray(lhs)) {
-  // If order doesn't matter, we need to sort our arrays
-          if (orderIndependent) {
-            lhs.sort(function(a, b) {
-              return getOrderIndependentHash(a) - getOrderIndependentHash(b);
-            });
+    changes(new DiffNew(currentPath, rhs));
+  } else if (!rdefined && ldefined) {
+    changes(new DiffDeleted(currentPath, lhs));
+  } else if (realTypeOf(lhs) !== realTypeOf(rhs)) {
+    changes(new DiffEdit(currentPath, lhs, rhs));
+  } else if (realTypeOf(lhs) === 'date' && (lhs - rhs) !== 0) {
+    changes(new DiffEdit(currentPath, lhs, rhs));
+  } else if (ltype === 'object' && lhs !== null && rhs !== null) {
+    stack = stack || [];
 
-            rhs.sort(function(a, b) {
-              return getOrderIndependentHash(a) - getOrderIndependentHash(b);
-            });
-          }        var i, len = lhs.length;
-          for (i = 0; i < lhs.length; i++) {
-            if (i >= rhs.length) {
-              changes(new DiffArray(currentPath, i, new DiffDeleted(undefined, lhs[i])));
-            } else {
-              deepDiff(lhs[i], rhs[i], changes, prefilter, currentPath, i, stack, orderIndependent);
-            }
-          }
-          while (i < rhs.length) {
-            changes(new DiffArray(currentPath, i, new DiffNew(undefined, rhs[i++])));
-          }
-        } else {
-          var akeys = Object.keys(lhs);
-          var pkeys = Object.keys(rhs);
-          akeys.forEach(function(k, i) {
-            var other = pkeys.indexOf(k);
-            if (other >= 0) {
-              deepDiff(lhs[k], rhs[k], changes, prefilter, currentPath, k, stack, orderIndependent);
-              pkeys = arrayRemove(pkeys, other);
-            } else {
-              deepDiff(lhs[k], undefined, changes, prefilter, currentPath, k, stack, orderIndependent);
-            }
+    if (!stack.filter(function (x) { return x.lhs=== lhs; }).length) {
+      stack.push({lhs: lhs, rhs: rhs });
+      if (Array.isArray(lhs)) {
+        // If order doesn't matter, we need to sort our arrays
+        if (orderIndependent) {
+          lhs.sort(function(a, b) {
+            return getOrderIndependentHash(a) - getOrderIndependentHash(b);
           });
-          pkeys.forEach(function(k) {
-            deepDiff(undefined, rhs[k], changes, prefilter, currentPath, k, stack, orderIndependent);
+
+          rhs.sort(function(a, b) {
+            return getOrderIndependentHash(a) - getOrderIndependentHash(b);
           });
         }
-        stack.length = stack.length - 1;
-
+        var i, len = lhs.length;
+        for (i = 0; i < lhs.length; i++) {
+          if (i >= rhs.length) {
+            changes(new DiffArray(currentPath, i, new DiffDeleted(undefined, lhs[i])));
+          } else {
+            deepDiff(lhs[i], rhs[i], changes, prefilter, currentPath, i, stack, orderIndependent);
+          }
+        }
+        while (i < rhs.length) {
+          changes(new DiffArray(currentPath, i, new DiffNew(undefined, rhs[i++])));
+        }
+      } else {
+        var akeys = Object.keys(lhs);
+        var pkeys = Object.keys(rhs);
+        akeys.forEach(function(k, i) {
+          var other = pkeys.indexOf(k);
+          if (other >= 0) {
+            deepDiff(lhs[k], rhs[k], changes, prefilter, currentPath, k, stack, orderIndependent);
+            pkeys = arrayRemove(pkeys, other);
+          } else {
+            deepDiff(lhs[k], undefined, changes, prefilter, currentPath, k, stack, orderIndependent);
+          }
+        });
+        pkeys.forEach(function(k) {
+          deepDiff(undefined, rhs[k], changes, prefilter, currentPath, k, stack, orderIndependent);
+        });
+      }
+      stack.length = stack.length - 1;
     } else if (lhs !== rhs) {
       // lhs is contains a cycle at this element and it differs from rhs
       changes(new DiffEdit(currentPath, lhs, rhs));
@@ -218,7 +218,9 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack, orderIndepende
 
   function orderIndependentDeepDiff(lhs, rhs, changes, prefilter, path, key, stack) {
     return deepDiff(lhs, rhs, changes, prefilter, path, key, stack, true);
-  }function accumulateDiff(lhs, rhs, prefilter, accum) {
+  }
+
+  function accumulateDiff(lhs, rhs, prefilter, accum) {
     accum = accum || [];
     deepDiff(lhs, rhs,
       function(diff) {
@@ -285,7 +287,9 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack, orderIndepende
     }
 
     return hash;
-  }function applyArrayChange(arr, index, change) {
+  }
+
+  function applyArrayChange(arr, index, change) {
     if (change.path && change.path.length) {
       var it = arr[index],
           i, u = change.path.length - 1;
@@ -435,55 +439,55 @@ function applyDiff(target, source, filter) {
 
 Object.defineProperties(accumulateDiff, {
 
-    diff: {
-      value: accumulateDiff,
-      enumerable: true
+  diff: {
+    value: accumulateDiff,
+    enumerable: true
+  },
+  orderIndependentDiff: {
+    value: accumulateOrderIndependentDiff,
+    enumerable: true
+  },observableDiff: {
+    value: deepDiff,enumerable: true
+  },
+  orderIndependentObservableDiff: {
+    value:orderIndependentDeepDiff,
+    enumerable: true
+  },
+  orderIndepHash: {
+    value:getOrderIndependentHash,
+    enumerable: true
+  },
+  applyDiff: {
+    value: applyDiff,
+    enumerable: true
+  },
+  applyChange: {
+    value: applyChange,
+    enumerable: true
+  },
+  revertChange: {
+    value: revertChange,
+    enumerable: true
+  },
+  isConflict: {
+    value: function() {
+      return 'undefined' !== typeof conflict;
     },
-    orderIndependentDiff: {
-      value: accumulateOrderIndependentDiff,
-      enumerable: true
-    },observableDiff: {
-      value: deepDiff,enumerable: true
+    enumerable: true
+  },
+  noConflict: {
+    value: function() {
+      if (conflictResolution) {
+        conflictResolution.forEach(function(it) {
+          it();
+        });
+        conflictResolution = null;
+      }
+      return accumulateDiff;
     },
-    orderIndependentObservableDiff: {
-      value:orderIndependentDeepDiff,
-      enumerable: true
-    },
-    orderIndepHash: {
-      value:getOrderIndependentHash,
-      enumerable: true
-    },
-    applyDiff: {
-      value: applyDiff,
-      enumerable: true
-    },
-    applyChange: {
-      value: applyChange,
-      enumerable: true
-    },
-    revertChange: {
-      value: revertChange,
-      enumerable: true
-    },
-    isConflict: {
-      value: function() {
-        return 'undefined' !== typeof conflict;
-      },
-      enumerable: true
-    },
-    noConflict: {
-      value: function() {
-        if (conflictResolution) {
-          conflictResolution.forEach(function(it) {
-            it();
-          });
-          conflictResolution = null;
-        }
-        return accumulateDiff;
-      },
-      enumerable: true
-    }
-  });
+    enumerable: true
+  }
+});
 
 return accumulateDiff;
 
