@@ -1,7 +1,7 @@
 {
   "name": "deep-diff",
   "main": "index.js",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "homepage": "https://github.com/flitbit/diff",
   "authors": [
     "Phillip Clark <phillip@flitbit.com>",

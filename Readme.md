@@ -12,6 +12,11 @@
 
 ## ChangeLog
 
+`0.3.8` - 2017-05-03
+* reconciled recently introduced difference between `index.es.js` and `index.js`
+* improved npm commands for more reliable contributions
+* added a few notes to README regarding contributing.
+
 `0.3.7` - 2017-05-01
 * fixed issue #98 by merging @sberan's pull request #99 &mdash; better handling of property with `undefined` value existing on either operand. Unit tests supplied.
 
