@@ -569,6 +569,7 @@ describe('deep-diff', function() {
         it('should detect a difference with undefined property on lhs', function() {
             var diff = deep.diff({foo: undefined }, {});
 
+            expect(diff).to.be.an(Array);
             expect(diff.length).to.be(1);
 
             expect(diff[0].kind).to.be('D');
@@ -582,6 +583,7 @@ describe('deep-diff', function() {
         it('should detect a difference with undefined property on rhs', function() {
             var diff = deep.diff({}, { foo: undefined });
 
+            expect(diff).to.be.an(Array);
             expect(diff.length).to.be(1);
 
             expect(diff[0].kind).to.be('N');

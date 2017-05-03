@@ -249,3 +249,15 @@ Currently testing on Travis CI against:
 + nodejs `0.12`
 + nodejs `0.11`
 + nodejs `0.10`
+
+# Contributing
+
+When contributing, keep in mind that it is an objective of `deep-diff` to have no package dependencies. This may change in the future, but for now, no-dependencies.
+
+As of release 0.3.5, all edits/changes should be made to `index.es.js`. You must run the unit tests before submitting your PR: `npm test`. Hopefully your PR includes additional unit tests to illustrate your change/modification!
+
+When you run `npm test`, linting will be performed and `index.js` will be built from `index.es.js`. Any linting errors will fail the tests... this includes code formatting.
+
+This module still uses `jshint` but the plan is to switch to `eslint` very soon as I have done in several of my other modules.
+
+**Thanks to all those who have contributed so far!**

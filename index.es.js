@@ -117,12 +117,14 @@ function realTypeOf(subject) {
 
 function deepDiff(lhs, rhs, changes, prefilter, path, key, stack) {
   path = path || [];
+  stack = stack || [];
   var currentPath = path.slice(0);
   if (typeof key !== 'undefined') {
     if (prefilter) {
-      if (typeof(prefilter) === 'function' && prefilter(currentPath, key)) { return; }
-      else if (typeof(prefilter) === 'object') {
-        if (prefilter.prefilter && prefilter.prefilter(currentPath, key)) { return; }
+      if (typeof(prefilter) === 'function' && prefilter(currentPath, key)) {
+        return; } else if (typeof(prefilter) === 'object') {
+        if (prefilter.prefilter && prefilter.prefilter(currentPath, key)) {
+          return; }
         if (prefilter.normalize) {
           var alt = prefilter.normalize(currentPath, key, lhs, rhs);
           if (alt) {
@@ -144,8 +146,8 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack) {
   var ltype = typeof lhs;
   var rtype = typeof rhs;
 
-  var ldefined = ltype !== 'undefined' || stack && stack[stack.length - 1].lhs.hasOwnProperty(key);
-  var rdefined = rtype !== 'undefined' || stack && stack[stack.length - 1].rhs.hasOwnProperty(key);
+  var ldefined = ltype !== 'undefined' || (stack && stack[stack.length - 1].lhs && stack[stack.length - 1].lhs.hasOwnProperty(key));
+  var rdefined = rtype !== 'undefined' || (stack && stack[stack.length - 1].rhs && stack[stack.length - 1].rhs.hasOwnProperty(key));
 
   if (!ldefined && rdefined) {
     changes(new DiffNew(currentPath, rhs));
@@ -156,9 +158,9 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack) {
   } else if (realTypeOf(lhs) === 'date' && (lhs - rhs) !== 0) {
     changes(new DiffEdit(currentPath, lhs, rhs));
   } else if (ltype === 'object' && lhs !== null && rhs !== null) {
-    stack = stack || [];
-    if (stack.indexOf(lhs) < 0) {
-      stack.push(lhs);
+    if (!stack.filter(function(x) {
+        return x.lhs === lhs; }).length) {
+      stack.push({ lhs: lhs, rhs: rhs });
       if (Array.isArray(lhs)) {
         var i, len = lhs.length;
         for (i = 0; i < lhs.length; i++) {
@@ -214,7 +216,7 @@ function accumulateDiff(lhs, rhs, prefilter, accum) {
 function applyArrayChange(arr, index, change) {
   if (change.path && change.path.length) {
     var it = arr[index],
-        i, u = change.path.length - 1;
+      i, u = change.path.length - 1;
     for (i = 0; i < u; i++) {
       it = it[change.path[i]];
     }
@@ -250,8 +252,8 @@ function applyArrayChange(arr, index, change) {
 function applyChange(target, source, change) {
   if (target && source && change && change.kind) {
     var it = target,
-        i = -1,
-        last = change.path ? change.path.length - 1 : 0;
+      i = -1,
+      last = change.path ? change.path.length - 1 : 0;
     while (++i < last) {
       if (typeof it[change.path[i]] === 'undefined') {
         it[change.path[i]] = (typeof change.path[i] === 'number') ? [] : {};
@@ -277,7 +279,7 @@ function revertArrayChange(arr, index, change) {
   if (change.path && change.path.length) {
     // the structure of the object at the index has changed...
     var it = arr[index],
-        i, u = change.path.length - 1;
+      i, u = change.path.length - 1;
     for (i = 0; i < u; i++) {
       it = it[change.path[i]];
     }
@@ -318,7 +320,7 @@ function revertArrayChange(arr, index, change) {
 function revertChange(target, source, change) {
   if (target && source && change && change.kind) {
     var it = target,
-        i, u;
+      i, u;
     u = change.path.length - 1;
     for (i = 0; i < u; i++) {
       if (typeof it[change.path[i]] === 'undefined') {
