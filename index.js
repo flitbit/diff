@@ -150,8 +150,8 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack, orderIndepende
 
   var ltype = typeof lhs;
   var rtype = typeof rhs;
-  var ldefined =ltype !== 'undefined'|| stack && stack[stack.length - 1].lhs.hasOwnProperty(key) ;
-  var rdefined =rtype !== 'undefined'|| stack && stack[stack.length - 1].rhs.hasOwnProperty(key);
+  var ldefined = ltype !== 'undefined'|| stack && stack[stack.length - 1].lhs.hasOwnProperty(key) ;
+  var rdefined = rtype !== 'undefined'|| stack && stack[stack.length - 1].rhs.hasOwnProperty(key);
 
   if (!ldefined && rdefined) {
     changes(new DiffNew(currentPath, rhs));
@@ -163,9 +163,8 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack, orderIndepende
     changes(new DiffEdit(currentPath, lhs, rhs));
   } else if (ltype === 'object' && lhs !== null && rhs !== null) {
     stack = stack || [];
-
-    if (!stack.filter(function (x) { return x.lhs=== lhs; }).length) {
-      stack.push({lhs: lhs, rhs: rhs });
+    if (!stack.filter(function (x) { return x.lhs === lhs; }).length) {
+      stack.push({ lhs: lhs, rhs: rhs });
       if (Array.isArray(lhs)) {
         // If order doesn't matter, we need to sort our arrays
         if (orderIndependent) {
@@ -220,110 +219,110 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack, orderIndepende
     return deepDiff(lhs, rhs, changes, prefilter, path, key, stack, true);
   }
 
-  function accumulateDiff(lhs, rhs, prefilter, accum) {
-    accum = accum || [];
-    deepDiff(lhs, rhs,
-      function(diff) {
-        if (diff) {
-          accum.push(diff);
-        }
-      },
-      prefilter);
-    return (accum.length) ? accum : undefined;
-  }
-
-  function accumulateOrderIndependentDiff(lhs, rhs, prefilter, accum) {
-    accum = accum || [];
-    deepDiff(lhs, rhs,
-      function(diff) {
-        if (diff) {
-          accum.push(diff);
-        }
-      },
-      prefilter, null, null, null, true);
-    return (accum.length) ? accum : undefined;
-  }
-
-  // Gets a hash of the given object in an array order-independent fashion
-  // also object key order independent (easier since they can be alphabetized)
-  function getOrderIndependentHash(object) {
-    var accum = 0;
-    var type = realTypeOf(object);
-
-    if (type === 'array') {
-      object.forEach(function(item) {
-        // Addition is commutative so this is order indep
-        accum += getOrderIndependentHash(item);
-      });
-
-      var arrayString = '[type: array, hash: ' + accum + ']';
-      return accum + hashThisString(arrayString);
-    }
-
-    if (type === 'object') {
-      for (var key in object) {
-        if (object.hasOwnProperty(key)) {
-          var keyValueString = '[ type: object, key: ' + key + ', value hash: ' + getOrderIndependentHash(object[key]) + ']';
-          accum += hashThisString(keyValueString);
-        }
+function accumulateDiff(lhs, rhs, prefilter, accum) {
+  accum = accum || [];
+  deepDiff(lhs, rhs,
+    function(diff) {
+      if (diff) {
+        accum.push(diff);
       }
+    },
+    prefilter);
+  return (accum.length) ? accum : undefined;
+}
 
-      return accum;
-    }
+function accumulateOrderIndependentDiff(lhs, rhs, prefilter, accum) {
+  accum = accum || [];
+  deepDiff(lhs, rhs,
+    function(diff) {
+      if (diff) {
+        accum.push(diff);
+      }
+    },
+    prefilter, null, null, null, true);
+  return (accum.length) ? accum : undefined;
+}
 
-    // Non object, non array...should be good?
-    var stringToHash = '[ type: ' + type + ' ; value: ' + object + ']';
-    return accum + hashThisString(stringToHash);
+// Gets a hash of the given object in an array order-independent fashion
+// also object key order independent (easier since they can be alphabetized)
+function getOrderIndependentHash(object) {
+  var accum = 0;
+  var type = realTypeOf(object);
+
+  if (type === 'array') {
+    object.forEach(function(item) {
+      // Addition is commutative so this is order indep
+      accum += getOrderIndependentHash(item);
+    });
+
+    var arrayString = '[type: array, hash: ' + accum + ']';
+    return accum + hashThisString(arrayString);
   }
 
-  // http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
-  function hashThisString(string) {
-    var hash = 0;
-    if (string.length === 0) return hash;
-    for (var i = 0; i < string.length; i++) {
-      var char = string.charCodeAt(i);
-      hash = ((hash<<5)-hash)+char;
-      hash = hash & hash; // Convert to 32bit integer
-    }
-
-    return hash;
-  }
-
-  function applyArrayChange(arr, index, change) {
-    if (change.path && change.path.length) {
-      var it = arr[index],
-          i, u = change.path.length - 1;
-      for (i = 0; i < u; i++) {
-        it = it[change.path[i]];
-      }
-      switch (change.kind) {
-        case 'A':
-          applyArrayChange(it[change.path[i]], change.index, change.item);
-          break;
-        case 'D':
-          delete it[change.path[i]];
-          break;
-        case 'E':
-        case 'N':
-          it[change.path[i]] = change.rhs;
-          break;
-      }
-    } else {
-      switch (change.kind) {
-        case 'A':
-          applyArrayChange(arr[index], change.index, change.item);
-          break;
-        case 'D':
-          arr = arrayRemove(arr, index);
-          break;
-        case 'E':
-        case 'N':
-          arr[index] = change.rhs;
-          break;
+  if (type === 'object') {
+    for (var key in object) {
+      if (object.hasOwnProperty(key)) {
+        var keyValueString = '[ type: object, key: ' + key + ', value hash: ' + getOrderIndependentHash(object[key]) + ']';
+        accum += hashThisString(keyValueString);
       }
     }
-    return arr;
+
+    return accum;
   }
+
+  // Non object, non array...should be good?
+  var stringToHash = '[ type: ' + type + ' ; value: ' + object + ']';
+  return accum + hashThisString(stringToHash);
+}
+
+// http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
+function hashThisString(string) {
+  var hash = 0;
+  if (string.length === 0) return hash;
+  for (var i = 0; i < string.length; i++) {
+    var char = string.charCodeAt(i);
+    hash = ((hash<<5)-hash)+char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+
+  return hash;
+}
+
+function applyArrayChange(arr, index, change) {
+  if (change.path && change.path.length) {
+    var it = arr[index],
+      i, u = change.path.length - 1;
+    for (i = 0; i < u; i++) {
+      it = it[change.path[i]];
+    }
+    switch (change.kind) {
+      case 'A':
+        applyArrayChange(it[change.path[i]], change.index, change.item);
+        break;
+      case 'D':
+        delete it[change.path[i]];
+        break;
+      case 'E':
+      case 'N':
+        it[change.path[i]] = change.rhs;
+        break;
+    }
+  } else {
+    switch (change.kind) {
+      case 'A':
+        applyArrayChange(arr[index], change.index, change.item);
+        break;
+      case 'D':
+        arr = arrayRemove(arr, index);
+        break;
+      case 'E':
+      case 'N':
+        arr[index] = change.rhs;
+        break;
+    }
+  }
+  return arr;
+}
 
 function applyChange(target, source, change) {
   if (target && source && change && change.kind) {
@@ -446,8 +445,10 @@ Object.defineProperties(accumulateDiff, {
   orderIndependentDiff: {
     value: accumulateOrderIndependentDiff,
     enumerable: true
-  },observableDiff: {
-    value: deepDiff,enumerable: true
+  },
+  observableDiff: {
+    value: deepDiff,
+    enumerable: true
   },
   orderIndependentObservableDiff: {
     value:orderIndependentDeepDiff,
