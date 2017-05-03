@@ -150,8 +150,8 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack, orderIndepende
 
   var ltype = typeof lhs;
   var rtype = typeof rhs;
-  var ldefined = ltype !== 'undefined'|| stack && stack[stack.length - 1].lhs.hasOwnProperty(key) ;
-  var rdefined = rtype !== 'undefined'|| stack && stack[stack.length - 1].rhs.hasOwnProperty(key);
+  var ldefined = ltype !== 'undefined' || stack && stack[stack.length - 1].lhs.hasOwnProperty(key);
+  var rdefined = rtype !== 'undefined' || stack && stack[stack.length - 1].rhs.hasOwnProperty(key);
 
   if (!ldefined && rdefined) {
     changes(new DiffNew(currentPath, rhs));
@@ -215,9 +215,9 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack, orderIndepende
   }
 }
 
-  function orderIndependentDeepDiff(lhs, rhs, changes, prefilter, path, key, stack) {
-    return deepDiff(lhs, rhs, changes, prefilter, path, key, stack, true);
-  }
+function orderIndependentDeepDiff(lhs, rhs, changes, prefilter, path, key, stack) {
+  return deepDiff(lhs, rhs, changes, prefilter, path, key, stack, true);
+}
 
 function accumulateDiff(lhs, rhs, prefilter, accum) {
   accum = accum || [];
@@ -291,7 +291,7 @@ function hashThisString(string) {
 function applyArrayChange(arr, index, change) {
   if (change.path && change.path.length) {
     var it = arr[index],
-      i, u = change.path.length - 1;
+        i, u = change.path.length - 1;
     for (i = 0; i < u; i++) {
       it = it[change.path[i]];
     }
