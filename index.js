@@ -150,8 +150,8 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack, orderIndepende
 
   var ltype = typeof lhs;
   var rtype = typeof rhs;
-  var ldefined = ltype !== 'undefined' || stack && stack[stack.length - 1].lhs.hasOwnProperty(key);
-  var rdefined = rtype !== 'undefined' || stack && stack[stack.length - 1].rhs.hasOwnProperty(key);
+  var ldefined = ltype !== 'undefined' || (stack && stack[stack.length - 1].lhs && stack[stack.length - 1].lhs.hasOwnProperty(key));
+  var rdefined = rtype !== 'undefined' || (stack && stack[stack.length - 1].rhs && stack[stack.length - 1].rhs.hasOwnProperty(key));
 
   if (!ldefined && rdefined) {
     changes(new DiffNew(currentPath, rhs));
@@ -162,8 +162,8 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack, orderIndepende
   } else if (realTypeOf(lhs) === 'date' && (lhs - rhs) !== 0) {
     changes(new DiffEdit(currentPath, lhs, rhs));
   } else if (ltype === 'object' && lhs !== null && rhs !== null) {
-    stack = stack || [];
-    if (!stack.filter(function (x) { return x.lhs === lhs; }).length) {
+    if (!stack.filter(function(x) {
+        return x.lhs === lhs; }).length) {
       stack.push({ lhs: lhs, rhs: rhs });
       if (Array.isArray(lhs)) {
         // If order doesn't matter, we need to sort our arrays
