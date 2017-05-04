@@ -150,6 +150,7 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack, orderIndepende
 
   var ltype = typeof lhs;
   var rtype = typeof rhs;
+
   var ldefined = ltype !== 'undefined' || (stack && stack[stack.length - 1].lhs && stack[stack.length - 1].lhs.hasOwnProperty(key));
   var rdefined = rtype !== 'undefined' || (stack && stack[stack.length - 1].rhs && stack[stack.length - 1].rhs.hasOwnProperty(key));
 
