@@ -607,5 +607,17 @@ describe('deep-diff', function() {
         });
     });
 
+    describe('regression test for issue #102', function() {
+        var lhs = null;
+        var rhs;
+
+        it('should not throw a TypeError', function() {
+            var diff = deep.diff(lhs, rhs);
+
+            expect(diff[0].kind).to.be('D');
+            expect(diff[0].lhs).to.be(null);
+        });
+    });
+
 
 });
