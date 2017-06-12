@@ -18,8 +18,6 @@ if (conflict) {
     });
 }
 
-var ignoreOrder = false;
-
 // nodejs compatible on server side and in the browser.
 function inherits(ctor, superCtor) {
   ctor.super_ = superCtor;
