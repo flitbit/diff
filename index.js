@@ -122,7 +122,7 @@ function realTypeOf(subject) {
   return 'object';
 }
 
-function deepDiff(lhs, rhs, changes, prefilter, path, key, stack) {
+function deepDiff(lhs, rhs, changes, prefilter, path, key, stack, orderIndependent) {
   path = path || [];
   stack = stack || [];
   var currentPath = path.slice(0);
@@ -169,16 +169,37 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack) {
         return x.lhs === lhs; }).length) {
       stack.push({ lhs: lhs, rhs: rhs });
       if (Array.isArray(lhs)) {
-        var i, len = lhs.length;
-        for (i = 0; i < lhs.length; i++) {
-          if (i >= rhs.length) {
-            changes(new DiffArray(currentPath, i, new DiffDeleted(undefined, lhs[i])));
+        var lhs1 = Array.from(lhs); 
+		var rhs1 = Array.from(rhs);
+		if (orderIndependent) {
+			for (i = 0; i < lhs.length && rhs1.length > 0 && lhs1.length > 0; i++) {
+				var ridx = rhs1.indexOf(lhs[i]);
+				var lidx = lhs1.indexOf(lhs[i]);
+				if(ridx != -1) {
+					rhs1.splice(ridx, 1);
+					if(lidx != -1) {
+						lhs1.splice(lidx, 1);
+					}
+				}
+			}
+			lhs1.sort(function(a, b) {
+				return getOrderIndependentHash(a) - getOrderIndependentHash(b);
+			});
+ 
+			rhs1.sort(function(a, b) {
+				return getOrderIndependentHash(a) - getOrderIndependentHash(b);
+			});
+		}
+        var i, len = lhs1.length;
+        for (i = 0; i < lhs1.length; i++) {
+          if (i >= rhs1.length) {
+            changes(new DiffArray(currentPath, i, new DiffDeleted(undefined, lhs1[i])));
           } else {
-            deepDiff(lhs[i], rhs[i], changes, prefilter, currentPath, i, stack);
+            deepDiff(lhs1[i], rhs1[i], changes, prefilter, currentPath, i, stack, orderIndependent);
           }
         }
-        while (i < rhs.length) {
-          changes(new DiffArray(currentPath, i, new DiffNew(undefined, rhs[i++])));
+        while (i < rhs1.length) {
+          changes(new DiffArray(currentPath, i, new DiffNew(undefined, rhs1[i++])));
         }
       } else {
         var akeys = Object.keys(lhs);
@@ -186,14 +207,14 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack) {
         akeys.forEach(function(k, i) {
           var other = pkeys.indexOf(k);
           if (other >= 0) {
-            deepDiff(lhs[k], rhs[k], changes, prefilter, currentPath, k, stack);
+            deepDiff(lhs[k], rhs[k], changes, prefilter, currentPath, k, stack, orderIndependent);
             pkeys = arrayRemove(pkeys, other);
           } else {
-            deepDiff(lhs[k], undefined, changes, prefilter, currentPath, k, stack);
+            deepDiff(lhs[k], undefined, changes, prefilter, currentPath, k, stack, orderIndependent);
           }
         });
         pkeys.forEach(function(k) {
-          deepDiff(undefined, rhs[k], changes, prefilter, currentPath, k, stack);
+          deepDiff(undefined, rhs[k], changes, prefilter, currentPath, k, stack, orderIndependent);
         });
       }
       stack.length = stack.length - 1;
@@ -207,7 +228,9 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack) {
     }
   }
 }
-
+function orderIndependentDeepDiff(lhs, rhs, changes, prefilter, path, key, stack) {
+  return deepDiff(lhs, rhs, changes, prefilter, path, key, stack, true);
+}
 function accumulateDiff(lhs, rhs, prefilter, accum) {
   accum = accum || [];
   deepDiff(lhs, rhs,
@@ -219,7 +242,62 @@ function accumulateDiff(lhs, rhs, prefilter, accum) {
     prefilter);
   return (accum.length) ? accum : undefined;
 }
-
+function accumulateOrderIndependentDiff(lhs, rhs, prefilter, accum) {
+   accum = accum || [];
+   deepDiff(lhs, rhs,
+     function(diff) {
+       if (diff) {
+         accum.push(diff);
+       }
+     },
+     prefilter, null, null, null, true);
+   return (accum.length) ? accum : undefined;
+ }
+ 
+ // Gets a hash of the given object in an array order-independent fashion
+ // also object key order independent (easier since they can be alphabetized)
+ function getOrderIndependentHash(object) {
+   var accum = 0;
+   var type = realTypeOf(object);
+ 
+   if (type === 'array') {
+     object.forEach(function(item) {
+       // Addition is commutative so this is order indep
+       accum += getOrderIndependentHash(item);
+     });
+ 
+     var arrayString = '[type: array, hash: ' + accum + ']';
+     return accum + hashThisString(arrayString);
+   }
+ 
+   if (type === 'object') {
+     for (var key in object) {
+       if (object.hasOwnProperty(key)) {
+         var keyValueString = '[ type: object, key: ' + key + ', value hash: ' + getOrderIndependentHash(object[key]) + ']';
+         accum += hashThisString(keyValueString);
+       }
+     }
+ 
+     return accum;
+   }
+ 
+   // Non object, non array...should be good?
+   var stringToHash = '[ type: ' + type + ' ; value: ' + object + ']';
+   return accum + hashThisString(stringToHash);
+ }
+ 
+ // http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
+ function hashThisString(string) {
+   var hash = 0;
+   if (string.length === 0) return hash;
+   for (var i = 0; i < string.length; i++) {
+     var char = string.charCodeAt(i);
+     hash = ((hash<<5)-hash)+char;
+     hash = hash & hash; // Convert to 32bit integer
+   }
+ 
+   return hash;
+ }
 function applyArrayChange(arr, index, change) {
   if (change.path && change.path.length) {
     var it = arr[index],
@@ -374,10 +452,22 @@ Object.defineProperties(accumulateDiff, {
     value: accumulateDiff,
     enumerable: true
   },
+  orderIndependentDiff: {
+    value: accumulateOrderIndependentDiff,
+    enumerable: true
+   },
   observableDiff: {
     value: deepDiff,
     enumerable: true
   },
+  orderIndependentObservableDiff: {
+     value:orderIndependentDeepDiff,
+     enumerable: true
+   },
+   orderIndepHash: {
+     value:getOrderIndependentHash,
+     enumerable: true
+   },
   applyDiff: {
     value: applyDiff,
     enumerable: true
