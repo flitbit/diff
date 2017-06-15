@@ -618,9 +618,6 @@ describe('deep-diff', function() {
             expect(diff.length).to.be(1);
 
             expect(diff[0].kind).to.be('A');
-            expect(diff[0].path).to.be.an('array');
-            expect(diff[0].path).to.have.length(1);
-            expect(diff[0].path[0]).to.be(null);
             expect(diff[0].rhs).to.be(undefined);
 			expect(diff[0].item.kind).to.be('D');
 			expect(diff[0].item.lhs).to.be('1');

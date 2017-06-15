@@ -327,9 +327,10 @@ function accumulateOrderIndependentDiff(lhs, rhs, prefilter, accum) {
          accum.push(diff);
        }
      },
-     prefilter, null, null, null, true);
+     prefilter, undefined, undefined, undefined, true);
    return (accum.length) ? accum : undefined;
  }
+
  
  // Gets a hash of the given object in an array order-independent fashion
  // also object key order independent (easier since they can be alphabetized)
