@@ -607,5 +607,29 @@ describe('deep-diff', function() {
         });
     });
 
+    describe('regression tests for issue #102', function() {
+        it('should not throw a TypeError', function() {
+
+            var diff = deep.diff(null, undefined);
+
+            expect(diff).to.be.an(Array);
+            expect(diff.length).to.be(1);
+
+            expect(diff[0].kind).to.be('D');
+            expect(diff[0].lhs).to.be(null);
+
+        });
+
+        it('should not throw a TypeError', function() {
+
+            var diff = deep.diff(Object.create(null), {foo: undefined});
+
+            expect(diff).to.be.an(Array);
+            expect(diff.length).to.be(1);
+
+            expect(diff[0].kind).to.be('N');
+            expect(diff[0].rhs).to.be(undefined);
+        });
+    });
 
 });
