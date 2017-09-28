@@ -303,13 +303,21 @@ describe('deep-diff', function() {
             noChange: 'same',
             levelOne: {
                 levelTwo: 'value'
-            }
+            },
+            arrayOne: [{
+                objValue: 'value'
+            }]
         };
         var nestedTwo = {
             noChange: 'same',
             levelOne: {
                 levelTwo: 'another value'
-            }
+            },
+            arrayOne: [{
+                objValue: 'new value'
+            }, {
+                objValue: 'more value'
+            }]
         };
 
         it('shows no differences when compared to itself', function() {
@@ -319,7 +327,7 @@ describe('deep-diff', function() {
         it('shows the property as removed when compared to an empty object', function() {
             var diff = deep(nestedOne, empty);
             expect(diff).to.be.ok();
-            expect(diff.length).to.be(2);
+            expect(diff.length).to.be(3);
             expect(diff[0]).to.have.property('kind');
             expect(diff[0].kind).to.be('D');
             expect(diff[1]).to.have.property('kind');
@@ -329,7 +337,7 @@ describe('deep-diff', function() {
         it('shows the property is changed when compared to an object that has value', function() {
             var diff = deep.diff(nestedOne, nestedTwo);
             expect(diff).to.be.ok();
-            expect(diff.length).to.be(1);
+            expect(diff.length).to.be(3);
             expect(diff[0]).to.have.property('kind');
             expect(diff[0].kind).to.be('E');
         });
@@ -337,16 +345,17 @@ describe('deep-diff', function() {
         it('shows the property as added when compared to an empty object on left', function() {
             var diff = deep.diff(empty, nestedOne);
             expect(diff).to.be.ok();
-            expect(diff.length).to.be(2);
+            expect(diff.length).to.be(3);
             expect(diff[0]).to.have.property('kind');
             expect(diff[0].kind).to.be('N');
         });
 
         describe('when diff is applied to a different empty object', function() {
             var diff = deep.diff(nestedOne, nestedTwo);
-            var result = {};
 
             it('has result with nested values', function() {
+                var result = {};
+
                 deep.applyChange(result, nestedTwo, diff[0]);
                 expect(result.levelOne).to.be.ok();
                 expect(result.levelOne).to.be.an('object');
@@ -354,8 +363,28 @@ describe('deep-diff', function() {
                 expect(result.levelOne.levelTwo).to.eql('another value');
             });
 
-        });
+            it('has result with array object values', function() {
+                var result = {};
 
+                deep.applyChange(result, nestedTwo, diff[1]);
+                expect(result.arrayOne).to.be.ok();
+                expect(result.arrayOne).to.be.an('array');
+                expect(result.arrayOne[0]).to.be.ok();
+                expect(result.arrayOne[0].objValue).to.be.ok();
+                expect(result.arrayOne[0].objValue).to.equal('new value');
+            });
+
+            it('has result with added array objects', function() {
+                var result = {};
+
+                deep.applyChange(result, nestedTwo, diff[2]);
+                expect(result.arrayOne).to.be.ok();
+                expect(result.arrayOne).to.be.an('array');
+                expect(result.arrayOne[1]).to.be.ok();
+                expect(result.arrayOne[1].objValue).to.be.ok();
+                expect(result.arrayOne[1].objValue).to.equal('more value');
+            });
+        });
     });
 
     describe('regression test for bug #10, ', function() {
