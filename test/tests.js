@@ -607,5 +607,34 @@ describe('deep-diff', function() {
         });
     });
 
+    describe('should detect a difference with undefined lhs or rhs', function() {
+
+        it('should detect a difference when lhs is undefined', function() {
+            var lhs;
+            var rhs = {a:'a'};
+            var diff = deep.diff(lhs, rhs);
+
+            expect(diff).to.be.an(Array);
+            expect(diff.length).to.be(1);
+
+            expect(diff[0].kind).to.be('N');
+            expect(diff[0].rhs).to.be(rhs);
+            expect(diff[0].lhs).to.be(undefined);
+        });
+
+        it('should detect a difference when rhs is undefined', function() {
+            var rhs;
+            var lhs = {a:'a'};
+            var diff = deep.diff(lhs, rhs);
+
+            expect(diff).to.be.an(Array);
+            expect(diff.length).to.be(1);
+
+            expect(diff[0].kind).to.be('D');
+            expect(diff[0].lhs).to.be(lhs);
+            expect(diff[0].rhs).to.be(undefined);
+        });
+    });
+
 
 });
