@@ -17,7 +17,7 @@ if (typeof global === 'object' && global) {
 conflict = $scope.DeepDiff;
 if (conflict) {
   conflictResolution.push(
-    function() {
+    function () {
       if ('undefined' !== typeof conflict && $scope.DeepDiff === accumulateDiff) {
         $scope.DeepDiff = conflict;
         conflict = undefined;
@@ -128,10 +128,12 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack, orderIndepende
   var currentPath = path.slice(0);
   if (typeof key !== 'undefined') {
     if (prefilter) {
-      if (typeof(prefilter) === 'function' && prefilter(currentPath, key)) {
-        return; } else if (typeof(prefilter) === 'object') {
+      if (typeof (prefilter) === 'function' && prefilter(currentPath, key)) {
+        return;
+      } else if (typeof (prefilter) === 'object') {
         if (prefilter.prefilter && prefilter.prefilter(currentPath, key)) {
-          return; }
+          return;
+        }
         if (prefilter.normalize) {
           var alt = prefilter.normalize(currentPath, key, lhs, rhs);
           if (alt) {
@@ -153,8 +155,12 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack, orderIndepende
   var ltype = typeof lhs;
   var rtype = typeof rhs;
 
-  var ldefined = ltype !== 'undefined' || (stack && (0 < stack.length) && stack[stack.length - 1].lhs && stack[stack.length - 1].lhs.hasOwnProperty(key));
-  var rdefined = rtype !== 'undefined' || (stack && (0 < stack.length) && stack[stack.length - 1].rhs && stack[stack.length - 1].rhs.hasOwnProperty(key));
+  var ldefined = ltype !== 'undefined' ||
+    (stack && (0 < stack.length) && stack[stack.length - 1].lhs &&
+      Object.getOwnPropertyDescriptor(stack[stack.length - 1].lhs, key));
+  var rdefined = rtype !== 'undefined' ||
+    (stack && (0 < stack.length) && stack[stack.length - 1].rhs &&
+      Object.getOwnPropertyDescriptor(stack[stack.length - 1].rhs, key));
 
   if (!ldefined && rdefined) {
     changes(new DiffNew(currentPath, rhs));
@@ -165,17 +171,18 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack, orderIndepende
   } else if (realTypeOf(lhs) === 'date' && (lhs - rhs) !== 0) {
     changes(new DiffEdit(currentPath, lhs, rhs));
   } else if (ltype === 'object' && lhs !== null && rhs !== null) {
-    if (!stack.filter(function(x) {
-        return x.lhs === lhs; }).length) {
+    if (!stack.filter(function (x) {
+      return x.lhs === lhs;
+    }).length) {
       stack.push({ lhs: lhs, rhs: rhs });
       if (Array.isArray(lhs)) {
         // If order doesn't matter, we need to sort our arrays
         if (orderIndependent) {
-          lhs.sort(function(a, b) {
+          lhs.sort(function (a, b) {
             return getOrderIndependentHash(a) - getOrderIndependentHash(b);
           });
 
-          rhs.sort(function(a, b) {
+          rhs.sort(function (a, b) {
             return getOrderIndependentHash(a) - getOrderIndependentHash(b);
           });
         }
@@ -193,7 +200,7 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack, orderIndepende
       } else {
         var akeys = Object.keys(lhs);
         var pkeys = Object.keys(rhs);
-        akeys.forEach(function(k, i) {
+        akeys.forEach(function (k, i) {
           var other = pkeys.indexOf(k);
           if (other >= 0) {
             deepDiff(lhs[k], rhs[k], changes, prefilter, currentPath, k, stack, orderIndependent);
@@ -202,7 +209,7 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack, orderIndepende
             deepDiff(lhs[k], undefined, changes, prefilter, currentPath, k, stack, orderIndependent);
           }
         });
-        pkeys.forEach(function(k) {
+        pkeys.forEach(function (k) {
           deepDiff(undefined, rhs[k], changes, prefilter, currentPath, k, stack, orderIndependent);
         });
       }
@@ -225,7 +232,7 @@ function orderIndependentDeepDiff(lhs, rhs, changes, prefilter, path, key, stack
 function accumulateDiff(lhs, rhs, prefilter, accum) {
   accum = accum || [];
   deepDiff(lhs, rhs,
-    function(diff) {
+    function (diff) {
       if (diff) {
         accum.push(diff);
       }
@@ -237,7 +244,7 @@ function accumulateDiff(lhs, rhs, prefilter, accum) {
 function accumulateOrderIndependentDiff(lhs, rhs, prefilter, accum) {
   accum = accum || [];
   deepDiff(lhs, rhs,
-    function(diff) {
+    function (diff) {
       if (diff) {
         accum.push(diff);
       }
@@ -253,7 +260,7 @@ function getOrderIndependentHash(object) {
   var type = realTypeOf(object);
 
   if (type === 'array') {
-    object.forEach(function(item) {
+    object.forEach(function (item) {
       // Addition is commutative so this is order indep
       accum += getOrderIndependentHash(item);
     });
@@ -284,7 +291,7 @@ function hashThisString(string) {
   if (string.length === 0) return hash;
   for (var i = 0; i < string.length; i++) {
     var char = string.charCodeAt(i);
-    hash = ((hash<<5)-hash)+char;
+    hash = ((hash << 5) - hash) + char;
     hash = hash & hash; // Convert to 32bit integer
   }
 
@@ -430,7 +437,7 @@ function revertChange(target, source, change) {
 
 function applyDiff(target, source, filter) {
   if (target && source) {
-    var onChange = function(change) {
+    var onChange = function (change) {
       if (!filter || filter(target, source, change)) {
         applyChange(target, source, change);
       }
@@ -454,11 +461,11 @@ Object.defineProperties(accumulateDiff, {
     enumerable: true
   },
   orderIndependentObservableDiff: {
-    value:orderIndependentDeepDiff,
+    value: orderIndependentDeepDiff,
     enumerable: true
   },
   orderIndepHash: {
-    value:getOrderIndependentHash,
+    value: getOrderIndependentHash,
     enumerable: true
   },
   applyDiff: {
@@ -474,15 +481,15 @@ Object.defineProperties(accumulateDiff, {
     enumerable: true
   },
   isConflict: {
-    value: function() {
+    value: function () {
       return 'undefined' !== typeof conflict;
     },
     enumerable: true
   },
   noConflict: {
-    value: function() {
+    value: function () {
       if (conflictResolution) {
-        conflictResolution.forEach(function(it) {
+        conflictResolution.forEach(function (it) {
           it();
         });
         conflictResolution = null;
