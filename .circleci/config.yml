@@ -1,0 +1,76 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/node:8.9.4
+    steps:
+      - checkout
+      - run:
+          name: authorize npm
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: run npm install
+          command: npm install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+          - ./node_modules
+      - run: mkdir ~/junit
+      - run:
+          name: build & test
+          command: npm run ci
+          when: always
+      - run: cp test-results.xml ~/junit/test-results.xml
+      - store_test_results:
+          path: ~/junit
+      - store_artifacts:
+          path: ~/junit
+
+  build_deploy_npm:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/node:8.9.4
+    steps:
+      - checkout
+      - run:
+          name: authorize npm
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: run npm install
+          command: npm install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+          - ./node_modules
+      - run: mkdir ~/junit
+      - run:
+          name: build & test
+          command: npm run ci
+          when: always
+      - run: cp test-results.xml ~/junit/test-results.xml
+      - store_test_results:
+          path: ~/junit
+      - store_artifacts:
+          path: ~/junit
+      - run:
+          name: publish package to npm
+          command: npm publish
+
+workflows:
+  version: 2
+  build_deploy:
+    jobs:
+      - build:
+          context: secrets
+      - build_deploy_npm:
+          context: secrets
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              ignore: /.*/

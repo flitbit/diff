@@ -1,9 +1,0 @@
-{
-  "node": true,
-  "strict": true,
-  "laxcomma": true,
-  "nomen": false,
-  "indent": 2,
-  "esversion": 6,
-  "browser": true
-}

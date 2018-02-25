@@ -1,38 +1,34 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <title>deep-diff Tests</title>
-    <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+  <meta charset="utf-8">
+  <title>Mocha Tests</title>
+  <link href="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.css" rel="stylesheet" />
 </head>
 
 <body>
-    <div id="mocha"></div>
-    <!--
-  You should open this file directly in a browser from your file system, not from a server...
-  -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-    <script src="../node_modules/expect.js/index.js"></script>
-    <script src="../node_modules/mocha/mocha.js"></script>
-    <script>
-    // Sets up a conflict in the global namespace.
-    DeepDiff = {
-        Conflict: "here"
+  <!-- You should open this file directly in a browser from your file system, not from a server... -->
+  <div id="mocha"></div>
+  <script>
+    globalConflict = "This is a conflict";
+    DeepDiff = globalConflict;
+  </script>
+  <script src="https://cdn.rawgit.com/jquery/jquery/2.1.4/dist/jquery.min.js"></script>
+  <script src="https://cdn.rawgit.com/Automattic/expect.js/0.3.1/index.js"></script>
+  <script src="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.js"></script>
+  <script>
+    mocha.setup('bdd')
+  </script>
+  <!--script src="../index.js"></script-->
+  <script src="../dist/deep-diff.min.js"></script>
+  <script src="tests.js"></script>
+  <script>
+    window.onload = function () {
+      mocha.checkLeaks();
+      mocha.globals(['jQuery']);
+      mocha.run();
     };
-    DeepDiffConflict = DeepDiff;
-    </script>
-    <script src="../releases/deep-diff-0.3.8.min.js"></script>
-    <!--script src="../index.js"></script-->
-    <script>
-    mocha.setup('bdd');
-    </script>
-    <script src="tests.js"></script>
-    <script>
-    window.onload = function() {
-        'use strict';
-        mocha.run();
-    };
-    </script>
+  </script>
 </body>
 
 </html>
