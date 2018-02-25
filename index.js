@@ -153,8 +153,8 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack, orderIndepende
   var ltype = typeof lhs;
   var rtype = typeof rhs;
 
-  var ldefined = ltype !== 'undefined' || (stack && stack[stack.length - 1].lhs && stack[stack.length - 1].lhs.hasOwnProperty(key));
-  var rdefined = rtype !== 'undefined' || (stack && stack[stack.length - 1].rhs && stack[stack.length - 1].rhs.hasOwnProperty(key));
+  var ldefined = ltype !== 'undefined' || (stack && (0 < stack.length) && stack[stack.length - 1].lhs && stack[stack.length - 1].lhs.hasOwnProperty(key));
+  var rdefined = rtype !== 'undefined' || (stack && (0 < stack.length) && stack[stack.length - 1].rhs && stack[stack.length - 1].rhs.hasOwnProperty(key));
 
   if (!ldefined && rdefined) {
     changes(new DiffNew(currentPath, rhs));
