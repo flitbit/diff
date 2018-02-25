@@ -341,12 +341,15 @@ function applyChange(target, source, change) {
       last = change.path ? change.path.length - 1 : 0;
     while (++i < last) {
       if (typeof it[change.path[i]] === 'undefined') {
-        it[change.path[i]] = (typeof change.path[i] === 'number') ? [] : {};
+        it[change.path[i]] = (typeof change.path[i + 1] !== 'undefined' && typeof change.path[i + 1] === 'number') ? [] : {};
       }
       it = it[change.path[i]];
     }
     switch (change.kind) {
       case 'A':
+        if (change.path && typeof it[change.path[i]] === 'undefined') {
+          it[change.path[i]] = [];
+        }
         applyArrayChange(change.path ? it[change.path[i]] : it, change.index, change.item);
         break;
       case 'D':
