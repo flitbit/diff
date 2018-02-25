@@ -6,6 +6,14 @@
 
 **deep-diff** is a javascript/node.js module providing utility functions for determining the structural differences between objects and includes some utilities for applying differences across objects.
 
+> I'm actively working through the backlog of issues and will pubish v1.0.0 soon. I'd appreciate any feedback I can get...
+
+Currently `v1.0.0-pre.1`
+
+```bash
+npm install deep-diff@next
+```
+
 ## Features
 
 * Get the structural differences between two objects.

@@ -4,7 +4,9 @@
 
 ## Log
 
-`1.0-pre` - 2018-02-25
+`1.0.0-pre.x` - 2018-02-25
+
+Install with `npm install deep-diff@next`... planning to release after only a few days of feedback.
 
 * reverted to [UMD style module](https://github.com/umdjs/umd) rather than the ES6 style, which evidently, broke lots of people's previously working code.
 * fixed some bugs...
