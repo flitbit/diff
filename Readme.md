@@ -8,7 +8,7 @@
 
 > I'm actively working through the backlog of issues and will pubish v1.0.0 soon. I'd appreciate any feedback I can get...
 
-Currently `v1.0.0-pre.1`
+Currently `v1.0.0-pre.2`
 
 ```bash
 npm install deep-diff@next
