@@ -14,6 +14,11 @@ Currently `v1.0.0-pre.2`
 npm install deep-diff@next
 ```
 
+Possible v1.0.0 incompatabilities:
+
+* elements in arrays are not processed in reverse order, which fixes a few nagging bugs but may break some users
+  * If your code relied on the order in which the differences were reported then your code will break. If you consider an object graph to be a big tree, then `deep-diff` does a [pre-order traversal of the object graph](https://en.wikipedia.org/wiki/Tree_traversal), however, when it encounters an array, the array is processed from the end towards the front, with each element recursively processed in-order during further descent.
+
 ## Features
 
 * Get the structural differences between two objects.
@@ -85,23 +90,22 @@ In order to describe differences, change revolves around an `origin` object. For
 var diff = require('deep-diff').diff;
 
 var lhs = {
-	name: 'my object',
-	description: 'it\'s an object!',
-	details: {
-		it: 'has',
-		an: 'array',
-		with: ['a', 'few', 'elements']
-	}
+  name: 'my object',
+  description: 'it\'s an object!',
+  details: {
+    it: 'has',
+    an: 'array',
+    with: ['a', 'few', 'elements']
+  }
 };
 
 var rhs = {
-	name: 'updated object',
-	description: 'it\'s an object!',
-	details: {
-		it: 'has',
-		an: 'array',
-		with: ['a', 'few', 'more', 'elements', { than: 'before' }]
-	}
+  name: 'updated object',
+  description: 'it\'s an object!',
+  details: {
+    it: 'has',
+    an: 'array',
+    with: ['a', 'few', 'more', 'elements', { than: 'before' }]
 };
 
 var differences = diff(lhs, rhs);
@@ -138,8 +142,8 @@ var differences = diff(lhs, rhs);
     rhs: 'updated object' },
   { kind: 'E',
     path: [ 'details', 'with', 2 ],
- 		lhs: 'elements',
- 		rhs: 'more' },
+    lhs: 'elements',
+    rhs: 'more' },
   { kind: 'A',
     path: [ 'details', 'with' ],
     index: 3,
@@ -175,34 +179,33 @@ differences. If the structural differences are applied from the `comparand` to t
 When two objects differ, you can observe the differences as they are calculated and selectively apply those changes to the origin object (left-hand-side).
 
 ``` javascript
-var observableDiff = require('deep-diff').observableDiff,
-applyChange        = require('deep-diff').applyChange;
+var observableDiff = require('deep-diff').observableDiff;
+var applyChange = require('deep-diff').applyChange;
 
 var lhs = {
-	name: 'my object',
-	description: 'it\'s an object!',
-	details: {
-		it: 'has',
-		an: 'array',
-		with: ['a', 'few', 'elements']
-	}
+  name: 'my object',
+  description: 'it\'s an object!',
+  details: {
+    it: 'has',
+    an: 'array',
+    with: ['a', 'few', 'elements']
+  }
 };
 
 var rhs = {
-	name: 'updated object',
-	description: 'it\'s an object!',
-	details: {
-		it: 'has',
-		an: 'array',
-		with: ['a', 'few', 'more', 'elements', { than: 'before' }]
-	}
+  name: 'updated object',
+  description: 'it\'s an object!',
+  details: {
+    it: 'has',
+    an: 'array',
+    with: ['a', 'few', 'more', 'elements', { than: 'before' }]
 };
 
 observableDiff(lhs, rhs, function (d) {
-	// Apply all changes except those to the 'name' property...
-	if (d.path.length !== 1 || d.path.join('.') !== 'name') {
-		applyChange(lhs, rhs, d);
-	}
+  // Apply all changes except to the name property...
+  if (d.path[d.path.length - 1] !== 'name') {
+    applyChange(lhs, rhs, d);
+  }
 });
 ```
 
@@ -220,12 +223,21 @@ A standard import of `var diff = require('deep-diff')` is assumed in all of the 
 
 The `diff` function calculates the difference between two objects.
 
-**Arguments**
+#### Arguments
 
 * `lhs` - the left-hand operand; the origin object.
 * `rhs` - the right-hand operand; the object being compared structurally with the origin object.
 * `prefilter` - an optional function that determines whether difference analysis should continue down the object graph.
 * `acc` - an optional accumulator/array (requirement is that it have a `push` function). Each difference is pushed to the specified accumulator.
+
+Returns either an array of changes or, if there are no changes, `undefined`. This was originally chosen so the result would be pass a truthy test:
+
+```javascript
+var changes = diff(obja, objb);
+if (changes) {
+  // do something with the changes.
+}
+```
 
 #### Pre-filtering Object Properties
 
