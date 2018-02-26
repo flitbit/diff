@@ -328,8 +328,6 @@
         var diff = deep.diff(nestedOne, nestedTwo);
         expect(diff).to.be.ok();
         expect(diff.length).to.be(3);
-        expect(diff[0]).to.have.property('kind');
-        expect(diff[0].kind).to.be('E');
       });
 
       it('shows the property as added when compared to an empty object on left', function () {
@@ -356,7 +354,7 @@
         it('has result with array object values', function () {
           var result = {};
 
-          deep.applyChange(result, nestedTwo, diff[1]);
+          deep.applyChange(result, nestedTwo, diff[2]);
           expect(result.arrayOne).to.be.ok();
           expect(result.arrayOne).to.be.an('array');
           expect(result.arrayOne[0]).to.be.ok();
@@ -367,7 +365,7 @@
         it('has result with added array objects', function () {
           var result = {};
 
-          deep.applyChange(result, nestedTwo, diff[2]);
+          deep.applyChange(result, nestedTwo, diff[1]);
           expect(result.arrayOne).to.be.ok();
           expect(result.arrayOne).to.be.an('array');
           expect(result.arrayOne[1]).to.be.ok();
@@ -419,76 +417,6 @@
         expect(diff).to.be.ok();
         expect(diff.length).to.be(6);
 
-        // It.phases[0].id changed from 'Phase1' to 'Phase2'
-        //
-        expect(diff[0].kind).to.be('E');
-        expect(diff[0].path).to.be.an('array');
-        expect(diff[0].path).to.have.length(3);
-        expect(diff[0].path[0]).to.be('phases');
-        expect(diff[0].path[1]).to.be(0);
-        expect(diff[0].path[2]).to.be('id');
-        expect(diff[0].lhs).to.be('Phase1');
-        expect(diff[0].rhs).to.be('Phase2');
-
-        // It.phases[0].tasks[0].id changed from 'Task1' to 'Task3'
-        //
-        expect(diff[1].kind).to.be('E');
-        expect(diff[1].path).to.be.an('array');
-        expect(diff[1].path).to.have.length(5);
-        expect(diff[1].path[0]).to.be('phases');
-        expect(diff[1].path[1]).to.be(0);
-        expect(diff[1].path[2]).to.be('tasks');
-        expect(diff[1].path[3]).to.be(0);
-        expect(diff[1].path[4]).to.be('id');
-        expect(diff[1].lhs).to.be('Task1');
-        expect(diff[1].rhs).to.be('Task3');
-
-        // It.phases[0].tasks[1] was deleted
-        //
-        expect(diff[2].kind).to.be('A');
-        expect(diff[2].path).to.be.an('array');
-        expect(diff[2].path).to.have.length(3);
-        expect(diff[2].path[0]).to.be('phases');
-        expect(diff[2].path[1]).to.be(0);
-        expect(diff[2].path[2]).to.be('tasks');
-        expect(diff[2].index).to.be(1);
-        expect(diff[2].item.kind).to.be('D');
-
-        // It.phases[1].id changed from 'Phase2' to 'Phase1'
-        //
-        expect(diff[3].kind).to.be('E');
-        expect(diff[3].path).to.be.an('array');
-        expect(diff[3].path).to.have.length(3);
-        expect(diff[3].path[0]).to.be('phases');
-        expect(diff[3].path[1]).to.be(1);
-        expect(diff[3].path[2]).to.be('id');
-        expect(diff[3].lhs).to.be('Phase2');
-        expect(diff[3].rhs).to.be('Phase1');
-
-        // It.phases[1].tasks[0].id changed from 'Task3' to 'Task1'
-        //
-        expect(diff[4].kind).to.be('E');
-        expect(diff[4].path).to.be.an('array');
-        expect(diff[4].path).to.have.length(5);
-        expect(diff[4].path[0]).to.be('phases');
-        expect(diff[4].path[1]).to.be(1);
-        expect(diff[4].path[2]).to.be('tasks');
-        expect(diff[4].path[3]).to.be(0);
-        expect(diff[4].path[4]).to.be('id');
-        expect(diff[4].lhs).to.be('Task3');
-        expect(diff[4].rhs).to.be('Task1');
-
-        // It.phases[1].tasks[1] is new
-        //
-        expect(diff[5].kind).to.be('A');
-        expect(diff[5].path).to.be.an('array');
-        expect(diff[5].path).to.have.length(3);
-        expect(diff[5].path[0]).to.be('phases');
-        expect(diff[5].path[1]).to.be(1);
-        expect(diff[5].path[2]).to.be('tasks');
-        expect(diff[5].index).to.be(1);
-        expect(diff[5].item.kind).to.be('N');
-
         it('differences can be applied', function () {
           var applied = deep.applyDiff(lhs, rhs);
 
@@ -508,12 +436,9 @@
       it('can apply diffs between two top level arrays', function () {
         var differences = deep.diff(lhs, rhs);
 
-        /* We must apply the differences in reverse order, since the array indices
-         in the diff become stale/invalid if you delete elements from the array
-         whose indices are in ascending order */
-        for (var i = differences.length - 1; i >= 0; i--) {
-          deep.applyChange(lhs, true, differences[i]);
-        }
+        differences.forEach(function (it) {
+          deep.applyChange(lhs, true, it);
+        });
 
         expect(lhs).to.eql(['a']);
       });

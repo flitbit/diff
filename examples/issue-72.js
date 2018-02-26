@@ -1,4 +1,4 @@
-var diff = require("../");
+var diff = require('../');
 
 var before = {
   data: [1, 2, 3]
@@ -9,9 +9,8 @@ var after = {
 };
 
 var differences = diff(before, after);
-console.log(differences);
-
-var reverted = differences.reduce(
+console.log(differences); // eslint-disable-line no-console
+differences.reduce(
   (acc, change) => {
     diff.revertChange(acc, true, change);
     return acc;
@@ -19,4 +18,4 @@ var reverted = differences.reduce(
   after
 );
 
-console.log(after);
+console.log(after); // eslint-disable-line no-console

@@ -1,4 +1,4 @@
-var deepDiff = require("../");
+var diff = require('../');
 
 var left = {
   left: 'yes',
@@ -12,4 +12,4 @@ var right = {
   right: 'no',
 };
 
-console.log(deepDiff(left, right));
+console.log(diff(left, right)); // eslint-disable-line no-console

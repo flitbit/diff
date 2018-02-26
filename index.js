@@ -11,6 +11,8 @@
   var root = this;
   var $conflict = root.DeepDiff;
 
+  var validKinds = ['N', 'E', 'A', 'D'];
+
   // nodejs compatible on server side and in the browser.
   function inherits(ctor, superCtor) {
     ctor.super_ = superCtor;
@@ -152,13 +154,12 @@
     return accum + hashThisString(stringToHash);
   }
 
-
-
   function deepDiff(lhs, rhs, changes, prefilter, path, key, stack, orderIndependent) {
+    changes = changes || [];
     path = path || [];
     stack = stack || [];
     var currentPath = path.slice(0);
-    if (typeof key !== 'undefined') {
+    if (typeof key !== 'undefined' && key !== null) {
       if (prefilter) {
         if (typeof (prefilter) === 'function' && prefilter(currentPath, key)) {
           return;
@@ -186,6 +187,7 @@
 
     var ltype = typeof lhs;
     var rtype = typeof rhs;
+    var i, j, k, other;
 
     var ldefined = ltype !== 'undefined' ||
       (stack && (stack.length > 0) && stack[stack.length - 1].lhs &&
@@ -195,17 +197,21 @@
         Object.getOwnPropertyDescriptor(stack[stack.length - 1].rhs, key));
 
     if (!ldefined && rdefined) {
-      changes(new DiffNew(currentPath, rhs));
+      changes.push(new DiffNew(currentPath, rhs));
     } else if (!rdefined && ldefined) {
-      changes(new DiffDeleted(currentPath, lhs));
+      changes.push(new DiffDeleted(currentPath, lhs));
     } else if (realTypeOf(lhs) !== realTypeOf(rhs)) {
-      changes(new DiffEdit(currentPath, lhs, rhs));
+      changes.push(new DiffEdit(currentPath, lhs, rhs));
     } else if (realTypeOf(lhs) === 'date' && (lhs - rhs) !== 0) {
-      changes(new DiffEdit(currentPath, lhs, rhs));
+      changes.push(new DiffEdit(currentPath, lhs, rhs));
     } else if (ltype === 'object' && lhs !== null && rhs !== null) {
-      if (!stack.filter(function (x) {
-        return x.lhs === lhs;
-      }).length) {
+      for (i = stack.length - 1; i > -1; --i) {
+        if (stack[i].lhs === lhs) {
+          other = true;
+          break;
+        }
+      }
+      if (!other) {
         stack.push({ lhs: lhs, rhs: rhs });
         if (Array.isArray(lhs)) {
           // If order doesn't matter, we need to sort our arrays
@@ -218,43 +224,58 @@
               return getOrderIndependentHash(a) - getOrderIndependentHash(b);
             });
           }
-          var i;
-          for (i = 0; i < lhs.length; i++) {
-            if (i >= rhs.length) {
-              changes(new DiffArray(currentPath, i, new DiffDeleted(undefined, lhs[i])));
-            } else {
-              deepDiff(lhs[i], rhs[i], changes, prefilter, currentPath, i, stack, orderIndependent);
-            }
+          i = rhs.length - 1;
+          j = lhs.length - 1;
+          while (i > j) {
+            changes.push(new DiffArray(currentPath, i, new DiffNew(undefined, rhs[i--])));
           }
-          while (i < rhs.length) {
-            changes(new DiffArray(currentPath, i, new DiffNew(undefined, rhs[i++])));
+          while (j > i) {
+            changes.push(new DiffArray(currentPath, j, new DiffDeleted(undefined, lhs[j--])));
+          }
+          for (; i >= 0; --i) {
+            deepDiff(lhs[i], rhs[i], changes, prefilter, currentPath, i, stack, orderIndependent);
           }
         } else {
           var akeys = Object.keys(lhs);
           var pkeys = Object.keys(rhs);
-          akeys.forEach(function (k) {
-            var other = pkeys.indexOf(k);
+          for (i = 0; i < akeys.length; ++i) {
+            k = akeys[i];
+            other = pkeys.indexOf(k);
             if (other >= 0) {
               deepDiff(lhs[k], rhs[k], changes, prefilter, currentPath, k, stack, orderIndependent);
-              pkeys = arrayRemove(pkeys, other);
+              pkeys[other] = null;
             } else {
               deepDiff(lhs[k], undefined, changes, prefilter, currentPath, k, stack, orderIndependent);
             }
-          });
-          pkeys.forEach(function (k) {
-            deepDiff(undefined, rhs[k], changes, prefilter, currentPath, k, stack, orderIndependent);
-          });
+          }
+          for (i = 0; i < pkeys.length; ++i) {
+            k = pkeys[i];
+            if (k) {
+              deepDiff(undefined, rhs[k], changes, prefilter, currentPath, k, stack, orderIndependent);
+            }
+          }
         }
         stack.length = stack.length - 1;
       } else if (lhs !== rhs) {
         // lhs is contains a cycle at this element and it differs from rhs
-        changes(new DiffEdit(currentPath, lhs, rhs));
+        changes.push(new DiffEdit(currentPath, lhs, rhs));
       }
     } else if (lhs !== rhs) {
       if (!(ltype === 'number' && isNaN(lhs) && isNaN(rhs))) {
-        changes(new DiffEdit(currentPath, lhs, rhs));
+        changes.push(new DiffEdit(currentPath, lhs, rhs));
       }
     }
+  }
+
+  function observableDiff(lhs, rhs, observer, prefilter, orderIndependent) {
+    let changes = [];
+    deepDiff(lhs, rhs, changes, prefilter, null, null, null, orderIndependent);
+    if (observer) {
+      for (var i = 0; i < changes.length; ++i) {
+        observer(changes[i]);
+      }
+    }
+    return changes;
   }
 
   function orderIndependentDeepDiff(lhs, rhs, changes, prefilter, path, key, stack) {
@@ -262,27 +283,25 @@
   }
 
   function accumulateDiff(lhs, rhs, prefilter, accum) {
-    accum = accum || [];
-    deepDiff(lhs, rhs,
-      function (diff) {
-        if (diff) {
-          accum.push(diff);
+    var observer = (accum) ?
+      function (difference) {
+        if (difference) {
+          accum.push(difference);
         }
-      },
-      prefilter);
-    return (accum.length) ? accum : undefined;
+      } : undefined;
+    var changes = observableDiff(lhs, rhs, observer, prefilter);
+    return (accum) ? accum : (changes.length) ? changes : undefined;
   }
 
   function accumulateOrderIndependentDiff(lhs, rhs, prefilter, accum) {
-    accum = accum || [];
-    deepDiff(lhs, rhs,
-      function (diff) {
-        if (diff) {
-          accum.push(diff);
+    var observer = (accum) ?
+      function (difference) {
+        if (difference) {
+          accum.push(difference);
         }
-      },
-      prefilter, null, null, null, true);
-    return (accum.length) ? accum : undefined;
+      } : undefined;
+    var changes = observableDiff(lhs, rhs, observer, prefilter, true);
+    return (accum) ? accum : (changes.length) ? changes : undefined;
   }
 
   function applyArrayChange(arr, index, change) {
@@ -322,7 +341,10 @@
   }
 
   function applyChange(target, source, change) {
-    if (target && source && change && change.kind) {
+    if (typeof change === 'undefined' && source && ~validKinds.indexOf(source.kind)) {
+      change = source;
+    }
+    if (target && change && change.kind) {
       var it = target,
         i = -1,
         last = change.path ? change.path.length - 1 : 0;
@@ -432,7 +454,7 @@
           applyChange(target, source, change);
         }
       };
-      deepDiff(target, source, onChange);
+      observableDiff(target, source, onChange);
     }
   }
 
@@ -447,7 +469,7 @@
       enumerable: true
     },
     observableDiff: {
-      value: deepDiff,
+      value: observableDiff,
       enumerable: true
     },
     orderIndependentObservableDiff: {
