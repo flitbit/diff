@@ -106,6 +106,7 @@ var rhs = {
     it: 'has',
     an: 'array',
     with: ['a', 'few', 'more', 'elements', { than: 'before' }]
+  }
 };
 
 var differences = diff(lhs, rhs);
