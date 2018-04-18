@@ -4,12 +4,18 @@
 
 ## Log
 
-`1.0.0-pre.x` - 2018-02-25
-
-Install with `npm install deep-diff@next`... planning to release after only a few days of feedback.
+`1.0.0` - 2018-04-18
 
 * reverted to [UMD style module](https://github.com/umdjs/umd) rather than the ES6 style, which evidently, broke lots of people's previously working code.
-* fixed some bugs...
+* fixed some bugs... see `examples/issue-XXx.js` for each issue I believe is fixed in this version.
+* Closed:
+  * [#63 diff of equal objects should return empty array](https://github.com/flitbit/diff/issues/63)
+  * [#115 Remove second argument of applyChange from public api](https://github.com/flitbit/diff/issues/115)
+* Resolved:
+  * [#78 FeatureRequest: change the diff of array elements (or add such an option)](https://github.com/flitbit/diff/issues/78)
+* Fixed:
+  * [#47 Deleting Array elements](https://github.com/flitbit/diff/issues/47)
+  * [#111 Crash when comparing two undefined](https://github.com/flitbit/diff/issues/111)
 
 `0.3.8` - 2017-05-03
 

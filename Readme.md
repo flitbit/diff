@@ -6,9 +6,7 @@
 
 **deep-diff** is a javascript/node.js module providing utility functions for determining the structural differences between objects and includes some utilities for applying differences across objects.
 
-> I'm actively working through the backlog of issues and will pubish v1.0.0 soon. I'd appreciate any feedback I can get...
-
-Currently `v1.0.0-pre.2`
+## Install
 
 ```bash
 npm install deep-diff@next
@@ -16,7 +14,7 @@ npm install deep-diff@next
 
 Possible v1.0.0 incompatabilities:
 
-* elements in arrays are not processed in reverse order, which fixes a few nagging bugs but may break some users
+* elements in arrays are now processed in reverse order, which fixes a few nagging bugs but may break some users
   * If your code relied on the order in which the differences were reported then your code will break. If you consider an object graph to be a big tree, then `deep-diff` does a [pre-order traversal of the object graph](https://en.wikipedia.org/wiki/Tree_traversal), however, when it encounters an array, the array is processed from the end towards the front, with each element recursively processed in-order during further descent.
 
 ## Features
