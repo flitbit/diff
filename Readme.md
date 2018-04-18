@@ -9,7 +9,7 @@
 ## Install
 
 ```bash
-npm install deep-diff@next
+npm install deep-diff
 ```
 
 Possible v1.0.0 incompatabilities:
