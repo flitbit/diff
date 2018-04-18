@@ -268,7 +268,7 @@
   }
 
   function observableDiff(lhs, rhs, observer, prefilter, orderIndependent) {
-    let changes = [];
+    var changes = [];
     deepDiff(lhs, rhs, changes, prefilter, null, null, null, orderIndependent);
     if (observer) {
       for (var i = 0; i < changes.length; ++i) {
