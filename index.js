@@ -1,14 +1,25 @@
-(function (root, factory) {
-  if (typeof define === 'function' && define.amd) { // eslint-disable-line no-undef
-    define([], factory);// eslint-disable-line no-undef
-  } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory();
+;(function(root, factory) {
+  var deepDiff = factory(root);
+  if (typeof define === 'function' && define.amd) {
+      // AMD
+      define('DeepDiff', function() {
+          return deepDiff;
+      });
+  } else if (typeof exports === 'object') {
+      // Node.js
+      module.exports = deepDiff;
   } else {
-    root.returnExports = factory();
+      // Browser globals
+      var _deepdiff = root.DeepDiff;
+      deepDiff.noConflict = function() {
+          if (root.DeepDiff === deepDiff) {
+              root.DeepDiff = _deepdiff;
+          }
+          return deepDiff;
+      };
+      root.DeepDiff = deepDiff;
   }
-  // eslint-disable-next-line no-undef
-}(typeof self !== 'undefined' ? self : this, function () {
-  var root = this;
+}(this, function(root) {
   var $conflict = root.DeepDiff;
 
   var validKinds = ['N', 'E', 'A', 'D'];
