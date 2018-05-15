@@ -1,8 +1,9 @@
-;(function(root, factory) {
+;(function(root, factory) { // eslint-disable-line no-extra-semi
   var deepDiff = factory(root);
+  // eslint-disable-next-line no-undef
   if (typeof define === 'function' && define.amd) {
       // AMD
-      define('DeepDiff', function() {
+      define('DeepDiff', function() { // eslint-disable-line no-undef
           return deepDiff;
       });
   } else if (typeof exports === 'object') {
@@ -506,16 +507,6 @@
     isConflict: {
       value: function () {
         return typeof $conflict !== 'undefined';
-      },
-      enumerable: true
-    },
-    noConflict: {
-      value: function () {
-        if ($conflict) {
-          root.DeepDiff = accumulateDiff;
-          $conflict = null;
-        }
-        return accumulateDiff;
       },
       enumerable: true
     }

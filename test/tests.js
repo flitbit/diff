@@ -212,18 +212,20 @@
 
 
     describe('can revert namespace using noConflict', function () {
-      deep = deep.noConflict();
+      if (deep.noConflict) {
+        deep = deep.noConflict();
 
-      it('conflict is restored (when applicable)', function () {
-        // In node there is no global conflict.
-        if (typeof globalConflict !== 'undefined') {
-          expect(DeepDiff).to.be(deep); // eslint-disable-line no-undef
-        }
-      });
+        it('conflict is restored (when applicable)', function () {
+          // In node there is no global conflict.
+          if (typeof globalConflict !== 'undefined') {
+            expect(DeepDiff).to.be(deep); // eslint-disable-line no-undef
+          }
+        });
 
-      it('DeepDiff functionality available through result of noConflict()', function () {
-        expect(deep.applyDiff).to.be.a('function');
-      });
+        it('DeepDiff functionality available through result of noConflict()', function () {
+          expect(deep.applyDiff).to.be.a('function');
+        });
+      }
     });
 
 
