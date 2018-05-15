@@ -1,6 +1,6 @@
 # deep-diff
 
-[![Build Status](https://travis-ci.org/flitbit/diff.png?branch=master)](https://travis-ci.org/flitbit/diff)
+[![CircleCI](https://circleci.com/gh/flitbit/diff.svg?style=svg)](https://circleci.com/gh/flitbit/diff)
 
 [![NPM](https://nodei.co/npm/deep-diff.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/deep-diff/)
 
@@ -24,32 +24,10 @@ Possible v1.0.0 incompatabilities:
 * When structural differences represent change, apply change from one object to another.
 * When structural differences represent change, selectively apply change from one object to another.
 
-## ChangeLog
-
 ## Installation
 
 ```bash
 npm install deep-diff
-```
-
-## Tests
-
-Tests use [mocha](http://mochajs.org/) and [expect.js](https://github.com/LearnBoost/expect.js/), so if you clone the [github repository](https://github.com/flitbit/json-ptr) you'll need to run:
-
-```bash
-npm install
-```
-
-... followed by ...
-
-```bash
-npm test
-```
-
-... or ...
-
-```bash
-mocha -R spec
 ```
 
 ### Importing
@@ -108,28 +86,6 @@ var rhs = {
 };
 
 var differences = diff(lhs, rhs);
-```
-
-*up to v 0.1.7* The code snippet above would result in the following structure describing the differences:
-
-``` javascript
-// Versions < 0.2.0
-[ { kind: 'E',
-    path: [ 'name' ],
-    lhs: 'my object',
-    rhs: 'updated object' },
-  { kind: 'A',
-    path: [ 'details', 'with' ],
-    index: 2,
-    item: { kind: 'E', path: [], lhs: 'elements', rhs: 'more' } },
-  { kind: 'A',
-    path: [ 'details', 'with' ],
-    index: 3,
-    item: { kind: 'N', rhs: 'elements' } },
-  { kind: 'A',
-    path: [ 'details', 'with' ],
-    index: 4,
-    item: { kind: 'N', rhs: { than: 'before' } } } ]
 ```
 
 *v 0.2.0 and above* The code snippet above would result in the following structure describing the differences:

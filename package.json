@@ -59,16 +59,16 @@
   "devDependencies": {
     "bluebird": "^3.5.1",
     "deep-equal": "^1.0.1",
-    "eslint": "^4.18.1",
-    "eslint-plugin-mocha": "^4.11.0",
+    "eslint": "^4.19.1",
+    "eslint-plugin-mocha": "^5.0.0",
     "expect.js": "^0.3.1",
     "json": "^9.0.6",
     "json-ptr": "^1.1.0",
-    "lodash": "^4.17.5",
-    "mocha": "^5.0.1",
+    "lodash": "^4.17.10",
+    "mocha": "^5.1.1",
     "mocha-junit-reporter": "^1.17.0",
-    "nodemon": "^1.15.1",
+    "nodemon": "^1.17.4",
     "rimraf": "^2.6.2",
-    "uglify-js": "^3.3.12"
+    "uglify-js": "^3.3.25"
   }
 }
