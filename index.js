@@ -2,7 +2,7 @@
   if (typeof define === 'function' && define.amd) { // eslint-disable-line no-undef
     define([], factory);// eslint-disable-line no-undef
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory();
+    module.exports = factory.call({});
   } else {
     root.returnExports = factory();
   }
