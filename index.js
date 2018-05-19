@@ -21,8 +21,6 @@
       root.DeepDiff = deepDiff;
   }
 }(this, function(root) {
-  var $conflict = root.DeepDiff;
-
   var validKinds = ['N', 'E', 'A', 'D'];
 
   // nodejs compatible on server side and in the browser.
