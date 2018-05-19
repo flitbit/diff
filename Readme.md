@@ -198,6 +198,36 @@ if (changes) {
 
 The `prefilter`'s signature should be `function(path, key)` and it should return a truthy value for any `path`-`key` combination that should be filtered. If filtered, the difference analysis does no further analysis of on the identified object-property path.
 
+```javascript
+const diff = require('deep-diff');
+const assert = require('assert');
+
+const data = {
+  issue: 126,
+  submittedBy: 'abuzarhamza',
+  title: 'readme.md need some additional example prefilter',
+  posts: [
+    {
+      date: '2018-04-16',
+      text: `additional example for prefilter for deep-diff would be great.
+      https://stackoverflow.com/questions/38364639/pre-filter-condition-deep-diff-node-js`
+    }
+  ]
+};
+
+const clone = JSON.parse(JSON.stringify(data));
+clone.title = 'README.MD needs additional example illustrating how to prefilter';
+clone.disposition = 'completed';
+
+const two = diff(data, clone);
+const none = diff(data, clone,
+  (path, key) => path.length === 0 && ~['title', 'disposition'].indexOf(key)
+);
+
+assert.equal(two.length, 2, 'should reflect two differences');
+assert.ok(typeof none === 'undefined', 'should reflect no differences');
+```
+
 ## Contributing
 
 When contributing, keep in mind that it is an objective of `deep-diff` to have no package dependencies. This may change in the future, but for now, no-dependencies.
