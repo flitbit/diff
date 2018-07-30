@@ -763,6 +763,7 @@
     };
     const rhs = {
       foo: "bar"
+      [Symbol.iterator]: "Iterator"
     };
     
     const res = deep.diff(lhs, rhs);
