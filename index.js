@@ -246,8 +246,8 @@
             deepDiff(lhs[i], rhs[i], changes, prefilter, currentPath, i, stack, orderIndependent);
           }
         } else {
-          var akeys = Object.keys(lhs);
-          var pkeys = Object.keys(rhs);
+          var akeys = Object.keys(lhs).concat(Object.getOwnPropertySymbols(lhs));
+          var pkeys = Object.keys(rhs).concat(Object.getOwnPropertySymbols(rhs));
           for (i = 0; i < akeys.length; ++i) {
             k = akeys[i];
             other = pkeys.indexOf(k);
