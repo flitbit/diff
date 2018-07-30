@@ -755,5 +755,31 @@
     });
 
   });
+  
+  describe('Diff-ing symbol-based keys should work', function () {
+    const lhs = {
+      [Symbol.iterator]: "Iterator"
+    };
+    const rhs = {
+      foo: "bar"
+    };
+    
+    const res = deep.diff(lhs, rhs);
+    expect(res).to.be.ok();
+    expect(res).to.be.an('array');
+    expect(res).to.have.length(2);
+
+    let changed = 0, deleted = 0;
+    for (const difference of res) {
+      if (difference.kind == 'D')
+        deleted += 1;
+      else if (difference.kind == 'E')
+        changed += 1;
+    }
+
+    expect(changed).to.be(1);
+    expect(deleted).to.be(1);
+
+  });
 
 }));
