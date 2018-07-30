@@ -7,7 +7,7 @@
           return deepDiff;
       });
   } else if (typeof exports === 'object' || typeof navigator === 'object' && navigator.product.match(/ReactNative/i)) {
-      // Node.js
+      // Node.js or ReactNative
       module.exports = deepDiff;
   } else {
       // Browser globals
