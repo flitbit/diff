@@ -6,7 +6,7 @@
       define('DeepDiff', function() { // eslint-disable-line no-undef
           return deepDiff;
       });
-  } else if (typeof exports === 'object') {
+  } else if (typeof exports === 'object' || typeof navigator === 'object' && navigator.product.match(/ReactNative/i)) {
       // Node.js
       module.exports = deepDiff;
   } else {
