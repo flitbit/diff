@@ -518,6 +518,9 @@
   // const DeepDiff = require('deep-diff');
   // const { DeepDiff } = require('deep-diff');
 
-  root.DeepDiff = accumulateDiff;
+  if (root) {
+    root.DeepDiff = accumulateDiff;
+  }
+
   return accumulateDiff;
 }));
