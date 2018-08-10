@@ -45,7 +45,7 @@
   "main": "./index.js",
   "scripts": {
     "prerelease": "npm run clean && npm run test",
-    "release": "uglifyjs -c -m -o dist/deep-diff.min.js --source-map -r '$,require,exports,self,module,define' index.js",
+    "release": "uglifyjs -c -m -o dist/deep-diff.min.js --source-map -r '$,require,exports,self,module,define,navigator' index.js",
     "clean": "rimraf dist && mkdir dist",
     "preversion": "npm run release",
     "postversion": "git push && git push --tags",
