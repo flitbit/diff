@@ -4,6 +4,10 @@
 
 ## Log
 
+`1.0.2` - 2018-08-10
+
+* Support for react-native environment - Thanks @xanderberkein
+
 `1.0.0` - 2018-04-18
 
 * reverted to [UMD style module](https://github.com/umdjs/umd) rather than the ES6 style, which evidently, broke lots of people's previously working code.
