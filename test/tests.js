@@ -580,6 +580,53 @@
       });
     });
 
+    describe('regression test for issue #141', function() {
+      var changeFail = { kind: 'E', path: ['foo'], lhs: true, rhs: false };
+      var changeSucceed = { kind: 'E', path: ['foo'], lhs: 1, rhs: 3 };
+
+      var revertLHSFalsey = { kind: 'E', path: ['foo'], lhs: -1, rhs: 1 };
+      var revertBothFalsey = { kind: 'E', path: ['foo'], lhs: -1, rhs: -3 };
+      var revertLHSTruthy = { kind: 'E', path: ['foo'], lhs: 1, rhs: 3 };
+      var revertBothTruthy = { kind: 'E', path: ['foo'], lhs: 1, rhs: 3 };
+
+      it('applies changes correctly when the new value is truthy', function() {
+        var target = { foo: changeSucceed.lhs };
+        deep.applyChange(target, changeSucceed);
+        expect(target.foo).to.equal(changeSucceed.rhs);
+      });
+
+      it('applies changes correctly when the new value is falsey', function() {
+        var target = { foo: changeFail.lhs };
+        deep.applyChange(target, changeFail);
+        expect(target.foo).to.equal(changeFail.rhs);
+      });
+
+      it('reverts changes correctly when both values are truthy', function() {
+        var target = { foo: 'hello' };
+        deep.revertChange(target, revertBothTruthy);
+        expect(target.foo).to.equal(revertBothTruthy.lhs);
+      });
+
+      it('reverts changes correctly when both values are falsey', function() {
+        var target = { foo: 'hello' };
+        deep.revertChange(target, revertBothFalsey);
+        expect(target.foo).to.equal(revertBothFalsey.lhs);
+      });
+
+      it('reverts changes correctly when the new value is truthy', function() {
+        var target = { foo: revertLHSTruthy.rhs };
+        deep.revertChange(target, revertLHSTruthy);
+        expect(target.foo).to.equal(revertLHSTruthy.lhs);
+      });
+
+      it('reverts changes correctly when the new value is falsey', function() {
+        var target = { foo: revertLHSFalsey.rhs };
+        deep.revertChange(target, revertLHSFalsey);
+        expect(target.foo).to.equal(revertLHSFalsey.lhs);
+      });
+
+    });
+
     describe('Order independent hash testing', function () {
       function sameHash(a, b) {
         expect(deep.orderIndepHash(a)).to.equal(deep.orderIndepHash(b));
