@@ -580,7 +580,7 @@
       });
     });
 
-    describe('regression tests for issue #102', function () {
+    describe('regression tests for issue #142', function () {
       it('should not modify the change object', function () {
 
         var target = {};
