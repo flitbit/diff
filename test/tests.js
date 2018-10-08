@@ -580,6 +580,23 @@
       });
     });
 
+    describe('regression tests for issue #102', function () {
+      it('should not modify the change object', function () {
+
+        var target = {};
+        var change1 = { kind: 'N', path: ['foo'], rhs: {} };
+        var change2 = { kind: 'N', path: ['foo', 'bar'], rhs: 'bug' };
+
+        deep.applyChange(target, true, change1);
+        deep.applyChange(target, true, change2);
+
+        expect(Object.keys(target)).to.eql(['foo']);
+        expect(Object.keys(target.foo)).to.eql(['bar']);
+        expect(Object.keys(change1.rhs)).to.eql([]);
+
+      });
+    });
+
     describe('Order independent hash testing', function () {
       function sameHash(a, b) {
         expect(deep.orderIndepHash(a)).to.equal(deep.orderIndepHash(b));
