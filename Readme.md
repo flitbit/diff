@@ -154,6 +154,7 @@ var rhs = {
     it: 'has',
     an: 'array',
     with: ['a', 'few', 'more', 'elements', { than: 'before' }]
+  }
 };
 
 observableDiff(lhs, rhs, function (d) {
