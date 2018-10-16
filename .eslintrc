@@ -9,6 +9,7 @@
   "extends": "eslint:recommended",
   "rules": {
     "no-alert": 2,
+    "no-var": "error",
     "no-array-constructor": 2,
     "no-caller": 2,
     "no-catch-shadow": 2,
@@ -65,8 +66,7 @@
   },
   "overrides": [
     {
-      "files": [ "*.js", "test/*.js" ],
-      "excludedFiles": "examples/*.js"
+      "files": [ "*.js", "test/*.js" ]
     }
   ]
 }

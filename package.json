@@ -42,19 +42,15 @@
     "type": "git",
     "url": "git://github.com/flitbit/diff.git"
   },
-  "main": "./index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "prerelease": "npm run clean && npm run test",
-    "release": "uglifyjs -c -m -o dist/deep-diff.min.js --source-map -r '$,require,exports,self,module,define,navigator' index.js",
-    "clean": "rimraf dist && mkdir dist",
-    "preversion": "npm run release",
-    "postversion": "git push && git push --tags",
-    "pretest": "npm run lint",
+    "build": "webpack",
+    "posttest": "npm run lint",
     "test": "mocha test/**/*.js",
     "test:watch": "nodemon --ext js,json --ignore dist/ --exec 'npm test'",
     "preci": "npm run lint",
     "ci": "mocha --reporter mocha-junit-reporter test/**/*.js",
-    "lint": "eslint index.js test"
+    "lint": "eslint ./"
   },
   "devDependencies": {
     "bluebird": "^3.5.1",
@@ -69,6 +65,8 @@
     "mocha-junit-reporter": "^1.17.0",
     "nodemon": "^1.17.4",
     "rimraf": "^2.6.2",
-    "uglify-js": "^3.3.25"
+    "uglify-js": "^3.3.25",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2"
   }
 }
