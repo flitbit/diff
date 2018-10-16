@@ -45,12 +45,12 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "webpack",
-    "pretest": "npm run lint",
+    "posttest": "npm run lint",
     "test": "mocha test/**/*.js",
     "test:watch": "nodemon --ext js,json --ignore dist/ --exec 'npm test'",
     "preci": "npm run lint",
     "ci": "mocha --reporter mocha-junit-reporter test/**/*.js",
-    "lint": "eslint **/*.js"
+    "lint": "eslint ./"
   },
   "devDependencies": {
     "bluebird": "^3.5.1",

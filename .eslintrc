@@ -65,8 +65,7 @@
   },
   "overrides": [
     {
-      "files": [ "*.js", "test/*.js" ],
-      "excludedFiles": "examples/*.js"
+      "files": [ "*.js", "test/*.js" ]
     }
   ]
 }
