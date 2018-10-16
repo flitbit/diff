@@ -1,1 +1,6 @@
 test-results.xml
+test
+examples
+.vscode
+.circlci
+.eslintrc
