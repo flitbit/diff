@@ -1,4 +1,4 @@
-var validKinds = ['N', 'E', 'A', 'D'];
+const validKinds = ['N', 'E', 'A', 'D'];
 
 // nodejs compatible on server side and in the browser.
 function inherits(ctor, superCtor) {
@@ -71,14 +71,14 @@ function DiffArray(path, index, item) {
 inherits(DiffArray, Diff);
 
 function arrayRemove(arr, from, to) {
-  var rest = arr.slice((to || from) + 1 || arr.length);
+  const rest = arr.slice((to || from) + 1 || arr.length);
   arr.length = from < 0 ? arr.length + from : from;
   arr.push.apply(arr, rest);
   return arr;
 }
 
 function realTypeOf(subject) {
-  var type = typeof subject;
+  const type = typeof subject;
   if (type !== 'object') {
     return type;
   }
@@ -99,10 +99,10 @@ function realTypeOf(subject) {
 
 // http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
 function hashThisString(string) {
-  var hash = 0;
+  let hash = 0;
   if (string.length === 0) { return hash; }
-  for (var i = 0; i < string.length; i++) {
-    var char = string.charCodeAt(i);
+  for (let i = 0; i < string.length; i++) {
+    const char = string.charCodeAt(i);
     hash = ((hash << 5) - hash) + char;
     hash = hash & hash; // Convert to 32bit integer
   }
@@ -112,8 +112,8 @@ function hashThisString(string) {
 // Gets a hash of the given object in an array order-independent fashion
 // also object key order independent (easier since they can be alphabetized)
 function getOrderIndependentHash(object) {
-  var accum = 0;
-  var type = realTypeOf(object);
+  let accum = 0;
+  const type = realTypeOf(object);
 
   if (type === 'array') {
     object.forEach(function (item) {
@@ -121,14 +121,14 @@ function getOrderIndependentHash(object) {
       accum += getOrderIndependentHash(item);
     });
 
-    var arrayString = '[type: array, hash: ' + accum + ']';
+    const arrayString = '[type: array, hash: ' + accum + ']';
     return accum + hashThisString(arrayString);
   }
 
   if (type === 'object') {
-    for (var key in object) {
+    for (const key in object) {
       if (object.hasOwnProperty(key)) {
-        var keyValueString = '[ type: object, key: ' + key + ', value hash: ' + getOrderIndependentHash(object[key]) + ']';
+        const keyValueString = '[ type: object, key: ' + key + ', value hash: ' + getOrderIndependentHash(object[key]) + ']';
         accum += hashThisString(keyValueString);
       }
     }
@@ -137,7 +137,7 @@ function getOrderIndependentHash(object) {
   }
 
   // Non object, non array...should be good?
-  var stringToHash = '[ type: ' + type + ' ; value: ' + object + ']';
+  const stringToHash = '[ type: ' + type + ' ; value: ' + object + ']';
   return accum + hashThisString(stringToHash);
 }
 
@@ -145,7 +145,7 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack, orderIndepende
   changes = changes || [];
   path = path || [];
   stack = stack || [];
-  var currentPath = path.slice(0);
+  const currentPath = path.slice(0);
   if (typeof key !== 'undefined' && key !== null) {
     if (prefilter) {
       if (typeof (prefilter) === 'function' && prefilter(currentPath, key)) {
@@ -155,7 +155,7 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack, orderIndepende
           return;
         }
         if (prefilter.normalize) {
-          var alt = prefilter.normalize(currentPath, key, lhs, rhs);
+          const alt = prefilter.normalize(currentPath, key, lhs, rhs);
           if (alt) {
             lhs = alt[0];
             rhs = alt[1];
@@ -172,14 +172,14 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack, orderIndepende
     rhs = rhs.toString();
   }
 
-  var ltype = typeof lhs;
-  var rtype = typeof rhs;
-  var i, j, k, other;
+  const ltype = typeof lhs;
+  const rtype = typeof rhs;
+  let i, j, k, other;
 
-  var ldefined = ltype !== 'undefined' ||
+  const ldefined = ltype !== 'undefined' ||
     (stack && (stack.length > 0) && stack[stack.length - 1].lhs &&
       Object.getOwnPropertyDescriptor(stack[stack.length - 1].lhs, key));
-  var rdefined = rtype !== 'undefined' ||
+  const rdefined = rtype !== 'undefined' ||
     (stack && (stack.length > 0) && stack[stack.length - 1].rhs &&
       Object.getOwnPropertyDescriptor(stack[stack.length - 1].rhs, key));
 
@@ -223,8 +223,8 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack, orderIndepende
           deepDiff(lhs[i], rhs[i], changes, prefilter, currentPath, i, stack, orderIndependent);
         }
       } else {
-        var akeys = Object.keys(lhs);
-        var pkeys = Object.keys(rhs);
+        const akeys = Object.keys(lhs);
+        const pkeys = Object.keys(rhs);
         for (i = 0; i < akeys.length; ++i) {
           k = akeys[i];
           other = pkeys.indexOf(k);
@@ -255,10 +255,10 @@ function deepDiff(lhs, rhs, changes, prefilter, path, key, stack, orderIndepende
 }
 
 function observableDiff(lhs, rhs, observer, prefilter, orderIndependent) {
-  var changes = [];
+  const changes = [];
   deepDiff(lhs, rhs, changes, prefilter, null, null, null, orderIndependent);
   if (observer) {
-    for (var i = 0; i < changes.length; ++i) {
+    for (let i = 0; i < changes.length; ++i) {
       observer(changes[i]);
     }
   }
@@ -270,30 +270,30 @@ function orderIndependentDeepDiff(lhs, rhs, changes, prefilter, path, key, stack
 }
 
 function accumulateDiff(lhs, rhs, prefilter, accum) {
-  var observer = (accum) ?
+  const observer = (accum) ?
     function (difference) {
       if (difference) {
         accum.push(difference);
       }
     } : undefined;
-  var changes = observableDiff(lhs, rhs, observer, prefilter);
+  const changes = observableDiff(lhs, rhs, observer, prefilter);
   return (accum) ? accum : (changes.length) ? changes : undefined;
 }
 
 function accumulateOrderIndependentDiff(lhs, rhs, prefilter, accum) {
-  var observer = (accum) ?
+  const observer = (accum) ?
     function (difference) {
       if (difference) {
         accum.push(difference);
       }
     } : undefined;
-  var changes = observableDiff(lhs, rhs, observer, prefilter, true);
+  const changes = observableDiff(lhs, rhs, observer, prefilter, true);
   return (accum) ? accum : (changes.length) ? changes : undefined;
 }
 
 function applyArrayChange(arr, index, change) {
   if (change.path && change.path.length) {
-    var it = arr[index],
+    let it = arr[index],
       i, u = change.path.length - 1;
     for (i = 0; i < u; i++) {
       it = it[change.path[i]];
@@ -332,7 +332,7 @@ function applyChange(target, source, change) {
     change = source;
   }
   if (target && change && change.kind) {
-    var it = target,
+    let it = target,
       i = -1,
       last = change.path ? change.path.length - 1 : 0;
     while (++i < last) {
@@ -362,7 +362,7 @@ function applyChange(target, source, change) {
 function revertArrayChange(arr, index, change) {
   if (change.path && change.path.length) {
     // the structure of the object at the index has changed...
-    var it = arr[index],
+    let it = arr[index],
       i, u = change.path.length - 1;
     for (i = 0; i < u; i++) {
       it = it[change.path[i]];
@@ -403,7 +403,7 @@ function revertArrayChange(arr, index, change) {
 
 function revertChange(target, source, change) {
   if (target && source && change && change.kind) {
-    var it = target,
+    let it = target,
       i, u;
     u = change.path.length - 1;
     for (i = 0; i < u; i++) {
@@ -436,7 +436,7 @@ function revertChange(target, source, change) {
 
 function applyDiff(target, source, filter) {
   if (target && source) {
-    var onChange = function (change) {
+    const onChange = function (change) {
       if (!filter || filter(target, source, change)) {
         applyChange(target, source, change);
       }
