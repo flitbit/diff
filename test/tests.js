@@ -268,6 +268,23 @@
 
       });
 
+      describe('if the filtered config is passed as an object', function () {
+
+        it('changes to the array to not appear as a difference', function () {
+          var prefilter = function (path, key) {
+            return key === 'supportedBy';
+          };
+          var diff = deep(lhs, rhs, {prefilter: prefilter});
+          expect(diff).to.be.ok();
+          expect(diff.length).to.be(2);
+          expect(diff[0]).to.have.property('kind');
+          expect(diff[0].kind).to.be('E');
+          expect(diff[1]).to.have.property('kind');
+          expect(diff[1].kind).to.be('N');
+        });
+
+      });
+
       describe('if the filtered property is not an array', function () {
 
         it('changes do not appear as a difference', function () {
@@ -287,6 +304,57 @@
           expect(diff[3].kind).to.be('E');
         });
 
+      });
+    });
+
+    describe('Can normalize properties to before diffing', function () {
+      var testLHS = {
+        array: [1, 2, 3, 4, 5],
+      };
+
+      var testRHS = {
+        array: '1/2/3/4/5',
+      };
+
+      it('changes do not appear as a difference', function () {
+        var filter = {
+          normalize: function (path, key, lhs, rhs) {
+            expect(key).to.be('array');
+
+            if (Array.isArray(lhs)) {
+              lhs = lhs.join('/');
+            }
+            if (Array.isArray(rhs)) {
+              rhs = rhs.join('/');
+            }
+            return [lhs, rhs];
+          }
+        };
+
+        var diff;
+
+        diff = deep(testLHS, testRHS, filter);
+        expect(diff).to.be.an('undefined');
+
+        diff = deep(testRHS, testLHS, filter);
+        expect(diff).to.be.an('undefined');
+      });
+
+      it('falsy return does not normalize', function () {
+        var filter = {
+          // eslint-disable-next-line no-unused-vars
+          normalize: function (path, key, lhs, rhs) {
+            return false;
+          }
+        };
+
+        var diff;
+
+        diff = deep(testLHS, testRHS, filter);
+        expect(diff).to.be.ok();
+
+        diff = deep(testRHS, testLHS, filter);
+        expect(diff).to.be.ok();
       });
     });
 
