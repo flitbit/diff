@@ -154,6 +154,7 @@ var rhs = {
     it: 'has',
     an: 'array',
     with: ['a', 'few', 'more', 'elements', { than: 'before' }]
+  }
 };
 
 observableDiff(lhs, rhs, function (d) {
@@ -168,8 +169,8 @@ observableDiff(lhs, rhs, function (d) {
 
 A standard import of `var diff = require('deep-diff')` is assumed in all of the code examples. The import results in an object having the following public properties:
 
-* `diff(lhs, rhs, prefilter, acc)` &mdash; calculates the differences between two objects, optionally prefiltering elements for comparison, and optionally using the specified accumulator.
-* `observableDiff(lhs, rhs, observer, prefilter)` &mdash; calculates the differences between two objects and reports each to an observer function, optionally, prefiltering elements for comparison.
+* `diff(lhs, rhs[, options, acc])` &mdash; calculates the differences between two objects, optionally using the specified accumulator.
+* `observableDiff(lhs, rhs, observer[, options])` &mdash; calculates the differences between two objects and reports each to an observer function.
 * `applyDiff(target, source, filter)` &mdash; applies any structural differences from a source object to a target object, optionally filtering each difference.
 * `applyChange(target, source, change)` &mdash; applies a single change record to a target object. NOTE: `source` is unused and may be removed.
 * `revertChange(target, source, change)` reverts a single change record to a target object. NOTE: `source` is unused and may be removed.
@@ -178,11 +179,14 @@ A standard import of `var diff = require('deep-diff')` is assumed in all of the 
 
 The `diff` function calculates the difference between two objects.
 
+
 #### Arguments
 
 * `lhs` - the left-hand operand; the origin object.
 * `rhs` - the right-hand operand; the object being compared structurally with the origin object.
-* `prefilter` - an optional function that determines whether difference analysis should continue down the object graph.
+* `options` - A configuration object that can have the following properties:
+  - `prefilter`: function that determines whether difference analysis should continue down the object graph. This function can also replace the `options` object in the parameters for backward compatibility.
+  - `normalize`: function that pre-processes every _leaf_ of the tree.
 * `acc` - an optional accumulator/array (requirement is that it have a `push` function). Each difference is pushed to the specified accumulator.
 
 Returns either an array of changes or, if there are no changes, `undefined`. This was originally chosen so the result would be pass a truthy test:
@@ -227,6 +231,51 @@ const none = diff(data, clone,
 assert.equal(two.length, 2, 'should reflect two differences');
 assert.ok(typeof none === 'undefined', 'should reflect no differences');
 ```
+#### Normalizing object properties
+
+The `normalize`'s signature should be `function(path, key, lhs, rhs)` and it should return either a falsy value if no normalization has occured, or a `[lhs, rhs]` array to replace the original values. This step doesn't occur if the path was filtered out in the `prefilter` phase.
+
+```javascript
+const diff = require('deep-diff');
+const assert = require('assert');
+
+const data = {
+  pull: 149,
+  submittedBy: 'saveman71',
+};
+
+const clone = JSON.parse(JSON.stringify(data));
+clone.issue = 42;
+
+const two = diff(data, clone);
+const none = diff(data, clone, {
+  normalize: (path, key, lhs, rhs) => {
+    if (lhs === 149) {
+      lhs = 42;
+    }
+    if (rhs === 149) {
+      rhs = 42;
+    }
+    return [lsh, rhs];
+  }
+});
+
+assert.equal(two.length, 1, 'should reflect one difference');
+assert.ok(typeof none === 'undefined', 'should reflect no difference');
+```
+
+### `observableDiff`
+
+The `observableDiff` function calculates the difference between two objects and reports each to an observer function.
+
+#### Argmuments
+
+* `lhs` - the left-hand operand; the origin object.
+* `rhs` - the right-hand operand; the object being compared structurally with the origin object.
+* `observer` - The observer to report to.
+* `options` - A configuration object that can have the following properties:
+  - `prefilter`: function that determines whether difference analysis should continue down the object graph. This function can also replace the `options` object in the parameters for backward compatibility.
+  - `normalize`: function that pre-processes every _leaf_ of the tree.
 
 ## Contributing
 
