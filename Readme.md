@@ -256,7 +256,7 @@ const none = diff(data, clone, {
     if (rhs === 149) {
       rhs = 42;
     }
-    return [lsh, rhs];
+    return [lhs, rhs];
   }
 });
 
