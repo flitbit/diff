@@ -1,0 +1,7 @@
+{
+    "overrides": {
+        "BOWER-PACKAGE": {
+            "main": ['index.js']
+        }
+    }
+}
