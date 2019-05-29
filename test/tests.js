@@ -766,7 +766,6 @@
       });
     });
 
-
     describe('Order indepedent array comparison should work', function () {
       it('can compare simple arrays in an order independent fashion', function () {
         var lhs = [1, 2, 3];
@@ -820,6 +819,32 @@
       });
 
 
+    });
+
+    describe('maxChanges reached', function() {
+      it('result should include exactly maxChanges when comparing objects that have more differences', function() {
+        var lhs = { a: 1, b: 2, c: 3 };
+        var rhs = {};
+
+        var diff = deep.diff(lhs, rhs);
+        expect(diff.length).to.equal(3);
+
+        let maxChanges = 2;
+        diff = deep.diff(lhs, rhs, null, null, maxChanges);
+        expect(diff.length).to.equal(maxChanges);
+      });
+
+      it('result should include exactly maxChanges when comparing objects that have more differences in nested objects', function() {
+        var lhs = { a: 1, b: 2, c: { d: 1, e: 1 }, f: 3 };
+        var rhs = { a: 1, c: {} };
+
+        var diff = deep.diff(lhs, rhs);
+        expect(diff.length).to.equal(4);
+
+        let maxChanges = 2;
+        diff = deep.diff(lhs, rhs, null, null, maxChanges);
+        expect(diff.length).to.equal(maxChanges);
+      });
     });
 
   });
