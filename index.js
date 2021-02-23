@@ -1,3 +1,4 @@
+/* eslint-disable no-fallthrough */
 ;(function(root, factory) { // eslint-disable-line no-extra-semi
   var deepDiff = factory(root);
   // eslint-disable-next-line no-undef
@@ -360,7 +361,7 @@
         last = change.path ? change.path.length - 1 : 0;
       while (++i < last) {
         if (typeof it[change.path[i]] === 'undefined') {
-          if (change.kind === "E" || change.kind === "N") {
+          if (change.kind === 'E' || change.kind === 'N') {
             return;
           }
           it[change.path[i]] = (typeof change.path[i + 1] !== 'undefined' && typeof change.path[i + 1] === 'number') ? [] : {};
@@ -378,7 +379,7 @@
           delete it[change.path[i]];
           break;
         case 'E': {
-          if (typeof it[change.path[i]] === "undefined") {
+          if (typeof it[change.path[i]] === 'undefined') {
             break;
           }
         }

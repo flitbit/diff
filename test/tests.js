@@ -411,25 +411,11 @@
       describe('when diff is applied to a different empty object', function () {
         var diff = deep.diff(nestedOne, nestedTwo);
 
-        it('has result with nested values', function () {
+        it('does not apply the edit', function () {
           var result = {};
 
           deep.applyChange(result, nestedTwo, diff[0]);
-          expect(result.levelOne).to.be.ok();
-          expect(result.levelOne).to.be.an('object');
-          expect(result.levelOne.levelTwo).to.be.ok();
-          expect(result.levelOne.levelTwo).to.eql('another value');
-        });
-
-        it('has result with array object values', function () {
-          var result = {};
-
-          deep.applyChange(result, nestedTwo, diff[2]);
-          expect(result.arrayOne).to.be.ok();
-          expect(result.arrayOne).to.be.an('array');
-          expect(result.arrayOne[0]).to.be.ok();
-          expect(result.arrayOne[0].objValue).to.be.ok();
-          expect(result.arrayOne[0].objValue).to.equal('new value');
+          expect(Object.keys(result).length).to.be(0);
         });
 
         it('has result with added array objects', function () {
