@@ -425,7 +425,7 @@
   }
 
   function revertChange(target, source, change) {
-    if (target && source && change && change.kind) {
+    if (target && change && change.kind) {
       var it = target,
         i, u;
       u = change.path.length - 1;
