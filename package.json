@@ -36,7 +36,8 @@
     "Dan Drinkard <dan.drinkard@gmail.com>",
     "Elad Efrat <elad@iNNU.ORG>",
     "caasi Huang <caasi.igd@gmail.com>",
-    "Tom Ashworth <tashworth@twitter.com>"
+    "Tom Ashworth <tashworth@twitter.com>",
+    "Matthew Oxley <matt@flux.ai>"
   ],
   "repository": {
     "type": "git",
@@ -62,12 +63,12 @@
     "eslint": "^4.19.1",
     "eslint-plugin-mocha": "^5.0.0",
     "expect.js": "^0.3.1",
-    "json": "^9.0.6",
-    "json-ptr": "^1.1.0",
-    "lodash": "^4.17.10",
-    "mocha": "^5.1.1",
+    "json": "^11.0.0",
+    "json-ptr": "^2.2.0",
+    "lodash": "^4.17.21",
+    "mocha": "^9.0.3",
     "mocha-junit-reporter": "^1.17.0",
-    "nodemon": "^1.17.4",
+    "nodemon": "^2.0.12",
     "rimraf": "^2.6.2",
     "uglify-js": "^3.3.25"
   }
