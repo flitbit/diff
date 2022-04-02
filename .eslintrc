@@ -1,11 +1,13 @@
 {
   "parserOptions": {
-    "sourceType": "module"
+    "sourceType": "module",
+    "ecmaVersion": 6
   },
   "env": {
     "node": true,
     "browser": true
   },
+  "plugins": ["es"],
   "extends": "eslint:recommended",
   "rules": {
     "no-alert": 2,
@@ -31,6 +33,7 @@
     "no-octal-escape": 2,
     "no-process-exit": 2,
     "no-proto": 2,
+    "no-prototype-builtins": 0,
     "no-return-assign": 2,
     "no-script-url": 2,
     "no-sequences": 2,
@@ -46,26 +49,26 @@
     "camelcase": 1,
     "comma-spacing": 2,
     "consistent-return": 2,
-    "curly": [ 2, "all" ],
-    "dot-notation": [ 2, { "allowKeywords": true } ],
+    "curly": [2, "all"],
+    "dot-notation": [2, { "allowKeywords": true }],
     "eol-last": 2,
-    "no-extra-parens": [ 2, "functions" ],
+    "no-extra-parens": [2, "functions"],
     "eqeqeq": 2,
-    "keyword-spacing": [ 2, { "before": true, "after": true } ],
-    "key-spacing": [ 2, { "beforeColon": false, "afterColon": true } ],
+    "keyword-spacing": [2, { "before": true, "after": true }],
+    "key-spacing": [2, { "beforeColon": false, "afterColon": true }],
     "new-cap": 2,
     "new-parens": 2,
-    "quotes": [ 2, "single" ],
+    "quotes": [2, "single"],
     "semi": 2,
-    "semi-spacing": [ 2, { "before": false, "after": true } ],
+    "semi-spacing": [2, { "before": false, "after": true }],
     "space-infix-ops": 2,
-    "space-unary-ops": [ 2, { "words": true, "nonwords": false } ],
-    "strict": [ 2, "global" ],
-    "yoda": [ 2, "never" ]
+    "space-unary-ops": [2, { "words": true, "nonwords": false }],
+    "strict": [2, "global"],
+    "yoda": [2, "never"]
   },
   "overrides": [
     {
-      "files": [ "*.js", "test/*.js" ],
+      "files": ["*.js", "test/*.js"],
       "excludedFiles": "examples/*.js"
     }
   ]
